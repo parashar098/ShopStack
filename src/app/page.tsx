@@ -1,9 +1,12 @@
 
+'use client';
+
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { mockProducts } from "@/lib/data";
 import ProductCard from "@/components/product-card";
 import HeroCarousel from "@/components/hero-carousel";
+import SplitText from "@/components/ui/split-text";
 
 export default function HomePage() {
   const featuredProducts = mockProducts.slice(0, 8);
@@ -15,9 +18,11 @@ export default function HomePage() {
         <div className="absolute inset-0 bg-black/50" />
         <div className="relative z-10 container mx-auto px-4 md:px-6 text-center text-white">
           <div className="max-w-3xl mx-auto">
-            <h1 className="text-4xl font-headline font-bold tracking-tighter sm:text-5xl md:text-6xl !text-white">
-              Discover Your Next Favorite Thing
-            </h1>
+            <SplitText
+              text="Discover Your Next Favorite Thing"
+              tag="h1"
+              className="text-4xl font-headline font-bold tracking-tighter sm:text-5xl md:text-6xl !text-white"
+            />
             <p className="mt-4 text-lg md:text-xl text-white/80">
               High-quality products curated just for you. Explore our collection and find what you've been looking for.
             </p>
