@@ -4,28 +4,43 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Search } from "lucide-react";
 
 interface ProductFiltersProps {
   categories: string[];
-  onFilterChange: (category: string) => void;
+  onCategoryChange: (category: string) => void;
+  onSearchChange: (searchTerm: string) => void;
 }
 
 export default function ProductFilters({
   categories,
-  onFilterChange,
+  onCategoryChange,
+  onSearchChange,
 }: ProductFiltersProps) {
   return (
     <Card>
       <CardHeader>
         <CardTitle className="font-headline text-xl">Filters</CardTitle>
       </CardHeader>
-      <CardContent>
-        <div className="space-y-4">
-          <div>
-            <h3 className="font-semibold mb-2">Category</h3>
+      <CardContent className="space-y-6">
+        <div>
+           <div className="relative">
+             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+             <Input
+                type="search"
+                placeholder="Search products..."
+                className="pl-8"
+                onChange={(e) => onSearchChange(e.target.value)}
+              />
+           </div>
+        </div>
+        <div>
+            <h3 className="font-semibold mb-3">Category</h3>
             <RadioGroup
               defaultValue="all"
-              onValueChange={onFilterChange}
+              onValueChange={onCategoryChange}
+              className="space-y-2"
             >
               <div className="flex items-center space-x-2">
                 <RadioGroupItem value="all" id="cat-all" />
@@ -38,7 +53,6 @@ export default function ProductFilters({
                 </div>
               ))}
             </RadioGroup>
-          </div>
         </div>
       </CardContent>
     </Card>

@@ -1,23 +1,37 @@
 
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { mockProducts } from "@/lib/data";
 import ProductCard from "@/components/product-card";
 import ProductFilters from "@/components/product-filters";
 import type { Product } from "@/lib/types";
 
 export default function ProductsPage() {
-  const [filteredProducts, setFilteredProducts] = useState<Product[]>(mockProducts);
+  const [filters, setFilters] = useState({
+    category: "all",
+    searchTerm: "",
+  });
 
   const categories = [...new Set(mockProducts.map((p) => p.category))];
 
-  const handleFilterChange = (category: string) => {
-    if (category === "all") {
-      setFilteredProducts(mockProducts);
-    } else {
-      setFilteredProducts(mockProducts.filter((p) => p.category === category));
-    }
+  const filteredProducts = useMemo(() => {
+    return mockProducts.filter((product) => {
+      const categoryMatch =
+        filters.category === "all" || product.category === filters.category;
+      const searchMatch = product.name
+        .toLowerCase()
+        .includes(filters.searchTerm.toLowerCase());
+      return categoryMatch && searchMatch;
+    });
+  }, [filters]);
+
+  const handleCategoryChange = (category: string) => {
+    setFilters((prev) => ({ ...prev, category }));
+  };
+
+  const handleSearchChange = (searchTerm: string) => {
+    setFilters((prev) => ({ ...prev, searchTerm }));
   };
 
   return (
@@ -26,7 +40,8 @@ export default function ProductsPage() {
         <aside className="md:col-span-1">
           <ProductFilters
             categories={categories}
-            onFilterChange={handleFilterChange}
+            onCategoryChange={handleCategoryChange}
+            onSearchChange={handleSearchChange}
           />
         </aside>
         <main className="md:col-span-3">
@@ -40,7 +55,12 @@ export default function ProductsPage() {
               ))}
             </div>
           ) : (
-            <p>No products found for the selected filter.</p>
+             <div className="text-center py-20 border-2 border-dashed rounded-lg">
+                <h2 className="text-xl font-semibold">No Products Found</h2>
+                <p className="mt-2 text-muted-foreground">
+                    Try adjusting your search or filters.
+                </p>
+            </div>
           )}
         </main>
       </div>
