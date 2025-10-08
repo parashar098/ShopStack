@@ -6,18 +6,37 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
+import { useEffect, useState } from "react";
 
 interface ProductFiltersProps {
   categories: string[];
   onCategoryChange: (category: string) => void;
   onSearchChange: (searchTerm: string) => void;
+  currentSearchTerm?: string;
 }
 
 export default function ProductFilters({
   categories,
   onCategoryChange,
   onSearchChange,
+  currentSearchTerm = "",
 }: ProductFiltersProps) {
+
+  const [searchTerm, setSearchTerm] = useState(currentSearchTerm);
+
+  useEffect(() => {
+    setSearchTerm(currentSearchTerm);
+  }, [currentSearchTerm]);
+
+  const handleSearchDebounce = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearchTerm(value);
+    const handler = setTimeout(() => {
+        onSearchChange(value);
+    }, 300);
+    return () => clearTimeout(handler);
+  }
+
   return (
     <Card>
       <CardHeader>
@@ -30,7 +49,8 @@ export default function ProductFilters({
             type="search"
             placeholder="Search products..."
             className="pl-8"
-            onChange={(e) => onSearchChange(e.target.value)}
+            value={searchTerm}
+            onChange={handleSearchDebounce}
           />
         </div>
         <div>

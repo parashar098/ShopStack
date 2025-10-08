@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { useCart } from "@/hooks/use-cart";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import Searchbar from "./search-bar";
 
 export default function MainNav() {
   const { itemCount } = useCart();
@@ -29,12 +30,12 @@ export default function MainNav() {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center">
-        <div className="mr-4 flex">
+        <div className="mr-4 hidden md:flex">
           <Link href="/" className="mr-6 flex items-center space-x-2">
             <Package2 className="h-6 w-6 text-primary" />
             <span className="font-bold font-headline text-lg">ShopStack</span>
           </Link>
-          <nav className="hidden items-center space-x-6 text-sm font-medium md:flex">
+          <nav className="flex items-center space-x-6 text-sm font-medium">
             <Link
               href="/"
               className={cn(
@@ -48,31 +49,38 @@ export default function MainNav() {
               href="/products"
               className={cn(
                 "transition-colors hover:text-foreground/80",
-                pathname === "/products" ? "text-foreground" : "text-foreground/60"
+                pathname?.startsWith("/products") ? "text-foreground" : "text-foreground/60"
               )}
             >
               Products
             </Link>
           </nav>
         </div>
-        <div className="flex flex-1 items-center justify-end space-x-2">
-          <Button variant="ghost" size="icon" asChild>
-            <Link href="/cart">
-              <ShoppingCart className="h-5 w-5" />
-              {isClient && itemCount > 0 && (
-                <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground">
-                  {itemCount}
-                </span>
-              )}
-              <span className="sr-only">Shopping Cart</span>
-            </Link>
-          </Button>
-           <Button variant="ghost" asChild>
-              <Link href="/login">Sign In</Link>
+        <div className="flex flex-1 items-center justify-between md:justify-end gap-4">
+            <div className="w-full md:w-auto md:flex-1 md:max-w-xs">
+                <Searchbar />
+            </div>
+          <div className="flex items-center space-x-2">
+            <Button variant="ghost" size="icon" asChild>
+                <Link href="/cart">
+                <ShoppingCart className="h-5 w-5" />
+                {isClient && itemCount > 0 && (
+                    <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground">
+                    {itemCount}
+                    </span>
+                )}
+                <span className="sr-only">Shopping Cart</span>
+                </Link>
             </Button>
-            <Button asChild>
-              <Link href="/register">Sign Up</Link>
-            </Button>
+            <div className="hidden md:flex items-center space-x-2">
+                <Button variant="ghost" asChild>
+                    <Link href="/login">Sign In</Link>
+                </Button>
+                <Button asChild>
+                    <Link href="/register">Sign Up</Link>
+                </Button>
+            </div>
+          </div>
         </div>
       </div>
     </header>

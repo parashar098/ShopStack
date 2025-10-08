@@ -1,17 +1,39 @@
 
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
+import { useSearchParams } from 'next/navigation';
 import { mockProducts } from "@/lib/data";
 import ProductCard from "@/components/product-card";
 import ProductFilters from "@/components/product-filters";
 import type { Product } from "@/lib/types";
 
+function useProductFilters() {
+    const searchParams = useSearchParams();
+    const [filters, setFilters] = useState({
+        category: "all",
+        searchTerm: searchParams.get('search') || "",
+    });
+
+    useEffect(() => {
+        setFilters(prev => ({ ...prev, searchTerm: searchParams.get('search') || "" }));
+    }, [searchParams]);
+
+
+    const handleCategoryChange = (category: string) => {
+        setFilters((prev) => ({ ...prev, category }));
+    };
+
+    const handleSearchChange = (searchTerm: string) => {
+        setFilters((prev) => ({ ...prev, searchTerm }));
+    };
+
+    return { filters, handleCategoryChange, handleSearchChange };
+}
+
+
 export default function ProductsPage() {
-  const [filters, setFilters] = useState({
-    category: "all",
-    searchTerm: "",
-  });
+  const { filters, handleCategoryChange, handleSearchChange } = useProductFilters();
 
   const categories = [...new Set(mockProducts.map((p) => p.category))];
 
@@ -26,14 +48,6 @@ export default function ProductsPage() {
     });
   }, [filters]);
 
-  const handleCategoryChange = (category: string) => {
-    setFilters((prev) => ({ ...prev, category }));
-  };
-
-  const handleSearchChange = (searchTerm: string) => {
-    setFilters((prev) => ({ ...prev, searchTerm }));
-  };
-
   return (
     <div className="container mx-auto px-4 py-8 md:py-12">
       <div className="grid md:grid-cols-4 gap-8">
@@ -42,6 +56,7 @@ export default function ProductsPage() {
             categories={categories}
             onCategoryChange={handleCategoryChange}
             onSearchChange={handleSearchChange}
+            currentSearchTerm={filters.searchTerm}
           />
         </aside>
         <main className="md:col-span-3">
