@@ -44,6 +44,15 @@ export default function MainNav() {
             >
               Home
             </Link>
+             <Link
+              href="/products"
+              className={cn(
+                "transition-colors hover:text-foreground/80",
+                pathname === "/products" ? "text-foreground" : "text-foreground/60"
+              )}
+            >
+              Products
+            </Link>
           </nav>
         </div>
         <div className="flex flex-1 items-center justify-end space-x-2">
