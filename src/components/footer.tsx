@@ -1,4 +1,3 @@
-
 "use client";
 
 import { usePathname } from 'next/navigation';
@@ -24,6 +23,17 @@ export default function Footer() {
             © {new Date().getFullYear()} ShopStack. All rights reserved.
           </p>
         </div>
+        <nav className="flex gap-4 sm:gap-6">
+            <Link href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+              About
+            </Link>
+            <Link href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+              Contact Us
+            </Link>
+            <Link href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+              Terms of Service
+            </Link>
+          </nav>
       </div>
     </footer>
   );
