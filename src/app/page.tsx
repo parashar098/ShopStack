@@ -7,6 +7,7 @@ import { mockProducts } from "@/lib/data";
 import ProductCard from "@/components/product-card";
 import HeroCarousel from "@/components/hero-carousel";
 import SplitText from "@/components/ui/split-text";
+import CategoryHighlights from "@/components/category-highlights";
 
 export default function HomePage() {
   const featuredProducts = mockProducts.slice(0, 8);
@@ -38,7 +39,9 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section id="featured-products" className="py-16 md:py-24">
+      <CategoryHighlights />
+
+      <section id="featured-products" className="py-16 md:py-24 bg-secondary">
         <div className="container mx-auto px-4 md:px-6">
           <h2 className="text-3xl font-headline font-bold tracking-tighter text-center mb-10">
             Featured Products

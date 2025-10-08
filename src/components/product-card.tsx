@@ -9,7 +9,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import AddToCartButton from "./add-to-cart-button";
 
 interface ProductCardProps {
@@ -33,7 +32,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         </Link>
       </CardHeader>
       <CardContent className="p-4 flex-grow">
-        <CardTitle className="text-lg font-headline mb-2">
+        <CardTitle className="text-lg font-headline mb-2 leading-tight">
           <Link href={`/products/${product.id}`} className="hover:text-primary transition-colors">
             {product.name}
           </Link>
@@ -44,7 +43,9 @@ export default function ProductCard({ product }: ProductCardProps) {
         <p className="text-lg font-semibold">
           ${product.price.toFixed(2)}
         </p>
-        <AddToCartButton product={product} />
+        <AddToCartButton product={product} showIcon={true} size="sm">
+          Add to Cart
+        </AddToCartButton>
       </CardFooter>
     </Card>
   );

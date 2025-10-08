@@ -11,12 +11,16 @@ import type { Product } from "@/lib/types";
 function useProductFilters() {
     const searchParams = useSearchParams();
     const [filters, setFilters] = useState({
-        category: "all",
+        category: searchParams.get('category') || "all",
         searchTerm: searchParams.get('search') || "",
     });
 
     useEffect(() => {
-        setFilters(prev => ({ ...prev, searchTerm: searchParams.get('search') || "" }));
+        setFilters(prev => ({
+            ...prev,
+            searchTerm: searchParams.get('search') || "",
+            category: searchParams.get('category') || "all"
+        }));
     }, [searchParams]);
 
 
@@ -56,12 +60,13 @@ export default function ProductsPage() {
             categories={categories}
             onCategoryChange={handleCategoryChange}
             onSearchChange={handleSearchChange}
+            currentCategory={filters.category}
             currentSearchTerm={filters.searchTerm}
           />
         </aside>
         <main className="md:col-span-3">
           <h1 className="text-3xl font-headline font-bold tracking-tighter mb-8">
-            All Products
+            {filters.category === 'all' ? 'All Products' : filters.category}
           </h1>
           {filteredProducts.length > 0 ? (
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">

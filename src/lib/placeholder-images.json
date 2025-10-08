@@ -71,6 +71,30 @@
       "description": "A smart home hub that controls lights, temperature, and more.",
       "imageUrl": "https://picsum.photos/seed/112/600/600",
       "imageHint": "smart hub"
+    },
+    {
+      "id": "category-furniture",
+      "description": "A stylish modern living room with a comfortable sofa and elegant furniture.",
+      "imageUrl": "https://picsum.photos/seed/201/800/600",
+      "imageHint": "modern living room"
+    },
+    {
+      "id": "category-electronics",
+      "description": "A collection of the latest electronic gadgets on a sleek desk.",
+      "imageUrl": "https://picsum.photos/seed/202/800/600",
+      "imageHint": "electronic gadgets"
+    },
+    {
+      "id": "category-accessories",
+      "description": "A display of fashionable accessories including watches, sunglasses, and bags.",
+      "imageUrl": "https://picsum.photos/seed/203/800/600",
+      "imageHint": "fashion accessories"
+    },
+    {
+      "id": "category-home-goods",
+      "description": "A cozy home setting with decorative items and kitchenware.",
+      "imageUrl": "https://picsum.photos/seed/204/800/600",
+      "imageHint": "cozy home"
     }
   ]
 }
