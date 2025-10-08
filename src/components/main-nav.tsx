@@ -5,7 +5,6 @@ import Link from "next/link";
 import {
   Package2,
   ShoppingCart,
-  User,
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -59,15 +58,12 @@ export default function MainNav() {
               <span className="sr-only">Shopping Cart</span>
             </Link>
           </Button>
-          <Button variant="ghost" size="icon" asChild>
-            <Link href="/login">
-              <User className="h-5 w-5" />
-              <span className="sr-only">User Account</span>
-            </Link>
-          </Button>
-          <Button asChild>
-            <Link href="/admin">Admin</Link>
-          </Button>
+           <Button variant="ghost" asChild>
+              <Link href="/login">Sign In</Link>
+            </Button>
+            <Button asChild>
+              <Link href="/register">Sign Up</Link>
+            </Button>
         </div>
       </div>
     </header>

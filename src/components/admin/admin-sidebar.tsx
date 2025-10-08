@@ -12,7 +12,7 @@ import {
     SidebarTrigger,
     SidebarFooter,
 } from "@/components/ui/sidebar";
-import { Package, Package2, ShoppingCart, Home } from "lucide-react";
+import { Package, Package2, ShoppingCart, Home, LogOut } from "lucide-react";
 import Link from "next/link";
 import { Button } from "../ui/button";
 
@@ -62,7 +62,7 @@ export default function AdminSidebar() {
         <SidebarFooter>
             <Button variant="ghost" asChild className="justify-start w-full">
                 <Link href="/">
-                    <Home className="mr-2 h-4 w-4" />
+                    <LogOut className="mr-2 h-4 w-4" />
                     Back to Store
                 </Link>
             </Button>
