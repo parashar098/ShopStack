@@ -3,13 +3,19 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { mockCategories } from '@/lib/categories';
 import { Card } from '@/components/ui/card';
+import RotatingText from './ui/rotating-text';
 
 export default function CategoryHighlights() {
   return (
     <section className="py-16 md:py-24">
       <div className="container mx-auto px-4 md:px-6">
-        <h2 className="text-3xl font-headline font-bold tracking-tighter text-center mb-10">
-          Shop by Category
+        <h2 className="text-3xl font-headline font-bold tracking-tighter text-center mb-10 flex items-center justify-center gap-2">
+            Shop by
+            <RotatingText
+                texts={['Category', 'Interest', 'Style']}
+                mainClassName="bg-accent text-accent-foreground px-4 py-1.5 rounded-lg"
+                splitLevelClassName="overflow-hidden"
+            />
         </h2>
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {mockCategories.map((category) => (
