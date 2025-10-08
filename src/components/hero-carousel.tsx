@@ -24,12 +24,15 @@ export default function HeroCarousel({ products }: HeroCarouselProps) {
     <Carousel
       plugins={[plugin.current]}
       className="absolute inset-0 w-full h-full"
+      opts={{
+        loop: true,
+      }}
       onMouseEnter={plugin.current.stop}
       onMouseLeave={plugin.current.reset}
     >
       <CarouselContent className="h-full">
         {products.map((product) => (
-          <CarouselItem key={product.id}>
+          <CarouselItem key={product.id} className="h-full">
             <div className="relative h-full w-full">
               <Image
                 src={product.imageURL}
