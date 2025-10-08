@@ -8,7 +8,6 @@ import ProductCard from "@/components/product-card";
 import HeroCarousel from "@/components/hero-carousel";
 import SplitText from "@/components/ui/split-text";
 import CategoryHighlights from "@/components/category-highlights";
-import RotatingText from "@/components/ui/rotating-text";
 import { Card, CardContent } from "@/components/ui/card";
 import { Star } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -52,14 +51,8 @@ export default function HomePage() {
 
       <section id="featured-products" className="py-16 md:py-24 bg-secondary">
         <div className="container mx-auto px-4 md:px-6">
-          <h2 className="text-3xl font-headline font-bold tracking-tighter text-center mb-10 flex items-center justify-center gap-2">
-            Our
-            <RotatingText
-              texts={['Featured', 'Hottest', 'Trending']}
-              mainClassName="bg-primary text-primary-foreground px-4 py-1.5 rounded-lg"
-              splitLevelClassName="overflow-hidden"
-            />
-            Products
+          <h2 className="text-3xl font-headline font-bold tracking-tighter text-center mb-10">
+            Our Featured Products
           </h2>
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {featuredProducts.map((product) => (
@@ -71,14 +64,8 @@ export default function HomePage() {
 
        <section id="testimonials" className="py-16 md:py-24">
         <div className="container mx-auto px-4 md:px-6">
-          <h2 className="text-3xl font-headline font-bold tracking-tighter text-center mb-10 flex flex-wrap items-center justify-center gap-2">
-            What Our
-            <RotatingText
-              texts={['Happy', 'Valued', 'Awesome']}
-              mainClassName="bg-accent text-accent-foreground px-4 py-1.5 rounded-lg"
-              splitLevelClassName="overflow-hidden"
-            />
-            Customers Say
+          <h2 className="text-3xl font-headline font-bold tracking-tighter text-center mb-10">
+            What Our Customers Say
           </h2>
           <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
             {testimonials.map((testimonial, index) => (
