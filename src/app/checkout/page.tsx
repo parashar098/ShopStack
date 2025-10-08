@@ -1,0 +1,222 @@
+
+"use client";
+
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useCart } from "@/hooks/use-cart";
+import { useRouter } from "next/navigation";
+import { placeOrder } from "@/actions/order";
+import { useToast } from "@/hooks/use-toast";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+
+const checkoutSchema = z.object({
+  name: z.string().min(2, "Name must be at least 2 characters."),
+  email: z.string().email("Invalid email address."),
+  address: z.string().min(5, "Address is too short."),
+  city: z.string().min(2, "City is required."),
+  zip: z.string().min(5, "A 5-digit ZIP code is required.").max(5),
+  paymentMethod: z.enum(["stripe", "razorpay"], {
+    required_error: "You need to select a payment method.",
+  }),
+});
+
+type CheckoutFormValues = z.infer<typeof checkoutSchema>;
+
+export default function CheckoutPage() {
+  const { cartItems, cartTotal, clearCart } = useCart();
+  const router = useRouter();
+  const { toast } = useToast();
+
+  const form = useForm<CheckoutFormValues>({
+    resolver: zodResolver(checkoutSchema),
+    defaultValues: {
+      paymentMethod: "stripe",
+    },
+  });
+
+  const onSubmit = async (data: CheckoutFormValues) => {
+    if (cartItems.length === 0) {
+      toast({
+        variant: "destructive",
+        title: "Your cart is empty",
+        description: "Please add items to your cart before checking out.",
+      });
+      return;
+    }
+
+    try {
+      const orderId = await placeOrder({
+        shippingAddress: data,
+        items: cartItems.map(item => ({ productId: item.id, quantity: item.quantity, price: item.price })),
+        totalAmount: cartTotal,
+      });
+
+      if (orderId) {
+        toast({
+          title: "Order Placed!",
+          description: "Thank you for your purchase.",
+        });
+        clearCart();
+        router.push(`/order-confirmation/${orderId}`);
+      } else {
+        throw new Error("Failed to place order.");
+      }
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Something went wrong",
+        description: "We couldn't process your order. Please try again.",
+      });
+    }
+  };
+
+  return (
+    <div className="container mx-auto px-4 py-8 md:py-12">
+      <h1 className="text-3xl font-headline font-bold tracking-tighter mb-8">Checkout</h1>
+      <div className="grid lg:grid-cols-2 gap-12">
+        <div>
+          <Card>
+            <CardHeader>
+              <CardTitle className="font-headline">Shipping Information</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                  <FormField
+                    control={form.control}
+                    name="name"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Full Name</FormLabel>
+                        <FormControl>
+                          <Input placeholder="John Doe" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="email"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Email</FormLabel>
+                        <FormControl>
+                          <Input placeholder="you@example.com" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="address"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Street Address</FormLabel>
+                        <FormControl>
+                          <Input placeholder="123 Main St" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <div className="grid grid-cols-2 gap-4">
+                    <FormField
+                      control={form.control}
+                      name="city"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>City</FormLabel>
+                          <FormControl>
+                            <Input placeholder="Anytown" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="zip"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>ZIP Code</FormLabel>
+                          <FormControl>
+                            <Input placeholder="12345" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <FormField
+                    control={form.control}
+                    name="paymentMethod"
+                    render={({ field }) => (
+                      <FormItem className="space-y-3">
+                        <FormLabel>Payment Method</FormLabel>
+                          <FormControl>
+                            <RadioGroup
+                              onValueChange={field.onChange}
+                              defaultValue={field.value}
+                              className="flex flex-col space-y-1"
+                            >
+                              <FormItem className="flex items-center space-x-3 space-y-0">
+                                <FormControl>
+                                  <RadioGroupItem value="stripe" />
+                                </FormControl>
+                                <FormLabel className="font-normal">Credit Card (Stripe)</FormLabel>
+                              </FormItem>
+                              <FormItem className="flex items-center space-x-3 space-y-0">
+                                <FormControl>
+                                  <RadioGroupItem value="razorpay" />
+                                </FormControl>
+                                <FormLabel className="font-normal">Razorpay</FormLabel>
+                              </FormItem>
+                            </RadioGroup>
+                          </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <Button type="submit" size="lg" className="w-full" disabled={cartItems.length === 0}>
+                    Place Order - ${cartTotal.toFixed(2)}
+                  </Button>
+                </form>
+              </Form>
+            </CardContent>
+          </Card>
+        </div>
+        <div>
+          <Card>
+            <CardHeader>
+              <CardTitle className="font-headline">Order Summary</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {cartItems.map(item => (
+                <div key={item.id} className="flex justify-between items-center">
+                  <div className="flex items-center gap-4">
+                    <span className="font-semibold">{item.quantity} x</span>
+                    <span>{item.name}</span>
+                  </div>
+                  <span>${(item.price * item.quantity).toFixed(2)}</span>
+                </div>
+              ))}
+              <div className="border-t pt-4 mt-4 flex justify-between font-bold text-lg">
+                <span>Total</span>
+                <span>${cartTotal.toFixed(2)}</span>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    </div>
+  );
+}
