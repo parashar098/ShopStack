@@ -31,9 +31,6 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-   env: {
-    RAZORPAY_KEY_SECRET: process.env.RAZORPAY_KEY_SECRET,
-  },
   experimental: {
   },
   allowedDevOrigins: [
