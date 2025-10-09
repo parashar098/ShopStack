@@ -1,3 +1,4 @@
+
 "use client";
 
 import { motion, useSpring, useTransform } from 'framer-motion';
@@ -79,6 +80,7 @@ export default function Counter({
   const derivedPlaces = places || (() => {
       const p = [];
       let n = value;
+      if (n === 0) return [1];
       let i = 1;
       while(n >= 1) {
           p.unshift(i);
