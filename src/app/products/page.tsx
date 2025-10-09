@@ -7,6 +7,7 @@ import { mockProducts } from "@/lib/data";
 import ProductCard from "@/components/product-card";
 import ProductFilters from "@/components/product-filters";
 import type { Product } from "@/lib/types";
+import RecentlyViewed from "@/components/recently-viewed";
 
 function useProductFilters() {
     const searchParams = useSearchParams();
@@ -84,6 +85,7 @@ export default function ProductsPage() {
           )}
         </main>
       </div>
+      <RecentlyViewed />
     </div>
   );
 }
