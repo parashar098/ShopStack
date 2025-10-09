@@ -16,6 +16,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import Script from "next/script";
 import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 
 const checkoutSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters."),
@@ -26,6 +27,33 @@ const checkoutSchema = z.object({
   paymentMethod: z.enum(["stripe", "razorpay"], {
     required_error: "You need to select a payment method.",
   }),
+  cardNumber: z.string().optional(),
+  cardExpiry: z.string().optional(),
+  cardCvc: z.string().optional(),
+}).superRefine((data, ctx) => {
+    if (data.paymentMethod === 'stripe') {
+        if (!data.cardNumber || !/^\d{16}$/.test(data.cardNumber)) {
+            ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                message: "A 16-digit card number is required.",
+                path: ["cardNumber"],
+            });
+        }
+        if (!data.cardExpiry || !/^(0[1-9]|1[0-2])\/\d{2}$/.test(data.cardExpiry)) {
+            ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                message: "Expiry must be in MM/YY format.",
+                path: ["cardExpiry"],
+            });
+        }
+        if (!data.cardCvc || !/^\d{3}$/.test(data.cardCvc)) {
+            ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                message: "A 3-digit CVC is required.",
+                path: ["cardCvc"],
+            });
+        }
+    }
 });
 
 type CheckoutFormValues = z.infer<typeof checkoutSchema>;
@@ -45,8 +73,13 @@ export default function CheckoutPage() {
       city: "",
       zip: "",
       paymentMethod: "stripe",
+      cardNumber: "",
+      cardExpiry: "",
+      cardCvc: "",
     },
   });
+
+  const paymentMethod = form.watch("paymentMethod");
 
   const handleFinalizeOrder = async (shippingData: CheckoutFormValues) => {
     try {
@@ -170,11 +203,13 @@ export default function CheckoutPage() {
           <div>
             <Card>
               <CardHeader>
-                <CardTitle className="font-headline">Shipping Information</CardTitle>
+                <CardTitle className="font-headline">Shipping & Payment</CardTitle>
               </CardHeader>
               <CardContent>
                 <Form {...form}>
                   <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                    {/* Shipping Info */}
+                    <h3 className="text-lg font-semibold border-b pb-2">Shipping Information</h3>
                     <FormField
                       control={form.control}
                       name="name"
@@ -242,38 +277,95 @@ export default function CheckoutPage() {
                         )}
                       />
                     </div>
+                    
+                    {/* Payment Method */}
+                    <h3 className="text-lg font-semibold border-b pb-2 pt-4">Payment Method</h3>
                     <FormField
                       control={form.control}
                       name="paymentMethod"
                       render={({ field }) => (
                         <FormItem className="space-y-3">
-                          <FormLabel>Payment Method</FormLabel>
-                            <FormControl>
-                              <RadioGroup
-                                onValueChange={field.onChange}
-                                defaultValue={field.value}
-                                className="flex flex-col space-y-1"
-                              >
-                                <FormItem className="flex items-center space-x-3 space-y-0">
-                                  <FormControl>
-                                    <RadioGroupItem value="stripe" />
-                                  </FormControl>
-                                  <FormLabel className="font-normal">Credit Card (Mock)</FormLabel>
-                                </FormItem>
-                                <FormItem className="flex items-center space-x-3 space-y-0">
-                                  <FormControl>
-                                    <RadioGroupItem value="razorpay" />
-                                  </FormControl>
-                                  <FormLabel className="font-normal">Razorpay</FormLabel>
-                                </FormItem>
-                              </RadioGroup>
-                            </FormControl>
+                          <FormControl>
+                            <RadioGroup
+                              onValueChange={field.onChange}
+                              defaultValue={field.value}
+                              className="flex flex-col space-y-2"
+                            >
+                              <FormItem className="flex items-center space-x-3 space-y-0 p-3 border rounded-md has-[[data-state=checked]]:border-primary">
+                                <FormControl>
+                                  <RadioGroupItem value="stripe" />
+                                </FormControl>
+                                <FormLabel className="font-normal flex-1 cursor-pointer">Credit Card (Mock)</FormLabel>
+                              </FormItem>
+                              <FormItem className="flex items-center space-x-3 space-y-0 p-3 border rounded-md has-[[data-state=checked]]:border-primary">
+                                <FormControl>
+                                  <RadioGroupItem value="razorpay" />
+                                </FormControl>
+                                <FormLabel className="font-normal flex-1 cursor-pointer">Razorpay</FormLabel>
+                              </FormItem>
+                            </RadioGroup>
+                          </FormControl>
                           <FormMessage />
                         </FormItem>
                       )}
                     />
 
-                    <Button type="submit" size="lg" className="w-full" disabled={cartItems.length === 0 || isProcessing}>
+                    {/* Conditional Credit Card Form */}
+                    <AnimatePresence>
+                      {paymentMethod === 'stripe' && (
+                        <motion.div
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: 'auto' }}
+                          exit={{ opacity: 0, height: 0 }}
+                          transition={{ duration: 0.3, ease: "easeInOut" }}
+                          className="space-y-6 overflow-hidden"
+                        >
+                            <FormField
+                              control={form.control}
+                              name="cardNumber"
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel>Card Number</FormLabel>
+                                  <FormControl>
+                                    <Input placeholder="0000 0000 0000 0000" {...field} />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                            <div className="grid grid-cols-2 gap-4">
+                                <FormField
+                                  control={form.control}
+                                  name="cardExpiry"
+                                  render={({ field }) => (
+                                    <FormItem>
+                                      <FormLabel>Expiry (MM/YY)</FormLabel>
+                                      <FormControl>
+                                        <Input placeholder="MM/YY" {...field} />
+                                      </FormControl>
+                                      <FormMessage />
+                                    </FormItem>
+                                  )}
+                                />
+                                <FormField
+                                  control={form.control}
+                                  name="cardCvc"
+                                  render={({ field }) => (
+                                    <FormItem>
+                                      <FormLabel>CVC</FormLabel>
+                                      <FormControl>
+                                        <Input placeholder="123" {...field} />
+                                      </FormControl>
+                                      <FormMessage />
+                                    </FormItem>
+                                  )}
+                                />
+                            </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+
+                    <Button type="submit" size="lg" className="w-full mt-6" disabled={cartItems.length === 0 || isProcessing}>
                       {isProcessing ? "Processing..." : `Place Order - ₹${cartTotal.toFixed(2)}`}
                     </Button>
                   </form>
