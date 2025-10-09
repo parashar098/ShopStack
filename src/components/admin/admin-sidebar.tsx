@@ -1,7 +1,7 @@
 
 "use client";
 
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
     Sidebar,
     SidebarHeader,
@@ -15,10 +15,18 @@ import {
 import { Package, Package2, ShoppingCart, Home, Users, LogOut } from "lucide-react";
 import Link from "next/link";
 import { Button } from "../ui/button";
+import { useAuth } from "@/hooks/use-auth";
 
 export default function AdminSidebar() {
   const pathname = usePathname();
+  const { logout } = useAuth();
+  const router = useRouter();
   const isActive = (path: string) => pathname === path;
+
+  const handleLogout = () => {
+    logout();
+    router.push('/admin/login');
+  }
 
   return (
     <Sidebar>
@@ -67,10 +75,13 @@ export default function AdminSidebar() {
                 </SidebarMenuItem>
             </SidebarMenu>
         </SidebarContent>
-        <SidebarFooter>
-            <Button variant="ghost" asChild className="justify-start w-full">
+        <SidebarFooter className="flex flex-col gap-2">
+            <Button variant="ghost" onClick={handleLogout} className="justify-start w-full">
+                <LogOut className="mr-2 h-4 w-4" />
+                Logout
+            </Button>
+            <Button variant="outline" asChild className="justify-start w-full bg-transparent border-sidebar-border hover:bg-sidebar-accent hover:text-sidebar-accent-foreground">
                 <Link href="/">
-                    <LogOut className="mr-2 h-4 w-4" />
                     Back to Store
                 </Link>
             </Button>
