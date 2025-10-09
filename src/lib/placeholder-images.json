@@ -2,99 +2,183 @@
   "placeholderImages": [
     {
       "id": "product-1",
-      "description": "A modern, minimalist chair with wooden legs.",
       "imageUrl": "https://picsum.photos/seed/101/600/600",
-      "imageHint": "modern chair"
+      "imageHint": "white t-shirt"
     },
     {
       "id": "product-2",
-      "description": "A sleek, wireless headphone set with noise-cancelling features.",
       "imageUrl": "https://picsum.photos/seed/102/600/600",
-      "imageHint": "wireless headphones"
+      "imageHint": "denim jacket"
     },
     {
       "id": "product-3",
-      "description": "A smart watch with a circular display and a leather strap.",
       "imageUrl": "https://picsum.photos/seed/103/600/600",
-      "imageHint": "smart watch"
+      "imageHint": "floral dress"
     },
     {
       "id": "product-4",
-      "description": "A vintage-style leather backpack for daily use.",
       "imageUrl": "https://picsum.photos/seed/104/600/600",
-      "imageHint": "leather backpack"
+      "imageHint": "sports sneakers"
     },
     {
       "id": "product-5",
-      "description": "A set of ceramic coffee mugs in pastel colors.",
       "imageUrl": "https://picsum.photos/seed/105/600/600",
-      "imageHint": "ceramic mugs"
+      "imageHint": "leather wallet"
     },
     {
       "id": "product-6",
-      "description": "An ergonomic office chair with lumbar support.",
       "imageUrl": "https://picsum.photos/seed/106/600/600",
-      "imageHint": "office chair"
+      "imageHint": "wireless earbuds"
     },
     {
       "id": "product-7",
-      "description": "A portable bluetooth speaker with a rugged, waterproof design.",
       "imageUrl": "https://picsum.photos/seed/107/600/600",
-      "imageHint": "bluetooth speaker"
+      "imageHint": "black smartwatch"
     },
     {
       "id": "product-8",
-      "description": "A high-performance gaming mouse with customizable RGB lighting.",
       "imageUrl": "https://picsum.photos/seed/108/600/600",
       "imageHint": "gaming mouse"
     },
     {
       "id": "product-9",
-      "description": "A minimalist wooden desk with clean lines.",
       "imageUrl": "https://picsum.photos/seed/109/600/600",
-      "imageHint": "wooden desk"
+      "imageHint": "mechanical keyboard"
     },
     {
       "id": "product-10",
-      "description": "A stylish pair of sunglasses with polarized lenses.",
       "imageUrl": "https://picsum.photos/seed/110/600/600",
-      "imageHint": "stylish sunglasses"
+      "imageHint": "smart tv"
     },
     {
       "id": "product-11",
-      "description": "A professional-grade digital camera with a lens.",
       "imageUrl": "https://picsum.photos/seed/111/600/600",
-      "imageHint": "digital camera"
+      "imageHint": "ceramic mug"
     },
     {
       "id": "product-12",
-      "description": "A smart home hub that controls lights, temperature, and more.",
       "imageUrl": "https://picsum.photos/seed/112/600/600",
-      "imageHint": "smart hub"
+      "imageHint": "desk lamp"
     },
     {
-      "id": "category-furniture",
-      "description": "A stylish modern living room with a comfortable sofa and elegant furniture.",
+      "id": "product-13",
+      "imageUrl": "https://picsum.photos/seed/113/600/600",
+      "imageHint": "abstract art"
+    },
+    {
+      "id": "product-14",
+      "imageUrl": "https://picsum.photos/seed/114/600/600",
+      "imageHint": "bed sheet"
+    },
+    {
+      "id": "product-15",
+      "imageUrl": "https://picsum.photos/seed/115/600/600",
+      "imageHint": "aroma diffuser"
+    },
+    {
+      "id": "product-16",
+      "imageUrl": "https://picsum.photos/seed/116/600/600",
+      "imageHint": "purple iphone"
+    },
+    {
+      "id": "product-17",
+      "imageUrl": "https://picsum.photos/seed/117/600/600",
+      "imageHint": "black smartphone"
+    },
+    {
+      "id": "product-18",
+      "imageUrl": "https://picsum.photos/seed/118/600/600",
+      "imageHint": "power bank"
+    },
+    {
+      "id": "product-19",
+      "imageUrl": "https://picsum.photos/seed/119/600/600",
+      "imageHint": "usb cable"
+    },
+    {
+      "id": "product-20",
+      "imageUrl": "https://picsum.photos/seed/120/600/600",
+      "imageHint": "phone case"
+    },
+    {
+      "id": "product-21",
+      "imageUrl": "https://picsum.photos/seed/121/600/600",
+      "imageHint": "face wash"
+    },
+    {
+      "id": "product-22",
+      "imageUrl": "https://picsum.photos/seed/122/600/600",
+      "imageHint": "lip balm"
+    },
+    {
+      "id": "product-23",
+      "imageUrl": "https://picsum.photos/seed/123/600/600",
+      "imageHint": "hair dryer"
+    },
+    {
+      "id": "product-24",
+      "imageUrl": "https://picsum.photos/seed/124/600/600",
+      "imageHint": "perfume bottle"
+    },
+    {
+      "id": "product-25",
+      "imageUrl": "https://picsum.photos/seed/125/600/600",
+      "imageHint": "beard trimmer"
+    },
+    {
+      "id": "product-26",
+      "imageUrl": "https://picsum.photos/seed/126/600/600",
+      "imageHint": "travel backpack"
+    },
+    {
+      "id": "product-27",
+      "imageUrl": "https://picsum.photos/seed/127/600/600",
+      "imageHint": "sunglasses unisex"
+    },
+    {
+      "id": "product-28",
+      "imageUrl": "https://picsum.photos/seed/128/600/600",
+      "imageHint": "smart bottle"
+    },
+    {
+      "id": "product-29",
+      "imageUrl": "https://picsum.photos/seed/129/600/600",
+      "imageHint": "neck pillow"
+    },
+    {
+      "id": "product-30",
+      "imageUrl": "https://picsum.photos/seed/130/600/600",
+      "imageHint": "duffel bag"
+    },
+    {
+      "id": "category-fashion",
       "imageUrl": "https://picsum.photos/seed/201/800/600",
-      "imageHint": "modern living room"
+      "imageHint": "fashion apparel"
     },
     {
       "id": "category-electronics",
-      "description": "A collection of the latest electronic gadgets on a sleek desk.",
       "imageUrl": "https://picsum.photos/seed/202/800/600",
       "imageHint": "electronic gadgets"
     },
     {
-      "id": "category-accessories",
-      "description": "A display of fashionable accessories including watches, sunglasses, and bags.",
+      "id": "category-home",
       "imageUrl": "https://picsum.photos/seed/203/800/600",
-      "imageHint": "fashion accessories"
+      "imageHint": "modern living"
     },
     {
-      "id": "category-home-goods",
-      "description": "A cozy home setting with decorative items and kitchenware.",
+      "id": "category-mobiles",
       "imageUrl": "https://picsum.photos/seed/204/800/600",
-      "imageHint": "cozy home"
+      "imageHint": "smart phones"
+    },
+    {
+      "id": "category-beauty",
+      "imageUrl": "https://picsum.photos/seed/205/800/600",
+      "imageHint": "personal care"
+    },
+    {
+      "id": "category-lifestyle",
+      "imageUrl": "https://picsum.photos/seed/206/800/600",
+      "imageHint": "travel lifestyle"
     }
   ]
 }

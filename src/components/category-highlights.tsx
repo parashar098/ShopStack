@@ -5,6 +5,7 @@ import { mockCategories } from '@/lib/categories';
 import { Card } from '@/components/ui/card';
 
 export default function CategoryHighlights() {
+  const categoriesToShow = mockCategories.slice(0, 4);
   return (
     <section className="py-16 md:py-24">
       <div className="container mx-auto px-4 md:px-6">
@@ -12,7 +13,7 @@ export default function CategoryHighlights() {
             Shop by Category
         </h2>
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {mockCategories.map((category) => (
+          {categoriesToShow.map((category) => (
             <Link key={category.name} href={`/products?category=${encodeURIComponent(category.name)}`} passHref>
               <Card className="group relative block w-full h-64 overflow-hidden rounded-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
                 <Image

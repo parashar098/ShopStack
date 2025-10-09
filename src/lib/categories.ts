@@ -9,9 +9,9 @@ export type Category = {
 
 export const mockCategories: Category[] = [
   {
-    name: 'Furniture',
-    imageURL: PlaceHolderImages.find(p => p.id === 'category-furniture')?.imageUrl || '',
-    imageHint: PlaceHolderImages.find(p => p.id === 'category-furniture')?.imageHint || '',
+    name: 'Fashion',
+    imageURL: PlaceHolderImages.find(p => p.id === 'category-fashion')?.imageUrl || '',
+    imageHint: PlaceHolderImages.find(p => p.id === 'category-fashion')?.imageHint || '',
   },
   {
     name: 'Electronics',
@@ -19,13 +19,23 @@ export const mockCategories: Category[] = [
     imageHint: PlaceHolderImages.find(p => p.id === 'category-electronics')?.imageHint || '',
   },
   {
-    name: 'Accessories',
-    imageURL: PlaceHolderImages.find(p => p.id === 'category-accessories')?.imageUrl || '',
-    imageHint: PlaceHolderImages.find(p => p.id === 'category-accessories')?.imageHint || '',
+    name: 'Home',
+    imageURL: PlaceHolderImages.find(p => p.id === 'category-home')?.imageUrl || '',
+    imageHint: PlaceHolderImages.find(p => p.id === 'category-home')?.imageHint || '',
   },
   {
-    name: 'Home Goods',
-    imageURL: PlaceHolderImages.find(p => p.id === 'category-home-goods')?.imageUrl || '',
-    imageHint: PlaceHolderImages.find(p => p.id === 'category-home-goods')?.imageHint || '',
+    name: 'Mobiles',
+    imageURL: PlaceHolderImages.find(p => p.id === 'category-mobiles')?.imageUrl || '',
+    imageHint: PlaceHolderImages.find(p => p.id === 'category-mobiles')?.imageHint || '',
+  },
+   {
+    name: 'Beauty',
+    imageURL: PlaceHolderImages.find(p => p.id === 'category-beauty')?.imageUrl || '',
+    imageHint: PlaceHolderImages.find(p => p.id === 'category-beauty')?.imageHint || '',
+  },
+   {
+    name: 'Lifestyle',
+    imageURL: PlaceHolderImages.find(p => p.id === 'category-lifestyle')?.imageUrl || '',
+    imageHint: PlaceHolderImages.find(p => p.id === 'category-lifestyle')?.imageHint || '',
   },
 ];
