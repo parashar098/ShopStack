@@ -11,6 +11,7 @@ import { Star } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Image from "next/image";
 import Counter from "@/components/ui/counter";
+import RollingGallery from "@/components/ui/rolling-gallery";
 
 export default function HomePage() {
   const featuredProducts = mockProducts.slice(0, 8);
@@ -75,7 +76,19 @@ export default function HomePage() {
         </div>
       </section>
       
-      <section id="our-impact" className="py-16 md:py-24 bg-background">
+      <section className="py-16 md:py-24 bg-background">
+        <div className="container mx-auto px-4 md:px-6 text-center">
+            <h2 className="text-3xl font-headline font-bold tracking-tighter mb-10">
+                A Glimpse of Our Collection
+            </h2>
+            <p className="max-w-2xl mx-auto text-muted-foreground mb-10">
+                Explore the variety and quality that defines our brand. Each product is selected with an eye for design, durability, and delight.
+            </p>
+        </div>
+        <RollingGallery autoplay={true} pauseOnHover={true} />
+      </section>
+
+      <section id="our-impact" className="py-16 md:py-24 bg-secondary">
         <div className="container mx-auto px-4 md:px-6">
           <h2 className="text-3xl font-headline font-bold tracking-tighter text-center mb-10">
             Our Impact
@@ -90,7 +103,7 @@ export default function HomePage() {
                   gap={15}
                   textColor="hsl(var(--primary))"
                   fontWeight={700}
-                  gradientFrom="hsl(var(--background))"
+                  gradientFrom="hsl(var(--secondary))"
                   gradientTo="transparent"
                 />
                 <p className="text-muted-foreground mt-2">{stat.label}</p>
