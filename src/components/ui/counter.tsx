@@ -78,24 +78,36 @@ export default function Counter({
   const height = fontSize + padding;
   
   const derivedPlaces = places || (() => {
-      const p = [];
-      if (value === 0) return [1];
-      let n = value;
-      let i = 1;
-      while(n >= 1) {
-          p.unshift(i);
-          n /= 10;
-          i *= 10;
-      }
-      // This is to handle the case where the value is a power of 10, e.g. 100, 1000
-      if (p.length === 0 && value > 0) {
-        let tempValue = value;
-        while (tempValue > 0) {
-          p.push(Math.pow(10, tempValue.toString().length -1));
-          tempValue = 0;
+    const p = [];
+    if (value === 0) return [1];
+    let n = value;
+    let i = 1;
+    while (n >= 1) {
+        p.unshift(i);
+        n /= 10;
+        i *= 10;
+    }
+    // Handle cases like 100, 1000 where loop doesn't run correctly
+    if (p.length === 0 && value > 0) {
+        let temp = value;
+        while (temp > 0) {
+            const place = Math.pow(10, Math.floor(Math.log10(temp)));
+            p.push(place);
+            temp %= place;
+            if (temp === 0 && Math.log10(value) % 1 === 0) {
+                 // Fill remaining places with 1s for powers of 10
+                 let currentPlace = place / 10;
+                 while(currentPlace >= 1) {
+                    p.push(currentPlace);
+                    currentPlace /= 10;
+                 }
+                 break;
+            }
         }
-      }
-      return p.length ? p : [1];
+        //This is a hack to get it to work for now
+        return String(value).split('').map((_,i) => Math.pow(10, String(value).length - 1 - i));
+    }
+    return p.length > 0 ? p : [1];
   })();
 
   const defaultCounterStyle = {
