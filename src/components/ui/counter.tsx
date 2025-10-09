@@ -79,13 +79,21 @@ export default function Counter({
   
   const derivedPlaces = places || (() => {
       const p = [];
+      if (value === 0) return [1];
       let n = value;
-      if (n === 0) return [1];
       let i = 1;
       while(n >= 1) {
           p.unshift(i);
           n /= 10;
           i *= 10;
+      }
+      // This is to handle the case where the value is a power of 10, e.g. 100, 1000
+      if (p.length === 0 && value > 0) {
+        let tempValue = value;
+        while (tempValue > 0) {
+          p.push(Math.pow(10, tempValue.toString().length -1));
+          tempValue = 0;
+        }
       }
       return p.length ? p : [1];
   })();
