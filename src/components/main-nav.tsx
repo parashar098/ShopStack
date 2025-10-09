@@ -15,6 +15,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import Searchbar from "./search-bar";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "./ui/sheet";
+import { ThemeToggle } from "./theme-toggle";
 
 export default function MainNav() {
   const { itemCount } = useCart();
@@ -53,7 +54,7 @@ export default function MainNav() {
             </SheetTrigger>
             <SheetContent side="left" className="w-full max-w-xs">
               <SheetHeader>
-                <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
+                 <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
               </SheetHeader>
               <nav className="grid gap-6 text-lg font-medium mt-8">
                 <Link href="/" onClick={() => setOpen(false)} className="flex items-center gap-2 text-lg font-semibold mb-4">
@@ -102,11 +103,12 @@ export default function MainNav() {
 
 
         {/* Actions */}
-        <div className="flex flex-1 items-center justify-end gap-4">
+        <div className="flex flex-1 items-center justify-end gap-2">
           <div className="hidden sm:block w-full max-w-xs">
             <Searchbar />
           </div>
           <div className="flex items-center gap-2">
+             <ThemeToggle />
             <div className="relative">
               <Button variant="ghost" size="icon" asChild>
                 <Link href="/cart">
