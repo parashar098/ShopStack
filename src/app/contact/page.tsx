@@ -11,7 +11,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Mail, Phone, MapPin } from 'lucide-react';
-import Map from "@/components/map";
 
 const contactSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters."),
@@ -54,9 +53,9 @@ export default function ContactPage() {
           </p>
       </div>
 
-      <div className="grid md:grid-cols-5 gap-12">
+      <div className="grid md:grid-cols-2 gap-12">
           {/* Contact Form */}
-          <div className="md:col-span-2">
+          <div className="md:col-span-1">
             <Card>
               <CardHeader>
                 <CardTitle>Send a Message</CardTitle>
@@ -126,8 +125,8 @@ export default function ContactPage() {
             </Card>
           </div>
 
-          {/* Contact Information & Map */}
-          <div className="md:col-span-3 space-y-8">
+          {/* Contact Information */}
+          <div className="md:col-span-1 space-y-8">
                <Card>
                   <CardHeader>
                       <CardTitle>Contact Information</CardTitle>
@@ -157,9 +156,6 @@ export default function ContactPage() {
                       </div>
                   </CardContent>
               </Card>
-              <div className="relative aspect-video rounded-lg overflow-hidden h-full min-h-[400px]">
-                  <Map />
-              </div>
           </div>
       </div>
     </div>
