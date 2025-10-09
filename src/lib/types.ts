@@ -42,3 +42,9 @@ export type User = {
   role: 'admin' | 'customer';
   createdAt: Date;
 };
+
+declare global {
+  interface Window {
+    Razorpay: any;
+  }
+}

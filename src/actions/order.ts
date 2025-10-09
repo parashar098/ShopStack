@@ -1,6 +1,7 @@
 
 "use server";
 
+import Razorpay from "razorpay";
 import { mockOrders } from "@/lib/data";
 import type { Order } from "@/lib/types";
 
@@ -19,8 +20,7 @@ type PlaceOrderInput = {
 export async function placeOrder(input: PlaceOrderInput): Promise<string | null> {
   // In a real application, you would:
   // 1. Verify user authentication
-  // 2. Process payment with Stripe/Razorpay
-  // 3. Save the order to a real database
+  // 2. Save the order to a real database
   
   try {
     const newOrderId = `order-${Date.now()}`;
@@ -30,7 +30,7 @@ export async function placeOrder(input: PlaceOrderInput): Promise<string | null>
       items: input.items,
       totalAmount: input.totalAmount,
       shippingAddress: input.shippingAddress,
-      paymentStatus: "completed", // Mock payment as completed
+      paymentStatus: "completed",
       createdAt: new Date(),
     };
     
@@ -41,5 +41,27 @@ export async function placeOrder(input: PlaceOrderInput): Promise<string | null>
   } catch (error) {
     console.error("Failed to place order:", error);
     return null;
+  }
+}
+
+
+export async function createRazorpayOrder(amount: number) {
+  try {
+    const instance = new Razorpay({
+      key_id: process.env.RAZORPAY_KEY_ID!,
+      key_secret: process.env.RAZORPAY_KEY_SECRET,
+    });
+
+    const options = {
+      amount: amount * 100, // amount in the smallest currency unit
+      currency: "INR",
+      receipt: `receipt_order_${Date.now()}`,
+    };
+
+    const order = await instance.orders.create(options);
+    return { success: true, order };
+  } catch (error) {
+    console.error("Failed to create Razorpay order:", error);
+    return { success: false, error: "Could not create Razorpay order." };
   }
 }

@@ -55,7 +55,7 @@ export default function ProductsTable({ data }: { data: Product[] }) {
                     <TableCell>
                         <Badge variant="outline">{product.category}</Badge>
                     </TableCell>
-                    <TableCell className="hidden md:table-cell">${product.price.toFixed(2)}</TableCell>
+                    <TableCell className="hidden md:table-cell">₹{product.price.toFixed(2)}</TableCell>
                     <TableCell className="hidden md:table-cell">{product.stock}</TableCell>
                     <TableCell>
                         <DropdownMenu>

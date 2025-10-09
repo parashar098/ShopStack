@@ -39,7 +39,7 @@ export default function OrderConfirmationPage({
               return (
                  <div key={item.productId} className="flex justify-between items-center text-sm">
                     <span>{product?.name ?? 'Unknown Product'} x {item.quantity}</span>
-                    <span className="text-muted-foreground">${(item.price * item.quantity).toFixed(2)}</span>
+                    <span className="text-muted-foreground">₹{(item.price * item.quantity).toFixed(2)}</span>
                 </div>
               )
             })}
@@ -47,7 +47,7 @@ export default function OrderConfirmationPage({
           <Separator />
            <div className="flex justify-between font-bold text-lg">
                 <span>Total</span>
-                <span>${order.totalAmount.toFixed(2)}</span>
+                <span>₹{order.totalAmount.toFixed(2)}</span>
             </div>
           <Separator />
           <div>

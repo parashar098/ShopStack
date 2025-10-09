@@ -6,7 +6,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useCart } from "@/hooks/use-cart";
 import { useRouter } from "next/navigation";
-import { placeOrder } from "@/actions/order";
+import { placeOrder, createRazorpayOrder } from "@/actions/order";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,6 +14,8 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import Script from "next/script";
+import { useState } from "react";
 
 const checkoutSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters."),
@@ -32,6 +34,7 @@ export default function CheckoutPage() {
   const { cartItems, cartTotal, clearCart } = useCart();
   const router = useRouter();
   const { toast } = useToast();
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const form = useForm<CheckoutFormValues>({
     resolver: zodResolver(checkoutSchema),
@@ -40,19 +43,10 @@ export default function CheckoutPage() {
     },
   });
 
-  const onSubmit = async (data: CheckoutFormValues) => {
-    if (cartItems.length === 0) {
-      toast({
-        variant: "destructive",
-        title: "Your cart is empty",
-        description: "Please add items to your cart before checking out.",
-      });
-      return;
-    }
-
+  const handleFinalizeOrder = async (shippingData: CheckoutFormValues) => {
     try {
       const orderId = await placeOrder({
-        shippingAddress: data,
+        shippingAddress: shippingData,
         items: cartItems.map(item => ({ productId: item.id, quantity: item.quantity, price: item.price })),
         totalAmount: cartTotal,
       });
@@ -73,69 +67,117 @@ export default function CheckoutPage() {
         title: "Something went wrong",
         description: "We couldn't process your order. Please try again.",
       });
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+
+  const handleRazorpayPayment = async (formData: CheckoutFormValues) => {
+    setIsProcessing(true);
+    const result = await createRazorpayOrder(cartTotal);
+
+    if (!result.success || !result.order) {
+       toast({
+        variant: "destructive",
+        title: "Razorpay Error",
+        description: result.error || "Could not initialize payment.",
+      });
+      setIsProcessing(false);
+      return;
+    }
+
+    const razorpayOrder = result.order;
+
+    const options = {
+      key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!,
+      amount: razorpayOrder.amount,
+      currency: razorpayOrder.currency,
+      name: "ShopStack",
+      description: "E-commerce Transaction",
+      order_id: razorpayOrder.id,
+      handler: async function (response: any) {
+        await handleFinalizeOrder(formData);
+      },
+      prefill: {
+        name: formData.name,
+        email: formData.email,
+      },
+      notes: {
+        address: `${formData.address}, ${formData.city}, ${formData.zip}`,
+      },
+      theme: {
+        color: "#6750A4", // Corresponds to --primary HSL
+      },
+      modal: {
+        ondismiss: function() {
+          setIsProcessing(false);
+          toast({
+            variant: "destructive",
+            title: "Payment Cancelled",
+            description: "You closed the payment window.",
+          });
+        }
+      }
+    };
+    
+    const rzp = new (window as any).Razorpay(options);
+    rzp.on('payment.failed', function (response: any){
+      toast({
+        variant: "destructive",
+        title: "Payment Failed",
+        description: response.error.description || "Your payment could not be processed.",
+      });
+      setIsProcessing(false);
+    });
+
+    rzp.open();
+  };
+
+  const onSubmit = async (data: CheckoutFormValues) => {
+    if (cartItems.length === 0) {
+      toast({
+        variant: "destructive",
+        title: "Your cart is empty",
+        description: "Please add items to your cart before checking out.",
+      });
+      return;
+    }
+    
+    if (data.paymentMethod === 'razorpay') {
+      await handleRazorpayPayment(data);
+    } else {
+      // Handle Stripe or other "credit card" payments here
+      setIsProcessing(true);
+      await handleFinalizeOrder(data);
     }
   };
 
   return (
-    <div className="container mx-auto px-4 py-8 md:py-12">
-      <h1 className="text-3xl font-headline font-bold tracking-tighter mb-8">Checkout</h1>
-      <div className="grid lg:grid-cols-2 gap-12">
-        <div>
-          <Card>
-            <CardHeader>
-              <CardTitle className="font-headline">Shipping Information</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                  <FormField
-                    control={form.control}
-                    name="name"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Full Name</FormLabel>
-                        <FormControl>
-                          <Input placeholder="John Doe" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="email"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Email</FormLabel>
-                        <FormControl>
-                          <Input placeholder="you@example.com" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="address"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Street Address</FormLabel>
-                        <FormControl>
-                          <Input placeholder="123 Main St" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <div className="grid grid-cols-2 gap-4">
+    <>
+      <Script
+        id="razorpay-checkout-js"
+        src="https://checkout.razorpay.com/v1/checkout.js"
+      />
+      <div className="container mx-auto px-4 py-8 md:py-12">
+        <h1 className="text-3xl font-headline font-bold tracking-tighter mb-8">Checkout</h1>
+        <div className="grid lg:grid-cols-2 gap-12">
+          <div>
+            <Card>
+              <CardHeader>
+                <CardTitle className="font-headline">Shipping Information</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <Form {...form}>
+                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                     <FormField
                       control={form.control}
-                      name="city"
+                      name="name"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>City</FormLabel>
+                          <FormLabel>Full Name</FormLabel>
                           <FormControl>
-                            <Input placeholder="Anytown" {...field} />
+                            <Input placeholder="John Doe" {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -143,80 +185,121 @@ export default function CheckoutPage() {
                     />
                     <FormField
                       control={form.control}
-                      name="zip"
+                      name="email"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>ZIP Code</FormLabel>
+                          <FormLabel>Email</FormLabel>
                           <FormControl>
-                            <Input placeholder="12345" {...field} />
+                            <Input placeholder="you@example.com" {...field} />
                           </FormControl>
                           <FormMessage />
                         </FormItem>
                       )}
                     />
-                  </div>
-                  <FormField
-                    control={form.control}
-                    name="paymentMethod"
-                    render={({ field }) => (
-                      <FormItem className="space-y-3">
-                        <FormLabel>Payment Method</FormLabel>
+                    <FormField
+                      control={form.control}
+                      name="address"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Street Address</FormLabel>
                           <FormControl>
-                            <RadioGroup
-                              onValueChange={field.onChange}
-                              defaultValue={field.value}
-                              className="flex flex-col space-y-1"
-                            >
-                              <FormItem className="flex items-center space-x-3 space-y-0">
-                                <FormControl>
-                                  <RadioGroupItem value="stripe" />
-                                </FormControl>
-                                <FormLabel className="font-normal">Credit Card (Stripe)</FormLabel>
-                              </FormItem>
-                              <FormItem className="flex items-center space-x-3 space-y-0">
-                                <FormControl>
-                                  <RadioGroupItem value="razorpay" />
-                                </FormControl>
-                                <FormLabel className="font-normal">Razorpay</FormLabel>
-                              </FormItem>
-                            </RadioGroup>
+                            <Input placeholder="123 Main St" {...field} />
                           </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <div className="grid grid-cols-2 gap-4">
+                      <FormField
+                        control={form.control}
+                        name="city"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>City</FormLabel>
+                            <FormControl>
+                              <Input placeholder="Anytown" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name="zip"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>ZIP Code</FormLabel>
+                            <FormControl>
+                              <Input placeholder="12345" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                    <FormField
+                      control={form.control}
+                      name="paymentMethod"
+                      render={({ field }) => (
+                        <FormItem className="space-y-3">
+                          <FormLabel>Payment Method</FormLabel>
+                            <FormControl>
+                              <RadioGroup
+                                onValueChange={field.onChange}
+                                defaultValue={field.value}
+                                className="flex flex-col space-y-1"
+                              >
+                                <FormItem className="flex items-center space-x-3 space-y-0">
+                                  <FormControl>
+                                    <RadioGroupItem value="stripe" />
+                                  </FormControl>
+                                  <FormLabel className="font-normal">Credit Card (Mock)</FormLabel>
+                                </FormItem>
+                                <FormItem className="flex items-center space-x-3 space-y-0">
+                                  <FormControl>
+                                    <RadioGroupItem value="razorpay" />
+                                  </FormControl>
+                                  <FormLabel className="font-normal">Razorpay</FormLabel>
+                                </FormItem>
+                              </RadioGroup>
+                            </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
 
-                  <Button type="submit" size="lg" className="w-full" disabled={cartItems.length === 0}>
-                    Place Order - ${cartTotal.toFixed(2)}
-                  </Button>
-                </form>
-              </Form>
-            </CardContent>
-          </Card>
-        </div>
-        <div>
-          <Card>
-            <CardHeader>
-              <CardTitle className="font-headline">Order Summary</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              {cartItems.map(item => (
-                <div key={item.id} className="flex justify-between items-center">
-                  <div className="flex items-center gap-4">
-                    <span className="font-semibold">{item.quantity} x</span>
-                    <span>{item.name}</span>
+                    <Button type="submit" size="lg" className="w-full" disabled={cartItems.length === 0 || isProcessing}>
+                      {isProcessing ? "Processing..." : `Place Order - ₹${cartTotal.toFixed(2)}`}
+                    </Button>
+                  </form>
+                </Form>
+              </CardContent>
+            </Card>
+          </div>
+          <div>
+            <Card>
+              <CardHeader>
+                <CardTitle className="font-headline">Order Summary</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {cartItems.map(item => (
+                  <div key={item.id} className="flex justify-between items-center">
+                    <div className="flex items-center gap-4">
+                      <span className="font-semibold">{item.quantity} x</span>
+                      <span>{item.name}</span>
+                    </div>
+                    <span>₹{(item.price * item.quantity).toFixed(2)}</span>
                   </div>
-                  <span>${(item.price * item.quantity).toFixed(2)}</span>
+                ))}
+                <div className="border-t pt-4 mt-4 flex justify-between font-bold text-lg">
+                  <span>Total</span>
+                  <span>₹{cartTotal.toFixed(2)}</span>
                 </div>
-              ))}
-              <div className="border-t pt-4 mt-4 flex justify-between font-bold text-lg">
-                <span>Total</span>
-                <span>${cartTotal.toFixed(2)}</span>
-              </div>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

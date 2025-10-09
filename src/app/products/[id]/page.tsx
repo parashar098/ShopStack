@@ -44,7 +44,7 @@ export default function ProductDetailPage({
             {product.name}
           </h1>
           <p className="text-sm text-muted-foreground mb-4">{product.category}</p>
-          <p className="text-3xl font-semibold mb-6">${product.price.toFixed(2)}</p>
+          <p className="text-3xl font-semibold mb-6">₹{product.price.toFixed(2)}</p>
           <p className="text-foreground/80 leading-relaxed mb-6">
             {product.description}
           </p>
