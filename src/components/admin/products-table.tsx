@@ -1,4 +1,6 @@
 
+"use client";
+
 import Image from "next/image";
 import type { Product } from "@/lib/types";
 import {
@@ -18,9 +20,31 @@ import {
     DropdownMenuItem,
     DropdownMenuLabel,
     DropdownMenuTrigger,
+    DropdownMenuSeparator,
   } from "@/components/ui/dropdown-menu"
+import { useToast } from "@/hooks/use-toast";
 
 export default function ProductsTable({ data }: { data: Product[] }) {
+  const { toast } = useToast();
+
+  const handleDelete = (productId: string, productName: string) => {
+    // This is a mock delete. In a real app, you'd call an API here.
+    console.log(`Deleting product ${productId}`);
+    toast({
+        title: "Product Deleted (Mock)",
+        description: `${productName} has been removed.`,
+    });
+  }
+
+  const handleEdit = (productId: string) => {
+      // In a real app, this would navigate to an edit page.
+      console.log(`Editing product ${productId}`);
+      toast({
+          title: "Edit Action",
+          description: `Navigating to edit page for product ${productId}.`
+      });
+  }
+
   return (
     <div className="rounded-md border">
         <Table>
@@ -67,8 +91,14 @@ export default function ProductsTable({ data }: { data: Product[] }) {
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
                             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                            <DropdownMenuItem>Edit</DropdownMenuItem>
-                            <DropdownMenuItem className="text-destructive focus:text-destructive focus:bg-destructive/10">Delete</DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => handleEdit(product.id)}>Edit</DropdownMenuItem>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem 
+                                className="text-destructive focus:text-destructive focus:bg-destructive/10"
+                                onClick={() => handleDelete(product.id, product.name)}
+                            >
+                                Delete
+                            </DropdownMenuItem>
                             </DropdownMenuContent>
                         </DropdownMenu>
                     </TableCell>

@@ -12,7 +12,7 @@ import {
     SidebarTrigger,
     SidebarFooter,
 } from "@/components/ui/sidebar";
-import { Package, Package2, ShoppingCart, Home, LogOut } from "lucide-react";
+import { Package, Package2, ShoppingCart, Home, Users, LogOut } from "lucide-react";
 import Link from "next/link";
 import { Button } from "../ui/button";
 
@@ -54,6 +54,14 @@ export default function AdminSidebar() {
                         <Link href="/admin/orders">
                             <ShoppingCart />
                             <span>Orders</span>
+                        </Link>
+                    </SidebarMenuButton>
+                </SidebarMenuItem>
+                 <SidebarMenuItem>
+                    <SidebarMenuButton asChild isActive={isActive("/admin/users")}>
+                        <Link href="/admin/users">
+                            <Users />
+                            <span>Users</span>
                         </Link>
                     </SidebarMenuButton>
                 </SidebarMenuItem>
