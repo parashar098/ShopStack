@@ -3,7 +3,7 @@
     {
       "id": "product-1",
       "imageUrl": "https://picsum.photos/seed/101/600/600",
-      "imageHint": "white t-shirt"
+      "imageHint": "t-shirt model"
     },
     {
       "id": "product-2",
@@ -13,157 +13,157 @@
     {
       "id": "product-3",
       "imageUrl": "https://picsum.photos/seed/103/600/600",
-      "imageHint": "floral dress"
+      "imageHint": "summer dress"
     },
     {
       "id": "product-4",
       "imageUrl": "https://picsum.photos/seed/104/600/600",
-      "imageHint": "sports sneakers"
+      "imageHint": "running shoes"
     },
     {
       "id": "product-5",
       "imageUrl": "https://picsum.photos/seed/105/600/600",
-      "imageHint": "leather wallet"
+      "imageHint": "man wallet"
     },
     {
       "id": "product-6",
       "imageUrl": "https://picsum.photos/seed/106/600/600",
-      "imageHint": "wireless earbuds"
+      "imageHint": "earbuds case"
     },
     {
       "id": "product-7",
       "imageUrl": "https://picsum.photos/seed/107/600/600",
-      "imageHint": "black smartwatch"
+      "imageHint": "smartwatch display"
     },
     {
       "id": "product-8",
       "imageUrl": "https://picsum.photos/seed/108/600/600",
-      "imageHint": "gaming mouse"
+      "imageHint": "led mouse"
     },
     {
       "id": "product-9",
       "imageUrl": "https://picsum.photos/seed/109/600/600",
-      "imageHint": "mechanical keyboard"
+      "imageHint": "backlit keyboard"
     },
     {
       "id": "product-10",
       "imageUrl": "https://picsum.photos/seed/110/600/600",
-      "imageHint": "smart tv"
+      "imageHint": "television screen"
     },
     {
       "id": "product-11",
       "imageUrl": "https://picsum.photos/seed/111/600/600",
-      "imageHint": "ceramic mug"
+      "imageHint": "coffee mug"
     },
     {
       "id": "product-12",
       "imageUrl": "https://picsum.photos/seed/112/600/600",
-      "imageHint": "desk lamp"
+      "imageHint": "modern lamp"
     },
     {
       "id": "product-13",
       "imageUrl": "https://picsum.photos/seed/113/600/600",
-      "imageHint": "abstract art"
+      "imageHint": "canvas art"
     },
     {
       "id": "product-14",
       "imageUrl": "https://picsum.photos/seed/114/600/600",
-      "imageHint": "bed sheet"
+      "imageHint": "folded sheets"
     },
     {
       "id": "product-15",
       "imageUrl": "https://picsum.photos/seed/115/600/600",
-      "imageHint": "aroma diffuser"
+      "imageHint": "mist diffuser"
     },
     {
       "id": "product-16",
       "imageUrl": "https://picsum.photos/seed/116/600/600",
-      "imageHint": "purple iphone"
+      "imageHint": "new iphone"
     },
     {
       "id": "product-17",
       "imageUrl": "https://picsum.photos/seed/117/600/600",
-      "imageHint": "black smartphone"
+      "imageHint": "android phone"
     },
     {
       "id": "product-18",
       "imageUrl": "https://picsum.photos/seed/118/600/600",
-      "imageHint": "power bank"
+      "imageHint": "battery pack"
     },
     {
       "id": "product-19",
       "imageUrl": "https://picsum.photos/seed/119/600/600",
-      "imageHint": "usb cable"
+      "imageHint": "charging cable"
     },
     {
       "id": "product-20",
       "imageUrl": "https://picsum.photos/seed/120/600/600",
-      "imageHint": "phone case"
+      "imageHint": "clear case"
     },
     {
       "id": "product-21",
       "imageUrl": "https://picsum.photos/seed/121/600/600",
-      "imageHint": "face wash"
+      "imageHint": "beauty product"
     },
     {
       "id": "product-22",
       "imageUrl": "https://picsum.photos/seed/122/600/600",
-      "imageHint": "lip balm"
+      "imageHint": "lip care"
     },
     {
       "id": "product-23",
       "imageUrl": "https://picsum.photos/seed/123/600/600",
-      "imageHint": "hair dryer"
+      "imageHint": "blow dryer"
     },
     {
       "id": "product-24",
       "imageUrl": "https://picsum.photos/seed/124/600/600",
-      "imageHint": "perfume bottle"
+      "imageHint": "glass perfume"
     },
     {
       "id": "product-25",
       "imageUrl": "https://picsum.photos/seed/125/600/600",
-      "imageHint": "beard trimmer"
+      "imageHint": "electric shaver"
     },
     {
       "id": "product-26",
       "imageUrl": "https://picsum.photos/seed/126/600/600",
-      "imageHint": "travel backpack"
+      "imageHint": "hiking backpack"
     },
     {
       "id": "product-27",
       "imageUrl": "https://picsum.photos/seed/127/600/600",
-      "imageHint": "sunglasses unisex"
+      "imageHint": "black sunglasses"
     },
     {
       "id": "product-28",
       "imageUrl": "https://picsum.photos/seed/128/600/600",
-      "imageHint": "smart bottle"
+      "imageHint": "water bottle"
     },
     {
       "id": "product-29",
       "imageUrl": "https://picsum.photos/seed/129/600/600",
-      "imageHint": "neck pillow"
+      "imageHint": "travel pillow"
     },
     {
       "id": "product-30",
       "imageUrl": "https://picsum.photos/seed/130/600/600",
-      "imageHint": "duffel bag"
+      "imageHint": "gym bag"
     },
     {
       "id": "category-fashion",
       "imageUrl": "https://picsum.photos/seed/201/800/600",
-      "imageHint": "fashion apparel"
+      "imageHint": "clothing rack"
     },
     {
       "id": "category-electronics",
       "imageUrl": "https://picsum.photos/seed/202/800/600",
-      "imageHint": "electronic gadgets"
+      "imageHint": "tech gadgets"
     },
     {
       "id": "category-home",
       "imageUrl": "https://picsum.photos/seed/203/800/600",
-      "imageHint": "modern living"
+      "imageHint": "cozy room"
     },
     {
       "id": "category-mobiles",
@@ -173,12 +173,12 @@
     {
       "id": "category-beauty",
       "imageUrl": "https://picsum.photos/seed/205/800/600",
-      "imageHint": "personal care"
+      "imageHint": "makeup items"
     },
     {
       "id": "category-lifestyle",
       "imageUrl": "https://picsum.photos/seed/206/800/600",
-      "imageHint": "travel lifestyle"
+      "imageHint": "active lifestyle"
     }
   ]
 }
