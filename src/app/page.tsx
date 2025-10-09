@@ -27,6 +27,8 @@ export default function HomePage() {
     { value: 98, label: "Positive Reviews (%)" }
   ];
 
+  const discountProduct = mockProducts.find(p => p.id === 'product-7');
+
   return (
     <div className="flex flex-col">
       <section className="relative w-full h-[60vh] md:h-[80vh] flex items-center justify-center overflow-hidden">
@@ -75,8 +77,38 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {discountProduct && (
+        <section className="py-16 md:py-24 bg-background">
+            <div className="container mx-auto px-4 md:px-6">
+                <div className="grid md:grid-cols-2 gap-8 items-center bg-primary text-primary-foreground rounded-lg overflow-hidden p-8">
+                    <div className="relative aspect-square">
+                        <Image
+                            src={discountProduct.imageURL}
+                            alt={discountProduct.name}
+                            fill
+                            className="object-cover rounded-md"
+                            data-ai-hint={discountProduct.imageHint}
+                        />
+                    </div>
+                    <div>
+                        <h2 className="text-3xl font-headline font-bold tracking-tighter mb-2">Limited Time Offer!</h2>
+                        <p className="text-lg text-primary-foreground/80 mb-4">Get 20% off on the {discountProduct.name}</p>
+                        <div className="flex items-baseline gap-4 mb-6">
+                            <span className="text-4xl font-bold">₹{(discountProduct.price * 0.8).toFixed(2)}</span>
+                            <span className="text-xl line-through text-primary-foreground/60">₹{discountProduct.price.toFixed(2)}</span>
+                        </div>
+                        <p className="mb-6 text-primary-foreground/90">{discountProduct.description}</p>
+                        <Button asChild size="lg" variant="secondary" className="bg-white text-primary hover:bg-white/90">
+                           <Link href={`/products/${discountProduct.id}`}>Shop Now</Link>
+                        </Button>
+                    </div>
+                </div>
+            </div>
+        </section>
+      )}
       
-      <section className="py-16 md:py-24 bg-background">
+      <section className="py-16 md:py-24 bg-secondary">
         <div className="container mx-auto px-4 md:px-6 text-center">
             <h2 className="text-3xl font-headline font-bold tracking-tighter mb-10">
                 A Glimpse of Our Collection
@@ -88,7 +120,7 @@ export default function HomePage() {
         <RollingGallery autoplay={true} pauseOnHover={true} />
       </section>
 
-      <section id="our-impact" className="py-16 md:py-24 bg-secondary">
+      <section id="our-impact" className="py-16 md:py-24 bg-background">
         <div className="container mx-auto px-4 md:px-6">
           <h2 className="text-3xl font-headline font-bold tracking-tighter text-center mb-10">
             Our Impact
@@ -103,7 +135,7 @@ export default function HomePage() {
                   gap={15}
                   textColor="hsl(var(--primary))"
                   fontWeight={700}
-                  gradientFrom="hsl(var(--secondary))"
+                  gradientFrom="hsl(var(--background))"
                   gradientTo="transparent"
                 />
                 <p className="text-muted-foreground mt-2">{stat.label}</p>
@@ -113,7 +145,7 @@ export default function HomePage() {
         </div>
       </section>
 
-       <section id="testimonials" className="py-16 md:py-24">
+       <section id="testimonials" className="py-16 md:py-24 bg-secondary">
         <div className="container mx-auto px-4 md:px-6">
           <h2 className="text-3xl font-headline font-bold tracking-tighter text-center mb-10">
             What Our Customers Say
