@@ -8,6 +8,16 @@ export type Product = {
   imageURL: string;
   stock: number;
   imageHint: string;
+  rating: number;
+  reviews: {
+    id: string;
+    author: string;
+    rating: number;
+    title: string;
+    text: string;
+    date: string;
+  }[];
+  specifications: { name: string; value: string }[];
 };
 
 export type CartItem = {

@@ -2,7 +2,7 @@
 import type { Product, User, Order } from '@/lib/types';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 
-const productsData: Omit<Product, 'imageURL' | 'imageHint'>[] = [
+const productsData: Omit<Product, 'imageURL' | 'imageHint' | 'rating' | 'reviews' | 'specifications'>[] = [
   // Fashion & Apparel
   { id: '1', name: 'Classic White T-Shirt', description: '100% cotton, slim fit', price: 499, category: 'Fashion', stock: 120 },
   { id: '2', name: 'Men’s Denim Jacket', description: 'Stylish and durable denim', price: 1999, category: 'Fashion', stock: 75 },
@@ -46,11 +46,26 @@ export const mockProducts: Product[] = productsData.map((product, index) => {
     if (!placeholder) {
       throw new Error(`Placeholder image not found for product id: product-${index + 1}`);
     }
+
+    // Mocked data for new fields
+    const rating = (Math.random() * (5 - 3.5) + 3.5); // Random rating between 3.5 and 5
+    const reviews = [
+        { id: 'review-1', author: 'Alex', rating: 5, title: 'Excellent!', text: 'High quality and worth every penny.', date: '2024-05-15' },
+        { id: 'review-2', author: 'Maria', rating: 4, title: 'Very Good', text: 'Almost perfect, I love the design.', date: '2024-05-12' },
+    ];
+     const specifications = [
+        { name: 'Material', value: product.category === 'Fashion' ? 'Cotton' : 'Varies' },
+        { name: 'Weight', value: `${(Math.random() * 2 + 0.5).toFixed(1)} kg` },
+    ];
+
     return {
         ...product,
         id: `product-${index + 1}`,
         imageURL: placeholder.imageUrl,
         imageHint: placeholder.imageHint,
+        rating: parseFloat(rating.toFixed(1)),
+        reviews,
+        specifications
     }
 });
 

@@ -16,7 +16,7 @@ interface CartContextType {
   addToCart: (product: Product, quantity?: number) => void;
   removeFromCart: (productId: string) => void;
   updateQuantity: (productId: string, quantity: number) => void;
-  clearCart: () => void;
+  clearCart: (silent?: boolean) => void;
   cartTotal: number;
   itemCount: number;
 }
@@ -101,9 +101,15 @@ export function CartProvider({ children }: { children: ReactNode }) {
     );
   }, [removeFromCart]);
 
-  const clearCart = useCallback(() => {
+  const clearCart = useCallback((silent: boolean = false) => {
     setCartItems([]);
-  }, []);
+    if (!silent) {
+        toast({
+            title: "Cart Cleared",
+            description: "Your shopping cart has been emptied.",
+        });
+    }
+  }, [toast]);
 
   const cartTotal = cartItems.reduce(
     (total, item) => total + item.price * item.quantity,
