@@ -20,7 +20,7 @@ export default function AdminLoginPage() {
     e.preventDefault();
     // NOTE: Password is not checked in this mock implementation
     if (login(email)) {
-      router.push('/admin');
+      router.push('/admin/(protected)');
     }
   };
 

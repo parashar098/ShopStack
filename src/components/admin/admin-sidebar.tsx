@@ -32,7 +32,7 @@ export default function AdminSidebar() {
     <Sidebar>
         <SidebarHeader className="border-b border-sidebar-border">
             <div className="flex items-center justify-between p-2">
-                <Link href="/admin" className="flex items-center gap-2 font-headline text-lg font-semibold">
+                <Link href="/admin/(protected)" className="flex items-center gap-2 font-headline text-lg font-semibold">
                     <Package2 className="h-6 w-6 text-sidebar-primary"/>
                     <span>ShopStack</span>
                 </Link>
@@ -42,32 +42,32 @@ export default function AdminSidebar() {
         <SidebarContent>
             <SidebarMenu>
                 <SidebarMenuItem>
-                    <SidebarMenuButton asChild isActive={isActive("/admin")}>
-                        <Link href="/admin">
+                    <SidebarMenuButton asChild isActive={isActive("/admin/(protected)")}>
+                        <Link href="/admin/(protected)">
                             <Home />
                             <span>Dashboard</span>
                         </Link>
                     </SidebarMenuButton>
                 </SidebarMenuItem>
                  <SidebarMenuItem>
-                    <SidebarMenuButton asChild isActive={isActive("/admin/products")}>
-                        <Link href="/admin/products">
+                    <SidebarMenuButton asChild isActive={isActive("/admin/(protected)/products")}>
+                        <Link href="/admin/(protected)/products">
                             <Package />
                             <span>Products</span>
                         </Link>
                     </SidebarMenuButton>
                 </SidebarMenuItem>
                  <SidebarMenuItem>
-                    <SidebarMenuButton asChild isActive={isActive("/admin/orders")}>
-                        <Link href="/admin/orders">
+                    <SidebarMenuButton asChild isActive={isActive("/admin/(protected)/orders")}>
+                        <Link href="/admin/(protected)/orders">
                             <ShoppingCart />
                             <span>Orders</span>
                         </Link>
                     </SidebarMenuButton>
                 </SidebarMenuItem>
                  <SidebarMenuItem>
-                    <SidebarMenuButton asChild isActive={isActive("/admin/users")}>
-                        <Link href="/admin/users">
+                    <SidebarMenuButton asChild isActive={isActive("/admin/(protected)/users")}>
+                        <Link href="/admin/(protected)/users">
                             <Users />
                             <span>Users</span>
                         </Link>
