@@ -12,7 +12,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Mail, Phone, MapPin } from 'lucide-react';
-import Image from "next/image";
+import Map from "@/components/map";
 
 const contactSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters."),
@@ -89,13 +89,7 @@ export default function ContactPage() {
                     </CardContent>
                 </Card>
                 <div className="relative aspect-video rounded-lg overflow-hidden">
-                    <Image
-                        src="https://picsum.photos/seed/303/800/450"
-                        alt="Map showing our location"
-                        fill
-                        className="object-cover"
-                        data-ai-hint="city map"
-                    />
+                    <Map />
                 </div>
             </div>
 
