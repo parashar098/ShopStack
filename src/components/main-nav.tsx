@@ -13,11 +13,14 @@ import { useCart } from "@/hooks/use-cart";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import Searchbar from "./search-bar";
+import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
+import { Menu } from "lucide-react";
 
 export default function MainNav() {
   const { itemCount } = useCart();
   const pathname = usePathname();
   const [isClient, setIsClient] = useState(false);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     setIsClient(true);
@@ -33,7 +36,7 @@ export default function MainNav() {
         <div className="mr-4 flex items-center">
           <Link href="/" className="mr-6 flex items-center space-x-2">
             <Package2 className="h-6 w-6 text-primary" />
-            <span className="font-bold font-headline text-lg hidden sm:inline-block">ShopStack</span>
+            <span className="font-bold font-headline text-lg">ShopStack</span>
           </Link>
           <nav className="hidden md:flex items-center space-x-6 text-sm font-medium">
             <Link
@@ -75,7 +78,7 @@ export default function MainNav() {
           </nav>
         </div>
         <div className="flex flex-1 items-center justify-end gap-4">
-          <div className="w-full flex-1 max-w-xs sm:max-w-sm">
+          <div className="hidden md:block w-full flex-1 max-w-xs sm:max-w-sm">
             <Searchbar />
           </div>
           <div className="flex items-center gap-2">
@@ -99,6 +102,40 @@ export default function MainNav() {
               <Button asChild>
                 <Link href="/register">Sign Up</Link>
               </Button>
+            </div>
+            <div className="md:hidden">
+                <Sheet open={open} onOpenChange={setOpen}>
+                    <SheetTrigger asChild>
+                        <Button variant="ghost" size="icon">
+                            <Menu className="h-5 w-5" />
+                            <span className="sr-only">Toggle Menu</span>
+                        </Button>
+                    </SheetTrigger>
+                    <SheetContent side="left" className="w-full max-w-xs">
+                        <nav className="grid gap-6 text-lg font-medium mt-8">
+                        <Link href="/" onClick={() => setOpen(false)} className="flex items-center gap-2 text-lg font-semibold">
+                            <Package2 className="h-6 w-6 text-primary" />
+                            <span className="sr-only">ShopStack</span>
+                        </Link>
+                        <Link href="/" onClick={() => setOpen(false)} className={cn("hover:text-foreground/80", pathname === "/" ? "text-foreground" : "text-foreground/60")}>Home</Link>
+                        <Link href="/products" onClick={() => setOpen(false)} className={cn("hover:text-foreground/80", pathname.startsWith("/products") ? "text-foreground" : "text-foreground/60")}>Products</Link>
+                        <Link href="/about" onClick={() => setOpen(false)} className={cn("hover:text-foreground/80", pathname === "/about" ? "text-foreground" : "text-foreground/60")}>About</Link>
+                        <Link href="/contact" onClick={() => setOpen(false)} className={cn("hover:text-foreground/80", pathname === "/contact" ? "text-foreground" : "text-foreground/60")}>Contact</Link>
+                        
+                        <div className="mt-4">
+                            <Searchbar />
+                        </div>
+                        <div className="flex items-center gap-4 mt-4">
+                            <Button variant="ghost" asChild onClick={() => setOpen(false)}>
+                                <Link href="/login">Sign In</Link>
+                            </Button>
+                            <Button asChild onClick={() => setOpen(false)}>
+                                <Link href="/register">Sign Up</Link>
+                            </Button>
+                        </div>
+                        </nav>
+                    </SheetContent>
+                </Sheet>
             </div>
           </div>
         </div>
