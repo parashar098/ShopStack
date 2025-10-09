@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from "next/link";
@@ -13,7 +14,7 @@ import { useCart } from "@/hooks/use-cart";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import Searchbar from "./search-bar";
-import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "./ui/sheet";
 
 export default function MainNav() {
   const { itemCount } = useCart();
@@ -34,11 +35,12 @@ export default function MainNav() {
     { href: "/contact", label: "Contact", active: pathname === "/contact" },
   ];
 
+  if (isAdminPage) {
+    return null;
+  }
+
   return (
-    <header className={cn(
-      "sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60",
-      isAdminPage && "hidden"
-    )}>
+    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center">
         {/* Mobile Menu Trigger */}
         <div className="md:hidden mr-4">
@@ -50,6 +52,9 @@ export default function MainNav() {
               </Button>
             </SheetTrigger>
             <SheetContent side="left" className="w-full max-w-xs">
+              <SheetHeader>
+                <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
+              </SheetHeader>
               <nav className="grid gap-6 text-lg font-medium mt-8">
                 <Link href="/" onClick={() => setOpen(false)} className="flex items-center gap-2 text-lg font-semibold mb-4">
                   <Package2 className="h-6 w-6 text-primary" />
