@@ -31,12 +31,12 @@ export default function MainNav() {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center">
-        <div className="mr-4 hidden md:flex">
+        <div className="flex items-center">
           <Link href="/" className="mr-6 flex items-center space-x-2">
             <Package2 className="h-6 w-6 text-primary" />
-            <span className="font-bold font-headline text-lg">ShopStack</span>
+            <span className="font-bold font-headline text-lg hidden sm:inline-block">ShopStack</span>
           </Link>
-          <nav className="flex items-center space-x-6 text-sm font-medium">
+          <nav className="hidden md:flex items-center space-x-6 text-sm font-medium">
             <Link
               href="/"
               className={cn(
@@ -75,8 +75,8 @@ export default function MainNav() {
             </Link>
           </nav>
         </div>
-        <div className="flex flex-1 items-center justify-between md:justify-end gap-4">
-            <div className="w-full md:w-auto md:flex-1 md:max-w-xs">
+        <div className="flex flex-1 items-center justify-end gap-4">
+            <div className="w-full max-w-xs sm:max-w-sm">
                 <Searchbar />
             </div>
           <div className="flex items-center space-x-2">
@@ -108,3 +108,4 @@ export default function MainNav() {
     </header>
   );
 }
+
