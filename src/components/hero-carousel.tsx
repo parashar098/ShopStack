@@ -1,3 +1,4 @@
+
 "use client";
 
 import Image from "next/image";
@@ -38,7 +39,6 @@ export default function HeroCarousel({ products }: HeroCarouselProps) {
                 alt={product.name}
                 fill
                 className="object-cover"
-                priority
                 data-ai-hint={product.imageHint}
               />
             </div>
