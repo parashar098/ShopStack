@@ -13,6 +13,7 @@ import { useCart } from "@/hooks/use-cart";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import Searchbar from "./search-bar";
+import { ThemeToggle } from "./theme-toggle";
 
 export default function MainNav() {
   const { itemCount } = useCart();
@@ -79,6 +80,7 @@ export default function MainNav() {
                 <Searchbar />
             </div>
           <div className="flex items-center space-x-2">
+            <ThemeToggle />
             <div className="relative">
               <Button variant="ghost" size="icon" asChild>
                   <Link href="/cart">

@@ -6,6 +6,7 @@ import { useSearchParams } from 'next/navigation';
 import { mockProducts } from "@/lib/data";
 import ProductCard from "@/components/product-card";
 import ProductFilters from "@/components/product-filters";
+import RecentlyViewed from "@/components/recently-viewed";
 import type { Product } from "@/lib/types";
 
 function useProductFilters() {
@@ -83,6 +84,9 @@ export default function ProductsPage() {
             </div>
           )}
         </main>
+      </div>
+      <div className="mt-16">
+        <RecentlyViewed />
       </div>
     </div>
   );
