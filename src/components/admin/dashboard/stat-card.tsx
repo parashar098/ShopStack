@@ -1,6 +1,9 @@
 
+"use client";
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { LucideIcon } from "lucide-react";
+import CountUp from "@/components/ui/count-up";
 
 interface StatCardProps {
     title: string;
@@ -10,6 +13,9 @@ interface StatCardProps {
 }
 
 export default function StatCard({ title, value, icon: Icon, footerText }: StatCardProps) {
+    const numericValue = parseFloat(value.replace(/[^0-9.]/g, ''));
+    const isCurrency = value.startsWith('$');
+
     return (
         <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -17,7 +23,15 @@ export default function StatCard({ title, value, icon: Icon, footerText }: StatC
                 <Icon className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-                <div className="text-2xl font-bold">{value}</div>
+                <div className="text-2xl font-bold">
+                    {isCurrency && '$'}
+                    <CountUp
+                        from={0}
+                        to={numericValue}
+                        separator=","
+                        duration={2}
+                    />
+                </div>
                 <p className="text-xs text-muted-foreground">{footerText}</p>
             </CardContent>
         </Card>
