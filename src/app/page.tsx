@@ -10,6 +10,7 @@ import CategoryHighlights from "@/components/category-highlights";
 import { Card, CardContent } from "@/components/ui/card";
 import { Star } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import Image from "next/image";
 
 export default function HomePage() {
   const featuredProducts = mockProducts.slice(0, 8);
@@ -22,7 +23,14 @@ export default function HomePage() {
   return (
     <div className="flex flex-col">
       <section className="relative w-full h-[60vh] md:h-[80vh] flex items-center justify-center overflow-hidden">
-        <HeroCarousel products={mockProducts} />
+        <Image 
+            src="https://picsum.photos/seed/hero/1600/900"
+            alt="Hero background"
+            fill
+            className="object-cover"
+            priority
+            data-ai-hint="modern storefront"
+        />
         <div className="absolute inset-0 bg-black/50" />
         <div className="relative z-10 container mx-auto px-4 md:px-6 text-center text-white">
           <div className="max-w-3xl mx-auto">
