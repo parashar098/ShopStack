@@ -4,6 +4,7 @@ import { Providers } from "./providers";
 import { cn } from "@/lib/utils";
 import "./globals.css";
 import "./chroma-grid.css";
+import "./counter.css";
 import MainNav from "@/components/main-nav";
 import Footer from "@/components/footer";
 
