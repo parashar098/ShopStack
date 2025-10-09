@@ -94,7 +94,6 @@ export default function ProductFilters({
             className="pl-8"
             value={searchTerm ?? ''}
             onChange={handleSearchDebounce}
-            disabled={!!currentSearchTerm}
           />
         </div>
         
