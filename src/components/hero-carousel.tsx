@@ -38,7 +38,7 @@ export default function HeroCarousel({ products }: HeroCarouselProps) {
                 src={product.imageURL}
                 alt={product.name}
                 fill
-                className="object-cover filter blur-sm scale-105"
+                className="object-cover"
                 priority
                 data-ai-hint={product.imageHint}
               />
