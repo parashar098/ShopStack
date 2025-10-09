@@ -1,5 +1,4 @@
 
-import { DollarSign, Package, Users, ShoppingCart } from "lucide-react";
 import StatCard from "@/components/admin/dashboard/stat-card";
 import RecentOrders from "@/components/admin/recent-orders";
 import { mockOrders, mockProducts, mockUsers } from "@/lib/data";
@@ -17,25 +16,25 @@ export default function AdminDashboardPage() {
                 <StatCard 
                     title="Total Revenue" 
                     value={`₹${totalRevenue.toFixed(2)}`}
-                    icon={DollarSign}
+                    icon="DollarSign"
                     footerText="+20.1% from last month" 
                 />
                 <StatCard 
                     title="Total Orders" 
                     value={`+${totalOrders}`}
-                    icon={ShoppingCart}
+                    icon="ShoppingCart"
                     footerText="Total orders placed" 
                 />
                 <StatCard 
                     title="Total Products" 
                     value={`${totalProducts}`} 
-                    icon={Package}
+                    icon="Package"
                     footerText="Total products in store" 
                 />
                 <StatCard 
                     title="Total Users" 
                     value={`${totalUsers}`}
-                    icon={Users}
+                    icon="Users"
                     footerText="Total registered users" 
                 />
             </div>

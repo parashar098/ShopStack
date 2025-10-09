@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useEffect, useRef } from 'react';
@@ -12,6 +13,7 @@ type CountUpProps = {
   className?: string;
   startWhen?: boolean;
   separator?: string;
+  decimals?: number;
   onStart?: () => void;
   onEnd?: () => void;
 };
@@ -25,6 +27,7 @@ export default function CountUp({
   className = '',
   startWhen = true,
   separator = '',
+  decimals,
   onStart,
   onEnd
 }: CountUpProps) {
@@ -42,13 +45,13 @@ export default function CountUp({
   const isInView = useInView(ref, { once: true, margin: '0px' });
 
   const getDecimalPlaces = (num: number) => {
+    if (decimals !== undefined) return decimals;
     const str = num.toString();
 
     if (str.includes('.')) {
-      const decimals = str.split('.')[1];
-
-      if (parseInt(decimals) !== 0) {
-        return decimals.length;
+      const parts = str.split('.');
+      if (parts[1] && parseInt(parts[1]) !== 0) {
+        return parts[1].length;
       }
     }
 
@@ -59,9 +62,9 @@ export default function CountUp({
 
   useEffect(() => {
     if (ref.current) {
-      ref.current.textContent = String(direction === 'down' ? to : from);
+      ref.current.textContent = (direction === 'down' ? to : from).toFixed(maxDecimals);
     }
-  }, [from, to, direction]);
+  }, [from, to, direction, maxDecimals]);
 
   useEffect(() => {
     if (isInView && startWhen) {
