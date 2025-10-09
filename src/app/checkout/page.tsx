@@ -22,7 +22,7 @@ const checkoutSchema = z.object({
   email: z.string().email("Invalid email address."),
   address: z.string().min(5, "Address is too short."),
   city: z.string().min(2, "City is required."),
-  zip: z.string().min(5, "A 5-digit ZIP code is required.").max(5),
+  zip: z.string().min(5, "A 5-digit ZIP code is required.").max(6),
   paymentMethod: z.enum(["stripe", "razorpay"], {
     required_error: "You need to select a payment method.",
   }),
@@ -230,7 +230,7 @@ export default function CheckoutPage() {
                           <FormItem>
                             <FormLabel>ZIP Code</FormLabel>
                             <FormControl>
-                              <Input placeholder="12345" {...field} />
+                              <Input placeholder="123456" {...field} />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
