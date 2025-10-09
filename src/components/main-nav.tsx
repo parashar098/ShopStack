@@ -61,17 +61,19 @@ export default function MainNav() {
                 <Searchbar />
             </div>
           <div className="flex items-center space-x-2">
-            <Button variant="ghost" size="icon" asChild>
-                <Link href="/cart">
-                <ShoppingCart className="h-5 w-5" />
-                {isClient && itemCount > 0 && (
-                    <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground">
-                    {itemCount}
-                    </span>
-                )}
-                <span className="sr-only">Shopping Cart</span>
-                </Link>
-            </Button>
+            <div className="relative">
+              <Button variant="ghost" size="icon" asChild>
+                  <Link href="/cart">
+                  <ShoppingCart className="h-5 w-5" />
+                  <span className="sr-only">Shopping Cart</span>
+                  </Link>
+              </Button>
+              {isClient && itemCount > 0 && (
+                  <span className="absolute top-0 right-0 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground transform translate-x-1/2 -translate-y-1/2">
+                  {itemCount}
+                  </span>
+              )}
+            </div>
             <div className="hidden md:flex items-center space-x-2">
                 <Button variant="ghost" asChild>
                     <Link href="/login">Sign In</Link>
