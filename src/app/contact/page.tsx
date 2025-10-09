@@ -157,7 +157,7 @@ export default function ContactPage() {
                       </div>
                   </CardContent>
               </Card>
-              <div className="relative aspect-video rounded-lg overflow-hidden h-[400px]">
+              <div className="relative aspect-video rounded-lg overflow-hidden h-full min-h-[400px]">
                   <Map />
               </div>
           </div>
