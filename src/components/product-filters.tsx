@@ -65,7 +65,7 @@ export default function ProductFilters({
             type="search"
             placeholder="Search products..."
             className="pl-8"
-            value={searchTerm}
+            value={searchTerm ?? ''}
             onChange={handleSearchDebounce}
             disabled={!!currentSearchTerm}
           />
@@ -93,3 +93,4 @@ export default function ProductFilters({
     </Card>
   );
 }
+
