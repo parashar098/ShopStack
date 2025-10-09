@@ -46,7 +46,7 @@ export default function HomePage() {
               <Button asChild size="lg" className="bg-white text-primary hover:bg-white/90">
                 <Link href="/products">Explore Products</Link>
               </Button>
-              <Button asChild variant="outline" size="lg" className="border-white text-white hover:bg-white hover:text-primary">
+              <Button asChild size="lg">
                 <Link href="/register">Create Account</Link>
               </Button>
             </div>
