@@ -39,6 +39,11 @@ export default function CheckoutPage() {
   const form = useForm<CheckoutFormValues>({
     resolver: zodResolver(checkoutSchema),
     defaultValues: {
+      name: "",
+      email: "",
+      address: "",
+      city: "",
+      zip: "",
       paymentMethod: "stripe",
     },
   });
