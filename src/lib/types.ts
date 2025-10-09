@@ -19,6 +19,8 @@ export type CartItem = {
   imageHint: string;
 };
 
+export type WishlistItem = Product;
+
 export type Order = {
   id: string;
   userId: string;

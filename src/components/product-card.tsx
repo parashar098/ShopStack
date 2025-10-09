@@ -10,6 +10,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import AddToCartButton from "./add-to-cart-button";
+import AddToWishlistButton from "./add-to-wishlist-button";
 
 interface ProductCardProps {
   product: Product;
@@ -18,7 +19,7 @@ interface ProductCardProps {
 export default function ProductCard({ product }: ProductCardProps) {
   return (
     <Card className="flex flex-col h-full overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
-      <CardHeader className="p-0">
+      <CardHeader className="p-0 relative">
         <Link href={`/products/${product.id}`} className="block">
           <div className="aspect-square relative w-full">
             <Image
@@ -30,6 +31,9 @@ export default function ProductCard({ product }: ProductCardProps) {
             />
           </div>
         </Link>
+        <div className="absolute top-2 right-2">
+            <AddToWishlistButton product={product} />
+        </div>
       </CardHeader>
       <CardContent className="p-4 flex-grow">
         <CardTitle className="text-lg font-headline mb-2 leading-tight">

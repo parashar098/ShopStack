@@ -2,6 +2,7 @@
 "use client";
 
 import { CartProvider } from "@/contexts/cart-context";
+import { WishlistProvider } from "@/contexts/wishlist-context";
 import { Toaster } from "@/components/ui/toaster";
 import type { ReactNode } from 'react';
 import { ThemeProvider } from "next-themes";
@@ -14,10 +15,12 @@ export function Providers({ children }: { children: ReactNode }) {
       enableSystem
       disableTransitionOnChange
     >
-      <CartProvider>
-        {children}
-        <Toaster />
-      </CartProvider>
+        <CartProvider>
+          <WishlistProvider>
+            {children}
+            <Toaster />
+          </WishlistProvider>
+        </CartProvider>
     </ThemeProvider>
   );
 }

@@ -7,6 +7,7 @@ import { mockProducts } from "@/lib/data";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import AddToCartButton from "@/components/add-to-cart-button";
+import AddToWishlistButton from "@/components/add-to-wishlist-button";
 import { Plus, Minus } from "lucide-react";
 import AiRecommendations from "@/components/ai-recommendations";
 
@@ -38,6 +39,9 @@ export default function ProductDetailPage({
             sizes="(max-width: 768px) 100vw, 50vw"
             data-ai-hint={product.imageHint}
           />
+           <div className="absolute top-4 right-4">
+            <AddToWishlistButton product={product} className="bg-background/50 hover:bg-background/80"/>
+           </div>
         </div>
         <div className="flex flex-col justify-center">
           <h1 className="text-3xl lg:text-4xl font-headline font-bold mb-2">

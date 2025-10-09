@@ -6,11 +6,13 @@ import {
   Package2,
   ShoppingCart,
   Menu,
+  Heart,
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/hooks/use-cart";
+import { useWishlist } from "@/hooks/use-wishlist";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import Searchbar from "./search-bar";
@@ -18,11 +20,12 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "./ui
 import { ThemeToggle } from "./theme-toggle";
 
 export default function MainNav() {
-  const { itemCount } = useCart();
+  const { itemCount: cartItemCount } = useCart();
+  const { itemCount: wishlistItemCount } = useWishlist();
   const pathname = usePathname();
   const [isClient, setIsClient] = useState(false);
   const [open, setOpen] = useState(false);
-  
+
   useEffect(() => {
     setIsClient(true);
   }, []);
@@ -107,8 +110,21 @@ export default function MainNav() {
           <div className="hidden sm:block w-full max-w-xs">
             <Searchbar />
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1">
              <ThemeToggle />
+             <div className="relative">
+              <Button variant="ghost" size="icon" asChild>
+                <Link href="/wishlist">
+                  <Heart className="h-5 w-5" />
+                  <span className="sr-only">Wishlist</span>
+                </Link>
+              </Button>
+              {isClient && wishlistItemCount > 0 && (
+                <span className="absolute top-0 right-0 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground transform translate-x-1/2 -translate-y-1/2">
+                  {wishlistItemCount}
+                </span>
+              )}
+            </div>
             <div className="relative">
               <Button variant="ghost" size="icon" asChild>
                 <Link href="/cart">
@@ -116,9 +132,9 @@ export default function MainNav() {
                   <span className="sr-only">Shopping Cart</span>
                 </Link>
               </Button>
-              {isClient && itemCount > 0 && (
+              {isClient && cartItemCount > 0 && (
                 <span className="absolute top-0 right-0 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground transform translate-x-1/2 -translate-y-1/2">
-                  {itemCount}
+                  {cartItemCount}
                 </span>
               )}
             </div>
