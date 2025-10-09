@@ -30,55 +30,67 @@ export default function MainNav() {
     return null;
   }
   
+  const navLinks = [
+    { href: "/", label: "Home", active: pathname === "/" },
+    { href: "/products", label: "Products", active: pathname.startsWith("/products") },
+    { href: "/about", label: "About", active: pathname === "/about" },
+    { href: "/contact", label: "Contact", active: pathname === "/contact" },
+  ];
+
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center">
-        <div className="mr-4 flex items-center">
-          <Link href="/" className="mr-6 flex items-center space-x-2">
-            <Package2 className="h-6 w-6 text-primary" />
-            <span className="font-bold font-headline text-lg">ShopStack</span>
-          </Link>
-          <nav className="hidden md:flex items-center space-x-6 text-sm font-medium">
-            <Link
-              href="/"
-              className={cn(
-                "transition-colors hover:text-foreground/80",
-                pathname === "/" ? "text-foreground" : "text-foreground/60"
-              )}
-            >
-              Home
-            </Link>
-             <Link
-              href="/products"
-              className={cn(
-                "transition-colors hover:text-foreground/80",
-                pathname?.startsWith("/products") ? "text-foreground" : "text-foreground/60"
-              )}
-            >
-              Products
-            </Link>
-             <Link
-              href="/about"
-              className={cn(
-                "transition-colors hover:text-foreground/80",
-                pathname === "/about" ? "text-foreground" : "text-foreground/60"
-              )}
-            >
-              About
-            </Link>
-             <Link
-              href="/contact"
-              className={cn(
-                "transition-colors hover:text-foreground/80",
-                pathname === "/contact" ? "text-foreground" : "text-foreground/60"
-              )}
-            >
-              Contact
-            </Link>
-          </nav>
+        {/* Mobile Menu Trigger */}
+        <div className="md:hidden mr-4">
+            <Sheet open={open} onOpenChange={setOpen}>
+                <SheetTrigger asChild>
+                    <Button variant="ghost" size="icon">
+                        <Menu className="h-5 w-5" />
+                        <span className="sr-only">Toggle Menu</span>
+                    </Button>
+                </SheetTrigger>
+                <SheetContent side="left" className="w-full max-w-xs">
+                    <nav className="grid gap-6 text-lg font-medium mt-8">
+                      <Link href="/" onClick={() => setOpen(false)} className="flex items-center gap-2 text-lg font-semibold mb-4">
+                          <Package2 className="h-6 w-6 text-primary" />
+                          <span className="font-bold font-headline">ShopStack</span>
+                      </Link>
+                      {navLinks.map(link => (
+                         <Link key={link.href} href={link.href} onClick={() => setOpen(false)} className={cn("hover:text-foreground/80", link.active ? "text-foreground" : "text-foreground/60")}>{link.label}</Link>
+                      ))}
+                      <div className="mt-4">
+                          <Searchbar />
+                      </div>
+                      <div className="flex items-center gap-4 mt-4">
+                          <Button variant="ghost" asChild onClick={() => setOpen(false)}>
+                              <Link href="/login">Sign In</Link>
+                          </Button>
+                          <Button asChild onClick={() => setOpen(false)}>
+                              <Link href="/register">Sign Up</Link>
+                          </Button>
+                      </div>
+                    </nav>
+                </SheetContent>
+            </Sheet>
         </div>
+
+        {/* Logo */}
+        <Link href="/" className="mr-6 flex items-center space-x-2">
+          <Package2 className="h-6 w-6 text-primary" />
+          <span className="font-bold font-headline text-lg">ShopStack</span>
+        </Link>
+        
+        {/* Desktop Navigation */}
+        <nav className="hidden md:flex items-center space-x-6 text-sm font-medium">
+          {navLinks.map(link => (
+            <Link key={link.href} href={link.href} className={cn("transition-colors hover:text-foreground/80", link.active ? "text-foreground" : "text-foreground/60")}>
+              {link.label}
+            </Link>
+          ))}
+        </nav>
+        
         <div className="flex flex-1 items-center justify-end gap-4">
-          <div className="hidden md:block w-full flex-1 max-w-xs sm:max-w-sm">
+          <div className="hidden sm:block w-full max-w-xs">
             <Searchbar />
           </div>
           <div className="flex items-center gap-2">
@@ -102,40 +114,6 @@ export default function MainNav() {
               <Button asChild>
                 <Link href="/register">Sign Up</Link>
               </Button>
-            </div>
-            <div className="md:hidden">
-                <Sheet open={open} onOpenChange={setOpen}>
-                    <SheetTrigger asChild>
-                        <Button variant="ghost" size="icon">
-                            <Menu className="h-5 w-5" />
-                            <span className="sr-only">Toggle Menu</span>
-                        </Button>
-                    </SheetTrigger>
-                    <SheetContent side="left" className="w-full max-w-xs">
-                        <nav className="grid gap-6 text-lg font-medium mt-8">
-                        <Link href="/" onClick={() => setOpen(false)} className="flex items-center gap-2 text-lg font-semibold">
-                            <Package2 className="h-6 w-6 text-primary" />
-                            <span className="sr-only">ShopStack</span>
-                        </Link>
-                        <Link href="/" onClick={() => setOpen(false)} className={cn("hover:text-foreground/80", pathname === "/" ? "text-foreground" : "text-foreground/60")}>Home</Link>
-                        <Link href="/products" onClick={() => setOpen(false)} className={cn("hover:text-foreground/80", pathname.startsWith("/products") ? "text-foreground" : "text-foreground/60")}>Products</Link>
-                        <Link href="/about" onClick={() => setOpen(false)} className={cn("hover:text-foreground/80", pathname === "/about" ? "text-foreground" : "text-foreground/60")}>About</Link>
-                        <Link href="/contact" onClick={() => setOpen(false)} className={cn("hover:text-foreground/80", pathname === "/contact" ? "text-foreground" : "text-foreground/60")}>Contact</Link>
-                        
-                        <div className="mt-4">
-                            <Searchbar />
-                        </div>
-                        <div className="flex items-center gap-4 mt-4">
-                            <Button variant="ghost" asChild onClick={() => setOpen(false)}>
-                                <Link href="/login">Sign In</Link>
-                            </Button>
-                            <Button asChild onClick={() => setOpen(false)}>
-                                <Link href="/register">Sign Up</Link>
-                            </Button>
-                        </div>
-                        </nav>
-                    </SheetContent>
-                </Sheet>
             </div>
           </div>
         </div>
