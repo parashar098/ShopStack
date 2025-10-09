@@ -13,7 +13,6 @@ import { useCart } from "@/hooks/use-cart";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import Searchbar from "./search-bar";
-import ThemeToggle from "./theme-toggle";
 
 export default function MainNav() {
   const { itemCount } = useCart();
@@ -75,32 +74,31 @@ export default function MainNav() {
             </Link>
           </nav>
         </div>
-        <div className="flex items-center justify-end gap-4">
-            <div className="w-full max-w-xs sm:max-w-sm">
-                <Searchbar />
-            </div>
-          <div className="flex items-center space-x-2">
-            <ThemeToggle />
+        <div className="flex flex-1 items-center justify-end gap-4">
+          <div className="w-full max-w-xs sm:max-w-sm">
+            <Searchbar />
+          </div>
+          <div className="flex items-center gap-2">
             <div className="relative">
               <Button variant="ghost" size="icon" asChild>
-                  <Link href="/cart">
+                <Link href="/cart">
                   <ShoppingCart className="h-5 w-5" />
                   <span className="sr-only">Shopping Cart</span>
-                  </Link>
+                </Link>
               </Button>
               {isClient && itemCount > 0 && (
-                  <span className="absolute top-0 right-0 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground transform translate-x-1/2 -translate-y-1/2">
+                <span className="absolute top-0 right-0 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground transform translate-x-1/2 -translate-y-1/2">
                   {itemCount}
-                  </span>
+                </span>
               )}
             </div>
             <div className="hidden md:flex items-center space-x-2">
-                <Button variant="ghost" asChild>
-                    <Link href="/login">Sign In</Link>
-                </Button>
-                <Button asChild>
-                    <Link href="/register">Sign Up</Link>
-                </Button>
+              <Button variant="ghost" asChild>
+                <Link href="/login">Sign In</Link>
+              </Button>
+              <Button asChild>
+                <Link href="/register">Sign Up</Link>
+              </Button>
             </div>
           </div>
         </div>

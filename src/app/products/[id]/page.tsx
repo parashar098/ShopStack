@@ -1,6 +1,6 @@
 
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { mockProducts } from "@/lib/data";
@@ -9,7 +9,6 @@ import { Input } from "@/components/ui/input";
 import AddToCartButton from "@/components/add-to-cart-button";
 import { Plus, Minus } from "lucide-react";
 import AiRecommendations from "@/components/ai-recommendations";
-import { useRecentlyViewed } from "@/hooks/use-recently-viewed";
 
 export default function ProductDetailPage({
   params,
@@ -18,13 +17,6 @@ export default function ProductDetailPage({
 }) {
   const [quantity, setQuantity] = useState(1);
   const product = mockProducts.find((p) => p.id === params.id);
-  const { addRecentlyViewed } = useRecentlyViewed();
-
-  useEffect(() => {
-    if (product) {
-      addRecentlyViewed(product.id);
-    }
-  }, [product, addRecentlyViewed]);
 
   if (!product) {
     notFound();
