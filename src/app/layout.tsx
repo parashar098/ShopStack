@@ -8,7 +8,6 @@ import "./counter.css";
 import "./rolling-gallery.css";
 import MainNav from "@/components/main-nav";
 import Footer from "@/components/footer";
-import BackToTop from "@/components/ui/back-to-top";
 
 export const metadata: Metadata = {
   title: "ShopStack | Modern E-commerce",
@@ -41,7 +40,6 @@ export default function RootLayout({
             <MainNav />
             <main className="flex-grow">{children}</main>
             <Footer />
-            <BackToTop />
           </div>
         </Providers>
       </body>
