@@ -1,7 +1,7 @@
 
 "use client";
 
-import { APIProvider, Map as GoogleMap, AdvancedMarker } from "@vis.gl/react-google-maps";
+import { APIProvider, Map as GoogleMap, AdvancedMarker, Pin } from "@vis.gl/react-google-maps";
 
 export default function Map() {
   const position = { lat: 37.7946, lng: -122.3999 };
@@ -10,7 +10,7 @@ export default function Map() {
   if (!apiKey) {
     return (
       <div className="flex items-center justify-center w-full h-full bg-muted text-muted-foreground">
-        <p>Google Maps API key is missing.</p>
+        <p>Google Maps API key is missing. Please add it to your .env file.</p>
       </div>
     );
   }
@@ -25,7 +25,13 @@ export default function Map() {
         gestureHandling={'greedy'}
         disableDefaultUI={true}
       >
-        <AdvancedMarker position={position} />
+        <AdvancedMarker position={position}>
+            <Pin 
+                background={'hsl(var(--primary))'}
+                borderColor={'hsl(var(--primary))'}
+                glyphColor={'hsl(var(--primary-foreground))'}
+            />
+        </AdvancedMarker>
       </GoogleMap>
     </APIProvider>
   );
