@@ -69,6 +69,25 @@ export const mockProducts: Product[] = productsData.map((product, index) => {
     }
 });
 
+export function addProduct(productData: Omit<Product, 'id' | 'imageURL' | 'imageHint' | 'rating' | 'reviews' | 'specifications'>): Product {
+    const newId = `product-${mockProducts.length + 1}`;
+    const newProduct: Product = {
+        ...productData,
+        id: newId,
+        imageURL: `https://picsum.photos/seed/${131 + mockProducts.length}/600/600`,
+        imageHint: productData.name.split(' ').slice(0,2).join(' ').toLowerCase(),
+        rating: 0,
+        reviews: [],
+        specifications: [
+            { name: 'Material', value: 'N/A' },
+            { name: 'Weight', value: 'N/A' },
+        ]
+    };
+    mockProducts.unshift(newProduct);
+    return newProduct;
+}
+
+
 export const mockUsers: User[] = [
   { id: 'user-1', name: 'Admin User', email: 'admin@shopstack.com', role: 'admin', createdAt: new Date() },
   { id: 'user-2', name: 'Customer User', email: 'customer@shopstack.com', role: 'customer', createdAt: new Date() },
