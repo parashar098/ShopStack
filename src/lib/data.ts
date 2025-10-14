@@ -69,12 +69,12 @@ export const mockProducts: Product[] = productsData.map((product, index) => {
     }
 });
 
-export function addProduct(productData: Omit<Product, 'id' | 'imageURL' | 'imageHint' | 'rating' | 'reviews' | 'specifications'>): Product {
+export function addProduct(productData: Omit<Product, 'id' | 'imageHint' | 'rating' | 'reviews' | 'specifications'>): Product {
     const newId = `product-${mockProducts.length + 1}`;
     const newProduct: Product = {
         ...productData,
         id: newId,
-        imageURL: `https://picsum.photos/seed/${131 + mockProducts.length}/600/600`,
+        imageURL: productData.imageURL || `https://picsum.photos/seed/${131 + mockProducts.length}/600/600`,
         imageHint: productData.name.split(' ').slice(0,2).join(' ').toLowerCase(),
         rating: 0,
         reviews: [],

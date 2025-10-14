@@ -28,6 +28,7 @@ const productSchema = z.object({
   category: z.string().min(2, "Category is required."),
   price: z.coerce.number().min(0, "Price must be a positive number."),
   stock: z.coerce.number().int().min(0, "Stock must be a non-negative integer."),
+  imageURL: z.string().url("Please enter a valid URL.").optional().or(z.literal('')),
 });
 
 type ProductFormValues = z.infer<typeof productSchema>;
@@ -49,6 +50,7 @@ export default function AddProductDialog({ onProductAdded }: AddProductDialogPro
       category: "",
       price: 0,
       stock: 0,
+      imageURL: "",
     },
   });
 
@@ -113,6 +115,19 @@ export default function AddProductDialog({ onProductAdded }: AddProductDialogPro
                   <FormLabel>Description</FormLabel>
                   <FormControl>
                     <Textarea placeholder="A short description of the product." {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="imageURL"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Image URL</FormLabel>
+                  <FormControl>
+                    <Input placeholder="https://example.com/image.png" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

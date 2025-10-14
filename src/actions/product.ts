@@ -10,6 +10,7 @@ type AddProductInput = {
   price: number;
   category: string;
   stock: number;
+  imageURL?: string;
 };
 
 export async function addProductAction(input: AddProductInput): Promise<Product | null> {
