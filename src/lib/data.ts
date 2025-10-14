@@ -1,4 +1,5 @@
 
+
 import type { Product, User, Order } from '@/lib/types';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 
@@ -88,9 +89,9 @@ export function addProduct(productData: Omit<Product, 'id' | 'imageHint' | 'rati
 }
 
 
-export const mockUsers: User[] = [
-  { id: 'user-1', name: 'Admin User', email: 'admin@shopstack.com', role: 'admin', createdAt: new Date() },
-  { id: 'user-2', name: 'Customer User', email: 'customer@shopstack.com', role: 'customer', createdAt: new Date() },
+export let mockUsers: User[] = [
+  { id: 'user-1', name: 'Admin User', email: 'admin@shopstack.com', role: 'admin', createdAt: new Date(), phone: '1234567890', gender: 'male', dob: '1990-01-01', profileImage: 'https://i.pravatar.cc/150?u=admin' },
+  { id: 'user-2', name: 'Customer User', email: 'customer@shopstack.com', role: 'customer', createdAt: new Date(), phone: '0987654321', gender: 'female', dob: '1995-05-20', profileImage: 'https://i.pravatar.cc/150?u=customer' },
 ];
 
 export function addUser(userData: { name: string; email: string }): User {
@@ -103,6 +104,15 @@ export function addUser(userData: { name: string; email: string }): User {
   };
   mockUsers.push(newUser);
   return newUser;
+}
+
+export function updateUser(userId: string, updatedData: Partial<User>): User | null {
+    const userIndex = mockUsers.findIndex(u => u.id === userId);
+    if (userIndex === -1) {
+        return null;
+    }
+    mockUsers[userIndex] = { ...mockUsers[userIndex], ...updatedData };
+    return mockUsers[userIndex];
 }
 
 

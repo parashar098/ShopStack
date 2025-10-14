@@ -1,8 +1,9 @@
 
+
 "use client";
 
 import type { User } from "@/lib/types";
-import { mockUsers, addUser } from "@/lib/data";
+import { mockUsers, addUser, updateUser as updateMockUser } from "@/lib/data";
 import {
   createContext,
   useState,
@@ -17,6 +18,7 @@ interface AuthContextType {
   login: (email: string, password?: string) => User | null;
   logout: () => void;
   register: (name: string, email: string, password?: string) => User | null;
+  updateUser: (updatedData: Partial<User>) => void;
   isLoading: boolean;
 }
 
@@ -112,11 +114,38 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     });
   }, [toast, user]);
 
+  const updateUser = useCallback((updatedData: Partial<User>) => {
+    if (!user) return;
+    
+    // In a real app, this would be an API call.
+    const updatedUser = updateMockUser(user.id, updatedData);
+
+    if (updatedUser) {
+        setUser(updatedUser);
+        try {
+            sessionStorage.setItem("shopstack_user", JSON.stringify(updatedUser));
+        } catch (error) {
+            console.error("Failed to save user to sessionStorage", error);
+        }
+        toast({
+            title: "Profile Updated",
+            description: "Your profile has been successfully updated.",
+        });
+    } else {
+        toast({
+            variant: "destructive",
+            title: "Update Failed",
+            description: "Could not update your profile. Please try again.",
+        });
+    }
+  }, [user, toast]);
+
   const value = {
     user,
     login,
     logout,
     register,
+    updateUser,
     isLoading,
   };
 

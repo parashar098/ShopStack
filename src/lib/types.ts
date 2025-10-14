@@ -1,4 +1,5 @@
 
+
 export type Product = {
   id: string;
   name: string;
@@ -53,6 +54,10 @@ export type User = {
   email: string;
   role: 'admin' | 'customer';
   createdAt: Date;
+  phone?: string;
+  gender?: 'male' | 'female' | 'other';
+  dob?: string;
+  profileImage?: string;
 };
 
 declare global {
