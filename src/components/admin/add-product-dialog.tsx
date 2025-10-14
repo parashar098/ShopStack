@@ -21,6 +21,8 @@ import {
 } from "@/components/ui/dialog";
 import { addProductAction } from "@/actions/product";
 import type { Product } from "@/lib/types";
+import { Upload } from "lucide-react";
+import Image from "next/image";
 
 const productSchema = z.object({
   name: z.string().min(3, "Name must be at least 3 characters."),
@@ -28,7 +30,7 @@ const productSchema = z.object({
   category: z.string().min(2, "Category is required."),
   price: z.coerce.number().min(0, "Price must be a positive number."),
   stock: z.coerce.number().int().min(0, "Stock must be a non-negative integer."),
-  imageURL: z.string().url("Please enter a valid URL.").optional().or(z.literal('')),
+  imageURL: z.string().optional().or(z.literal('')),
 });
 
 type ProductFormValues = z.infer<typeof productSchema>;
@@ -40,6 +42,7 @@ interface AddProductDialogProps {
 export default function AddProductDialog({ onProductAdded }: AddProductDialogProps) {
   const [open, setOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
   const { toast } = useToast();
 
   const form = useForm<ProductFormValues>({
@@ -54,6 +57,19 @@ export default function AddProductDialog({ onProductAdded }: AddProductDialogPro
     },
   });
 
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const result = reader.result as string;
+        setImagePreview(result);
+        form.setValue("imageURL", result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const onSubmit = async (data: ProductFormValues) => {
     setIsSubmitting(true);
     try {
@@ -65,6 +81,7 @@ export default function AddProductDialog({ onProductAdded }: AddProductDialogPro
             });
             onProductAdded(newProduct);
             form.reset();
+            setImagePreview(null);
             setOpen(false);
         } else {
             throw new Error("Failed to create product.");
@@ -81,7 +98,13 @@ export default function AddProductDialog({ onProductAdded }: AddProductDialogPro
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={(isOpen) => {
+      setOpen(isOpen);
+      if (!isOpen) {
+        form.reset();
+        setImagePreview(null);
+      }
+    }}>
       <DialogTrigger asChild>
         <Button>Add Product</Button>
       </DialogTrigger>
@@ -120,19 +143,37 @@ export default function AddProductDialog({ onProductAdded }: AddProductDialogPro
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="imageURL"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Image URL</FormLabel>
-                  <FormControl>
-                    <Input placeholder="https://example.com/image.png" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            
+            <FormItem>
+                <FormLabel>Product Image</FormLabel>
+                <FormControl>
+                    <div className="flex items-center gap-4">
+                        <input
+                            type="file"
+                            id="image-upload"
+                            accept="image/*"
+                            onChange={handleImageChange}
+                            className="hidden"
+                        />
+                        <Button
+                            type="button"
+                            variant="outline"
+                            onClick={() => document.getElementById('image-upload')?.click()}
+                        >
+                           <Upload className="mr-2 h-4 w-4" />
+                           Upload Image
+                        </Button>
+                        {imagePreview && (
+                            <div className="relative w-20 h-20 rounded-md overflow-hidden border">
+                                <Image src={imagePreview} alt="Image Preview" fill className="object-cover" />
+                            </div>
+                        )}
+                    </div>
+                </FormControl>
+                <FormMessage />
+            </FormItem>
+
+
             <FormField
               control={form.control}
               name="category"
