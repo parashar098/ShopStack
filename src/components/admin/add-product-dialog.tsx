@@ -22,7 +22,7 @@ import { addProductAction } from "@/actions/product";
 import type { Product } from "@/lib/types";
 import { Upload } from "lucide-react";
 import Image from "next/image";
-import { ScrollArea } from "./ui/scroll-area";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const productSchema = z.object({
   name: z.string().min(3, "Name must be at least 3 characters."),
