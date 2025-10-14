@@ -22,6 +22,7 @@ import { addProductAction } from "@/actions/product";
 import type { Product } from "@/lib/types";
 import { Upload } from "lucide-react";
 import Image from "next/image";
+import { ScrollArea } from "./ui/scroll-area";
 
 const productSchema = z.object({
   name: z.string().min(3, "Name must be at least 3 characters."),
@@ -29,7 +30,7 @@ const productSchema = z.object({
   category: z.string().min(2, "Category is required."),
   price: z.coerce.number().min(0, "Price must be a positive number."),
   stock: z.coerce.number().int().min(0, "Stock must be a non-negative integer."),
-  imageURL: z.string().optional().or(z.literal('')),
+  imageURL: z.string().optional(),
 });
 
 type ProductFormValues = z.infer<typeof productSchema>;
@@ -72,7 +73,11 @@ export default function AddProductDialog({ onProductAdded }: AddProductDialogPro
   const onSubmit = async (data: ProductFormValues) => {
     setIsSubmitting(true);
     try {
-        const newProduct = await addProductAction(data);
+        const submissionData = {
+          ...data,
+          imageURL: data.imageURL || undefined,
+        };
+        const newProduct = await addProductAction(submissionData);
         if (newProduct) {
             toast({
                 title: "Product Added",
@@ -108,13 +113,13 @@ export default function AddProductDialog({ onProductAdded }: AddProductDialogPro
         <Button>Add Product</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
-        <div>
-          <DialogHeader>
-            <DialogTitle>Add New Product</DialogTitle>
-            <DialogDescription>
-              Fill in the details below to add a new product to your store.
-            </DialogDescription>
-          </DialogHeader>
+        <DialogHeader>
+          <DialogTitle>Add New Product</DialogTitle>
+          <DialogDescription>
+            Fill in the details below to add a new product to your store.
+          </DialogDescription>
+        </DialogHeader>
+        <ScrollArea className="max-h-[70vh] pr-6">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 py-4">
               <FormField
@@ -217,7 +222,7 @@ export default function AddProductDialog({ onProductAdded }: AddProductDialogPro
               </div>
             </form>
           </Form>
-        </div>
+        </ScrollArea>
         <DialogFooter>
             <Button type="submit" form="add-product-form" onClick={form.handleSubmit(onSubmit)} disabled={isSubmitting}>
             {isSubmitting ? "Adding..." : "Add Product"}
