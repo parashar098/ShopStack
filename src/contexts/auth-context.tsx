@@ -2,7 +2,7 @@
 "use client";
 
 import type { User } from "@/lib/types";
-import { mockUsers } from "@/lib/data";
+import { mockUsers, addUser } from "@/lib/data";
 import {
   createContext,
   useState,
@@ -14,8 +14,9 @@ import { useToast } from "@/hooks/use-toast";
 
 interface AuthContextType {
   user: User | null;
-  login: (email: string) => boolean;
+  login: (email: string, password?: string) => User | null;
   logout: () => void;
+  register: (name: string, email: string, password?: string) => User | null;
   isLoading: boolean;
 }
 
@@ -42,8 +43,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const login = useCallback(
-    (email: string) => {
-      const foundUser = mockUsers.find(u => u.email === email && u.role === 'admin');
+    (email: string, password?: string) => {
+      // Password is not checked in this mock implementation
+      const foundUser = mockUsers.find(u => u.email === email);
       
       if (foundUser) {
         setUser(foundUser);
@@ -56,20 +58,48 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           title: "Login Successful",
           description: `Welcome back, ${foundUser.name}!`,
         });
-        return true;
+        return foundUser;
       } else {
         toast({
           variant: "destructive",
           title: "Login Failed",
-          description: "Invalid credentials or not an admin user.",
+          description: "No user found with that email.",
         });
-        return false;
+        return null;
       }
     },
     [toast]
   );
+  
+  const register = useCallback(
+    (name: string, email: string, password?: string) => {
+      const existingUser = mockUsers.find(u => u.email === email);
+      if (existingUser) {
+        toast({
+          variant: "destructive",
+          title: "Registration Failed",
+          description: "A user with this email already exists.",
+        });
+        return null;
+      }
+
+      const newUser = addUser({ name, email });
+      setUser(newUser);
+       try {
+            sessionStorage.setItem("shopstack_user", JSON.stringify(newUser));
+        } catch (error) {
+            console.error("Failed to save user to sessionStorage", error);
+        }
+      toast({
+          title: "Registration Successful",
+          description: `Welcome, ${newUser.name}!`,
+      });
+      return newUser;
+    }, [toast]
+  );
 
   const logout = useCallback(() => {
+    const userName = user?.name;
     setUser(null);
     try {
         sessionStorage.removeItem("shopstack_user");
@@ -78,14 +108,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
     toast({
         title: "Logged Out",
-        description: "You have been successfully logged out.",
+        description: `Goodbye, ${userName}!`,
     });
-  }, [toast]);
+  }, [toast, user]);
 
   const value = {
     user,
     login,
     logout,
+    register,
     isLoading,
   };
 

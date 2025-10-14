@@ -93,4 +93,17 @@ export const mockUsers: User[] = [
   { id: 'user-2', name: 'Customer User', email: 'customer@shopstack.com', role: 'customer', createdAt: new Date() },
 ];
 
+export function addUser(userData: { name: string; email: string }): User {
+  const newUser: User = {
+    id: `user-${mockUsers.length + 1}`,
+    name: userData.name,
+    email: userData.email,
+    role: 'customer',
+    createdAt: new Date(),
+  };
+  mockUsers.push(newUser);
+  return newUser;
+}
+
+
 export const mockOrders: Order[] = [];

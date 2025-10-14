@@ -7,22 +7,29 @@ import {
   ShoppingCart,
   Menu,
   Heart,
+  User,
+  LogOut,
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/hooks/use-cart";
 import { useWishlist } from "@/hooks/use-wishlist";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Searchbar from "./search-bar";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "./ui/sheet";
 import { ThemeToggle } from "./theme-toggle";
+import { useAuth } from "@/hooks/use-auth";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuItem } from "./ui/dropdown-menu";
 
 export default function MainNav() {
   const { itemCount: cartItemCount } = useCart();
   const { itemCount: wishlistItemCount } = useWishlist();
+  const { user, logout, isLoading } = useAuth();
   const pathname = usePathname();
+  const router = useRouter();
   const [isClient, setIsClient] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -41,6 +48,62 @@ export default function MainNav() {
 
   if (isAdminPage) {
     return null;
+  }
+  
+  const handleLogout = () => {
+    logout();
+    router.push('/');
+  }
+
+  const UserMenu = () => {
+    if (isLoading) {
+      return null; // Or a skeleton loader
+    }
+    
+    if (user) {
+      return (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+              <Avatar className="h-8 w-8">
+                <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
+              </Avatar>
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="w-56" align="end" forceMount>
+            <DropdownMenuLabel className="font-normal">
+              <div className="flex flex-col space-y-1">
+                <p className="text-sm font-medium leading-none">{user.name}</p>
+                <p className="text-xs leading-none text-muted-foreground">
+                  {user.email}
+                </p>
+              </div>
+            </DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={() => router.push('/admin')}>
+                <User className="mr-2 h-4 w-4" />
+                <span>Profile</span>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={handleLogout}>
+              <LogOut className="mr-2 h-4 w-4" />
+              <span>Log out</span>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      );
+    }
+
+    return (
+      <div className="hidden md:flex items-center space-x-2">
+        <Button variant="ghost" asChild>
+          <Link href="/login">Sign In</Link>
+        </Button>
+        <Button asChild>
+          <Link href="/register">Sign Up</Link>
+        </Button>
+      </div>
+    );
   }
 
   return (
@@ -71,12 +134,18 @@ export default function MainNav() {
                   <Searchbar />
                 </div>
                 <div className="flex items-center gap-4 mt-4">
-                  <Button variant="ghost" asChild onClick={() => setOpen(false)}>
-                    <Link href="/login">Sign In</Link>
-                  </Button>
-                  <Button asChild onClick={() => setOpen(false)}>
-                    <Link href="/register">Sign Up</Link>
-                  </Button>
+                 {user ? (
+                    <Button onClick={() => { handleLogout(); setOpen(false); }}>Logout</Button>
+                  ) : (
+                    <>
+                      <Button variant="ghost" asChild onClick={() => setOpen(false)}>
+                        <Link href="/login">Sign In</Link>
+                      </Button>
+                      <Button asChild onClick={() => setOpen(false)}>
+                        <Link href="/register">Sign Up</Link>
+                      </Button>
+                    </>
+                  )}
                 </div>
               </nav>
             </SheetContent>
@@ -138,14 +207,7 @@ export default function MainNav() {
                 </span>
               )}
             </div>
-            <div className="hidden md:flex items-center space-x-2">
-              <Button variant="ghost" asChild>
-                <Link href="/login">Sign In</Link>
-              </Button>
-              <Button asChild>
-                <Link href="/register">Sign Up</Link>
-              </Button>
-            </div>
+             <UserMenu />
           </div>
         </div>
       </div>
