@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useCart } from "@/hooks/use-cart";
+import { useAuth } from "@/hooks/use-auth";
 import { useRouter } from "next/navigation";
 import { placeOrder, createRazorpayOrder } from "@/actions/order";
 import { useToast } from "@/hooks/use-toast";
@@ -60,6 +61,7 @@ type CheckoutFormValues = z.infer<typeof checkoutSchema>;
 
 export default function CheckoutPage() {
   const { cartItems, cartTotal, clearCart } = useCart();
+  const { user } = useAuth();
   const router = useRouter();
   const { toast } = useToast();
   const [isProcessing, setIsProcessing] = useState(false);
@@ -67,8 +69,8 @@ export default function CheckoutPage() {
   const form = useForm<CheckoutFormValues>({
     resolver: zodResolver(checkoutSchema),
     defaultValues: {
-      name: "",
-      email: "",
+      name: user?.name || "",
+      email: user?.email || "",
       address: "",
       city: "",
       zip: "",
@@ -82,8 +84,18 @@ export default function CheckoutPage() {
   const paymentMethod = form.watch("paymentMethod");
 
   const handleFinalizeOrder = async (shippingData: CheckoutFormValues) => {
+    if (!user) {
+        toast({
+            variant: "destructive",
+            title: "Not Logged In",
+            description: "You must be logged in to place an order.",
+        });
+        router.push('/login');
+        return;
+    }
     try {
       const orderId = await placeOrder({
+        userId: user.id,
         shippingAddress: shippingData,
         items: cartItems.map(item => ({ productId: item.id, quantity: item.quantity, price: item.price })),
         totalAmount: cartTotal,
@@ -365,7 +377,7 @@ export default function CheckoutPage() {
                       )}
                     </AnimatePresence>
 
-                    <Button type="submit" size="lg" className="w-full mt-6" disabled={cartItems.length === 0 || isProcessing}>
+                    <Button type="submit" size="lg" className="w-full mt-6" disabled={cartItems.length === 0 || isProcessing || !user}>
                       {isProcessing ? "Processing..." : `Place Order - ₹${cartTotal.toFixed(2)}`}
                     </Button>
                   </form>

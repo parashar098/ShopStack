@@ -6,6 +6,7 @@ import { mockOrders } from "@/lib/data";
 import type { Order } from "@/lib/types";
 
 type PlaceOrderInput = {
+  userId: string;
   shippingAddress: {
     name: string;
     email: string;
@@ -26,7 +27,7 @@ export async function placeOrder(input: PlaceOrderInput): Promise<string | null>
     const newOrderId = `order-${Date.now()}`;
     const newOrder: Order = {
       id: newOrderId,
-      userId: "user-2", // Mock user
+      userId: input.userId,
       items: input.items,
       totalAmount: input.totalAmount,
       shippingAddress: input.shippingAddress,

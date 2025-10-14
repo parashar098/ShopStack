@@ -1,5 +1,4 @@
 
-
 'use client';
 
 import { useAuth } from '@/hooks/use-auth';
@@ -99,8 +98,10 @@ export default function ProfilePage() {
                           </div>
                           <Separator />
                            <div className="flex flex-wrap gap-4 pt-4">
-                                <Button variant="outline">
-                                    <ShoppingBag className="mr-2" /> Order History
+                                <Button asChild variant="outline">
+                                    <Link href="/profile/orders">
+                                        <ShoppingBag className="mr-2" /> Order History
+                                    </Link>
                                 </Button>
                                 {user.role === 'admin' && (
                                     <Button asChild variant="outline" className="text-primary border-primary/50 hover:bg-primary/5 hover:text-primary">
