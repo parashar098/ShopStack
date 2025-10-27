@@ -1,7 +1,6 @@
 
 "use server";
 
-import Razorpay from "razorpay";
 import { db } from "@/lib/db";
 import type { Order } from "@/lib/types";
 
@@ -40,8 +39,8 @@ export async function placeOrder(input: PlaceOrderInput): Promise<string | null>
 
 
 export async function createRazorpayOrder(amount: number) {
-  // For demo purposes, we'll return a mock successful order
-  // without calling the Razorpay API.
+  // This function is no longer the primary method for demo checkout,
+  // but is kept for potential future real implementation.
   try {
     const mockOrder = {
       id: `order_demo_${Date.now()}`,

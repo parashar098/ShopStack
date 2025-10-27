@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useCart } from "@/hooks/use-cart";
 import { useAuth } from "@/hooks/use-auth";
 import { useRouter } from "next/navigation";
-import { placeOrder, createRazorpayOrder } from "@/actions/order";
+import { placeOrder } from "@/actions/order";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -75,15 +75,26 @@ export default function CheckoutPage() {
       city: "",
       zip: "",
       paymentMethod: "stripe",
-      cardNumber: "",
-      cardExpiry: "",
-      cardCvc: "",
+      cardNumber: "0000000000000000",
+      cardExpiry: "12/25",
+      cardCvc: "123",
     },
   });
 
   const paymentMethod = form.watch("paymentMethod");
 
-  const handleFinalizeOrder = async (shippingData: CheckoutFormValues) => {
+  const onSubmit = async (data: CheckoutFormValues) => {
+    setIsProcessing(true);
+    if (cartItems.length === 0) {
+      toast({
+        variant: "destructive",
+        title: "Your cart is empty",
+        description: "Please add items to your cart before checking out.",
+      });
+      setIsProcessing(false);
+      return;
+    }
+
     if (!user) {
         toast({
             variant: "destructive",
@@ -91,19 +102,22 @@ export default function CheckoutPage() {
             description: "You must be logged in to place an order.",
         });
         router.push('/login');
+        setIsProcessing(false);
         return;
     }
+
     try {
+      // For demo purposes, we directly create the order without real payment processing
       const orderId = await placeOrder({
         userId: user.id,
-        shippingAddress: shippingData,
+        shippingAddress: data,
         items: cartItems.map(item => ({ productId: item.id, quantity: item.quantity, price: item.price })),
         totalAmount: cartTotal,
       });
 
       if (orderId) {
         toast({
-          title: "Order Placed!",
+          title: "Order Placed! (Demo)",
           description: "Thank you for your purchase.",
         });
         clearCart();
@@ -119,87 +133,6 @@ export default function CheckoutPage() {
       });
     } finally {
       setIsProcessing(false);
-    }
-  };
-
-
-  const handleRazorpayPayment = async (formData: CheckoutFormValues) => {
-    setIsProcessing(true);
-    const result = await createRazorpayOrder(cartTotal);
-
-    if (!result.success || !result.order) {
-       toast({
-        variant: "destructive",
-        title: "Razorpay Error",
-        description: result.error || "Could not initialize payment.",
-      });
-      setIsProcessing(false);
-      return;
-    }
-
-    const razorpayOrder = result.order;
-
-    const options = {
-      key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!,
-      amount: razorpayOrder.amount,
-      currency: razorpayOrder.currency,
-      name: "ShopStack",
-      description: "E-commerce Transaction",
-      order_id: razorpayOrder.id,
-      handler: async function (response: any) {
-        await handleFinalizeOrder(formData);
-      },
-      prefill: {
-        name: formData.name,
-        email: formData.email,
-      },
-      notes: {
-        address: `${formData.address}, ${formData.city}, ${formData.zip}`,
-      },
-      theme: {
-        color: "#6750A4", // Corresponds to --primary HSL
-      },
-      modal: {
-        ondismiss: function() {
-          setIsProcessing(false);
-          toast({
-            variant: "destructive",
-            title: "Payment Cancelled",
-            description: "You closed the payment window.",
-          });
-        }
-      }
-    };
-    
-    const rzp = new (window as any).Razorpay(options);
-    rzp.on('payment.failed', function (response: any){
-      toast({
-        variant: "destructive",
-        title: "Payment Failed",
-        description: response.error.description || "Your payment could not be processed.",
-      });
-      setIsProcessing(false);
-    });
-
-    rzp.open();
-  };
-
-  const onSubmit = async (data: CheckoutFormValues) => {
-    if (cartItems.length === 0) {
-      toast({
-        variant: "destructive",
-        title: "Your cart is empty",
-        description: "Please add items to your cart before checking out.",
-      });
-      return;
-    }
-    
-    if (data.paymentMethod === 'razorpay') {
-      await handleRazorpayPayment(data);
-    } else {
-      // Handle Stripe or other "credit card" payments here
-      setIsProcessing(true);
-      await handleFinalizeOrder(data);
     }
   };
 
@@ -313,7 +246,7 @@ export default function CheckoutPage() {
                                 <FormControl>
                                   <RadioGroupItem value="razorpay" />
                                 </FormControl>
-                                <FormLabel className="font-normal flex-1 cursor-pointer">Razorpay</FormLabel>
+                                <FormLabel className="font-normal flex-1 cursor-pointer">Razorpay (Mock)</FormLabel>
                               </FormItem>
                             </RadioGroup>
                           </FormControl>
