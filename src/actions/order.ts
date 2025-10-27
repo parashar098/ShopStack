@@ -40,22 +40,26 @@ export async function placeOrder(input: PlaceOrderInput): Promise<string | null>
 
 
 export async function createRazorpayOrder(amount: number) {
+  // For demo purposes, we'll return a mock successful order
+  // without calling the Razorpay API.
   try {
-    const instance = new Razorpay({
-      key_id: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!,
-      key_secret: process.env.RAZORPAY_KEY_SECRET,
-    });
-
-    const options = {
-      amount: amount * 100, // amount in the smallest currency unit
+    const mockOrder = {
+      id: `order_demo_${Date.now()}`,
+      entity: "order",
+      amount: amount * 100,
+      amount_paid: 0,
+      amount_due: amount * 100,
       currency: "INR",
       receipt: `receipt_order_${Date.now()}`,
+      status: "created",
+      attempts: 0,
+      notes: [],
+      created_at: Math.floor(Date.now() / 1000),
     };
-
-    const order = await instance.orders.create(options);
-    return { success: true, order };
+    
+    return { success: true, order: mockOrder };
   } catch (error) {
-    console.error("Failed to create Razorpay order:", error);
-    return { success: false, error: "Could not create Razorpay order." };
+    console.error("Failed to create mock Razorpay order:", error);
+    return { success: false, error: "Could not create mock Razorpay order." };
   }
 }
