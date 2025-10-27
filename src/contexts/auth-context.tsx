@@ -1,5 +1,4 @@
 
-
 "use client";
 
 import type { User } from "@/lib/types";
@@ -33,12 +32,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     try {
-      const storedUser = sessionStorage.getItem("shopstack_user");
+      const storedUser = localStorage.getItem("shopstack_user");
       if (storedUser) {
         setUser(JSON.parse(storedUser));
       }
     } catch (error) {
-      console.error("Failed to parse user from sessionStorage", error);
+      console.error("Failed to parse user from localStorage", error);
     } finally {
         setIsLoading(false);
     }
@@ -52,9 +51,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (foundUser) {
         setUser(foundUser);
         try {
-            sessionStorage.setItem("shopstack_user", JSON.stringify(foundUser));
+            localStorage.setItem("shopstack_user", JSON.stringify(foundUser));
         } catch (error) {
-            console.error("Failed to save user to sessionStorage", error);
+            console.error("Failed to save user to localStorage", error);
         }
         toast({
           title: "Login Successful",
@@ -88,9 +87,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const newUser = addUser({ name, email });
       setUser(newUser);
        try {
-            sessionStorage.setItem("shopstack_user", JSON.stringify(newUser));
+            localStorage.setItem("shopstack_user", JSON.stringify(newUser));
         } catch (error) {
-            console.error("Failed to save user to sessionStorage", error);
+            console.error("Failed to save user to localStorage", error);
         }
       toast({
           title: "Registration Successful",
@@ -104,9 +103,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const userName = user?.name;
     setUser(null);
     try {
-        sessionStorage.removeItem("shopstack_user");
+        localStorage.removeItem("shopstack_user");
     } catch (error) {
-        console.error("Failed to remove user from sessionStorage", error);
+        console.error("Failed to remove user from localStorage", error);
     }
     toast({
         title: "Logged Out",
@@ -123,9 +122,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (updatedUser) {
         setUser(updatedUser);
         try {
-            sessionStorage.setItem("shopstack_user", JSON.stringify(updatedUser));
+            localStorage.setItem("shopstack_user", JSON.stringify(updatedUser));
         } catch (error) {
-            console.error("Failed to save user to sessionStorage", error);
+            console.error("Failed to save user to localStorage", error);
         }
         toast({
             title: "Profile Updated",
