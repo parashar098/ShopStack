@@ -1,35 +1,29 @@
 
-"use client";
-import { useState } from "react";
-import Image from "next/image";
 import { notFound } from "next/navigation";
-import { mockProducts } from "@/lib/data";
+import Image from "next/image";
+import { getProductById } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import AddToCartButton from "@/components/add-to-cart-button";
 import AddToWishlistButton from "@/components/add-to-wishlist-button";
-import { Plus, Minus, Star } from "lucide-react";
+import { Star } from "lucide-react";
 import AiRecommendations from "@/components/ai-recommendations";
 import BuyNowButton from "@/components/buy-now-button";
 import { Separator } from "@/components/ui/separator";
 import ProductReviews from "@/components/product-reviews";
 import { Card, CardContent } from "@/components/ui/card";
+import ProductQuantityInput from './product-quantity-input';
 
-export default function ProductDetailPage({
+export default async function ProductDetailPage({
   params,
 }: {
   params: { id: string };
 }) {
-  const [quantity, setQuantity] = useState(1);
-  const product = mockProducts.find((p) => p.id === params.id);
+  const product = await getProductById(params.id);
 
   if (!product) {
     notFound();
   }
-
-  const handleQuantityChange = (amount: number) => {
-    setQuantity((prev) => Math.max(1, Math.min(product.stock, prev + amount)));
-  };
 
   return (
     <div className="container mx-auto px-4 py-8 md:py-12">
@@ -82,50 +76,9 @@ export default function ProductDetailPage({
                 </ul>
               </CardContent>
           </Card>
+          
+          <ProductQuantityInput product={product} />
 
-          <div className="flex items-center gap-4 mb-6">
-            <div className="flex items-center border rounded-md">
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => handleQuantityChange(-1)}
-                disabled={quantity <= 1}
-              >
-                <Minus className="h-4 w-4" />
-              </Button>
-              <Input
-                type="number"
-                value={quantity}
-                onChange={(e) => setQuantity(Number(e.target.value))}
-                className="w-16 h-10 text-center border-0 focus-visible:ring-0"
-                min="1"
-                max={product.stock}
-              />
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => handleQuantityChange(1)}
-                disabled={quantity >= product.stock}
-              >
-                <Plus className="h-4 w-4" />
-              </Button>
-            </div>
-            <p className="text-sm text-muted-foreground">{product.stock} in stock</p>
-          </div>
-          <div className="flex flex-col sm:flex-row gap-4">
-             <AddToCartButton
-                product={product}
-                quantity={quantity}
-                className="w-full sm:w-auto flex-1"
-                size="lg"
-              />
-              <BuyNowButton 
-                product={product}
-                quantity={quantity}
-                className="w-full sm:w-auto flex-1"
-                size="lg"
-              />
-          </div>
         </div>
       </div>
       
@@ -139,3 +92,4 @@ export default function ProductDetailPage({
     </div>
   );
 }
+

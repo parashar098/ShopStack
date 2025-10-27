@@ -1,6 +1,6 @@
 
 import { getProductRecommendations } from "@/ai/flows/ai-product-recommendations";
-import { mockProducts } from "@/lib/data";
+import { getProducts, getProductById } from "@/lib/api";
 import ProductCard from "./product-card";
 import {
   Carousel,
@@ -37,17 +37,19 @@ export default async function AiRecommendations({
     });
 
     if (recommendations && recommendations.recommendedProductIds) {
-      recommendedProducts = mockProducts.filter((p) =>
+      const allProducts = (await getProducts()).products;
+      recommendedProducts = allProducts.filter((p) =>
         recommendations.recommendedProductIds.includes(p.id) && p.id !== currentProductId
       );
     }
   } catch (error) {
     console.error("Failed to get AI recommendations:", error);
     // Fallback to showing some random related products from the same category
-    const currentProduct = mockProducts.find(p => p.id === currentProductId);
+    const currentProduct = await getProductById(currentProductId);
     if (currentProduct) {
-        recommendedProducts = mockProducts
-            .filter(p => p.category === currentProduct.category && p.id !== currentProductId)
+        const { products: categoryProducts } = await getProducts({ category: currentProduct.category });
+        recommendedProducts = categoryProducts
+            .filter(p => p.id !== currentProductId)
             .slice(0, 4);
     }
   }

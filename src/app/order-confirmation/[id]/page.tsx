@@ -1,22 +1,20 @@
 
 import { notFound } from "next/navigation";
-import { mockOrders, mockProducts } from "@/lib/data";
+import { getOrderById, getProductById } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CheckCircle2 } from "lucide-react";
 import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
 
-export default function OrderConfirmationPage({
+export default async function OrderConfirmationPage({
   params,
 }: {
   params: { id: string };
 }) {
-  const order = mockOrders.find((o) => o.id === params.id);
+  const order = await getOrderById(params.id);
 
   if (!order) {
-    // In a real app, you would fetch from the DB.
-    // For this mock, we'll just show not found if it's not in our temporary array.
     notFound();
   }
   
@@ -28,21 +26,21 @@ export default function OrderConfirmationPage({
             <CheckCircle2 className="h-16 w-16 text-green-500" />
           </div>
           <CardTitle className="text-2xl font-headline">Thank You For Your Order!</CardTitle>
-          <p className="text-muted-foreground">Your order #{order.id} has been placed successfully.</p>
+          <p className="text-muted-foreground">Your order #{order.id.split('-')[1]} has been placed successfully.</p>
         </CardHeader>
         <CardContent className="space-y-6">
           <Separator />
           <h3 className="font-semibold">Order Summary</h3>
           <div className="space-y-3">
-            {order.items.map(item => {
-              const product = mockProducts.find(p => p.id === item.productId);
+            {await Promise.all(order.items.map(async (item) => {
+              const product = await getProductById(item.productId);
               return (
                  <div key={item.productId} className="flex justify-between items-center text-sm">
                     <span>{product?.name ?? 'Unknown Product'} x {item.quantity}</span>
                     <span className="text-muted-foreground">₹{(item.price * item.quantity).toFixed(2)}</span>
                 </div>
               )
-            })}
+            }))}
           </div>
           <Separator />
            <div className="flex justify-between font-bold text-lg">

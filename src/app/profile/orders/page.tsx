@@ -3,10 +3,10 @@
 
 import { useAuth } from '@/hooks/use-auth';
 import { useRouter } from 'next/navigation';
-import { useEffect, useMemo } from 'react';
+import { useEffect, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
-import { mockOrders, mockProducts } from '@/lib/data';
+import { getOrdersByUserId, getProductById } from '@/lib/api';
 import type { Order } from '@/lib/types';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
@@ -21,9 +21,37 @@ import {
 } from "@/components/ui/accordion"
 import Image from 'next/image';
 
+function OrderItemDetails({ item }: { item: Order['items'][0] }) {
+    const [product, setProduct] = useState<any>(null);
+
+    useEffect(() => {
+        const fetchProduct = async () => {
+            const p = await getProductById(item.productId);
+            setProduct(p);
+        };
+        fetchProduct();
+    }, [item.productId]);
+
+    return (
+         <TableRow>
+            <TableCell>
+                <div className="flex items-center gap-3">
+                    <div className="relative w-12 h-12 rounded-md overflow-hidden">
+                        {product ? <Image src={product.imageURL} alt={product.name} layout="fill" objectFit="cover" /> : <Skeleton className="w-full h-full" />}
+                    </div>
+                    <span className="font-medium">{product?.name || 'Loading...'}</span>
+                </div>
+            </TableCell>
+            <TableCell>{item.quantity}</TableCell>
+            <TableCell className="text-right">₹{(item.price * item.quantity).toFixed(2)}</TableCell>
+        </TableRow>
+    )
+}
+
 export default function OrderHistoryPage() {
   const { user, isLoading } = useAuth();
   const router = useRouter();
+  const [userOrders, setUserOrders] = useState<Order[]>([]);
 
   useEffect(() => {
     if (!isLoading && !user) {
@@ -31,11 +59,15 @@ export default function OrderHistoryPage() {
     }
   }, [user, isLoading, router]);
 
-  const userOrders = useMemo(() => {
-    if (!user) return [];
-    return mockOrders
-        .filter(order => order.userId === user.id)
-        .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  useEffect(() => {
+    if (user) {
+        const fetchOrders = async () => {
+            const orders = await getOrdersByUserId(user.id);
+            const sortedOrders = orders.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+            setUserOrders(sortedOrders);
+        }
+        fetchOrders();
+    }
   }, [user]);
 
   if (isLoading || !user) {
@@ -118,23 +150,9 @@ export default function OrderHistoryPage() {
                                             </TableRow>
                                         </TableHeader>
                                         <TableBody>
-                                            {order.items.map((item, index) => {
-                                                const product = mockProducts.find(p => p.id === item.productId);
-                                                return (
-                                                <TableRow key={index}>
-                                                    <TableCell>
-                                                        <div className="flex items-center gap-3">
-                                                            <div className="relative w-12 h-12 rounded-md overflow-hidden">
-                                                                <Image src={product?.imageURL || ''} alt={product?.name || 'product'} layout="fill" objectFit="cover" />
-                                                            </div>
-                                                            <span className="font-medium">{product?.name || 'Unknown Product'}</span>
-                                                        </div>
-                                                    </TableCell>
-                                                    <TableCell>{item.quantity}</TableCell>
-                                                    <TableCell className="text-right">₹{(item.price * item.quantity).toFixed(2)}</TableCell>
-                                                </TableRow>
-                                                )
-                                            })}
+                                            {order.items.map((item, index) => (
+                                               <OrderItemDetails key={index} item={item} />
+                                            ))}
                                         </TableBody>
                                     </Table>
                                 </div>

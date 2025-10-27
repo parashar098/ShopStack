@@ -1,7 +1,7 @@
 
 "use server";
 
-import { addProduct } from "@/lib/data";
+import { db } from "@/lib/db";
 import type { Product } from "@/lib/types";
 
 type AddProductInput = {
@@ -15,9 +15,8 @@ type AddProductInput = {
 
 export async function addProductAction(input: AddProductInput): Promise<Product | null> {
   try {
-    // In a real app, you would add this to a database.
-    // For now, we'll add it to our mock data array.
-    const newProduct = addProduct(input);
+    // This now uses our in-memory DB singleton
+    const newProduct = db.addProduct(input);
     return newProduct;
   } catch (error) {
     console.error("Failed to add product:", error);

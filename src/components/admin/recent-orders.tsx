@@ -1,6 +1,6 @@
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { mockOrders } from "@/lib/data";
+import { getAllOrders } from "@/lib/api";
 import {
   Table,
   TableBody,
@@ -14,8 +14,9 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 
-export default function RecentOrders() {
-    const recentOrders = [...mockOrders].sort((a,b) => b.createdAt.getTime() - a.createdAt.getTime()).slice(0, 5);
+export default async function RecentOrders() {
+    const allOrders = await getAllOrders();
+    const recentOrders = [...allOrders].sort((a,b) => b.createdAt.getTime() - a.createdAt.getTime()).slice(0, 5);
 
     return (
         <Card>
@@ -23,7 +24,7 @@ export default function RecentOrders() {
                 <div className="grid gap-2">
                     <CardTitle className="font-headline">Recent Orders</CardTitle>
                     <CardDescription>
-                        You have {mockOrders.length} orders in total.
+                        You have {allOrders.length} orders in total.
                     </CardDescription>
                 </div>
                 <Button asChild size="sm" className="ml-auto gap-1">

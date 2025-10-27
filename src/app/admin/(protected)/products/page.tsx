@@ -1,14 +1,22 @@
 
 "use client";
 
-import { mockProducts, addProduct } from "@/lib/data";
+import { getProducts } from "@/lib/api";
 import ProductsTable from "@/components/admin/products-table";
 import AddProductDialog from "@/components/admin/add-product-dialog";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { Product } from "@/lib/types";
 
 export default function AdminProductsPage() {
-    const [products, setProducts] = useState<Product[]>(mockProducts);
+    const [products, setProducts] = useState<Product[]>([]);
+
+    useEffect(() => {
+        const fetchProducts = async () => {
+            const { products: fetchedProducts } = await getProducts();
+            setProducts(fetchedProducts);
+        };
+        fetchProducts();
+    }, []);
 
     const handleProductAdded = (newProduct: Product) => {
         // This is a client-side update for immediate feedback.

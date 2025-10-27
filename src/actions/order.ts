@@ -2,7 +2,7 @@
 "use server";
 
 import Razorpay from "razorpay";
-import { mockOrders } from "@/lib/data";
+import { db } from "@/lib/db";
 import type { Order } from "@/lib/types";
 
 type PlaceOrderInput = {
@@ -19,26 +19,19 @@ type PlaceOrderInput = {
 };
 
 export async function placeOrder(input: PlaceOrderInput): Promise<string | null> {
-  // In a real application, you would:
-  // 1. Verify user authentication
-  // 2. Save the order to a real database
-  
   try {
-    const newOrderId = `order-${Date.now()}`;
-    const newOrder: Order = {
-      id: newOrderId,
+    const newOrderData = {
       userId: input.userId,
       items: input.items,
       totalAmount: input.totalAmount,
       shippingAddress: input.shippingAddress,
-      paymentStatus: "completed",
-      createdAt: new Date(),
+      paymentStatus: "completed" as const,
     };
     
-    // Simulate saving to database
-    mockOrders.push(newOrder);
+    // Use the in-memory DB to create an order
+    const newOrder = db.createOrder(newOrderData);
 
-    return newOrderId;
+    return newOrder.id;
   } catch (error) {
     console.error("Failed to place order:", error);
     return null;

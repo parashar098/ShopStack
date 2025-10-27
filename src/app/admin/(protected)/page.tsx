@@ -1,13 +1,17 @@
 
 import StatCard from "@/components/admin/dashboard/stat-card";
 import RecentOrders from "@/components/admin/recent-orders";
-import { mockOrders, mockProducts, mockUsers } from "@/lib/data";
+import { getAllOrders, getProducts, getAllUsers } from "@/lib/api";
 
-export default function AdminDashboardPage() {
-    const totalRevenue = mockOrders.reduce((sum, order) => sum + order.totalAmount, 0);
-    const totalProducts = mockProducts.length;
-    const totalUsers = mockUsers.length;
-    const totalOrders = mockOrders.length;
+export default async function AdminDashboardPage() {
+    const orders = await getAllOrders();
+    const { products } = await getProducts();
+    const users = await getAllUsers();
+
+    const totalRevenue = orders.reduce((sum, order) => sum + order.totalAmount, 0);
+    const totalProducts = products.length;
+    const totalUsers = users.length;
+    const totalOrders = orders.length;
 
     return (
         <div className="space-y-8">
@@ -42,3 +46,4 @@ export default function AdminDashboardPage() {
         </div>
     );
 }
+

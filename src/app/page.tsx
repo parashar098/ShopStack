@@ -1,8 +1,7 @@
-'use client';
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { mockProducts } from "@/lib/data";
+import { getFeaturedProducts, getProductById } from "@/lib/api";
 import ProductCard from "@/components/product-card";
 import SplitText from "@/components/ui/split-text";
 import CategoryHighlights from "@/components/category-highlights";
@@ -12,9 +11,12 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Image from "next/image";
 import Counter from "@/components/ui/counter";
 import RollingGallery from "@/components/ui/rolling-gallery";
+import type { Product } from "@/lib/types";
 
-export default function HomePage() {
-  const featuredProducts = mockProducts.slice(0, 8);
+export default async function HomePage() {
+  const featuredProducts = await getFeaturedProducts(8);
+  const discountProduct = await getProductById('product-7');
+
   const testimonials = [
     { name: "Sarah L.", avatar: "https://i.pravatar.cc/150?u=a042581f4e29026704d", rating: 5, text: "The quality is outstanding, and the customer service was top-notch. I'll definitely be back for more!" },
     { name: "Mike D.", avatar: "https://i.pravatar.cc/150?u=a042581f4e29026705d", rating: 5, text: "I'm so impressed with my new desk. It's sturdy, stylish, and was surprisingly easy to assemble. Five stars!" },
@@ -26,8 +28,6 @@ export default function HomePage() {
     { value: 5000, label: "Products Shipped" },
     { value: 98, label: "Positive Reviews (%)" }
   ];
-
-  const discountProduct = mockProducts.find(p => p.id === 'product-7');
 
   return (
     <div className="flex flex-col">
