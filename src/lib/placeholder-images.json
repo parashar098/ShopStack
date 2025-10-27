@@ -2,182 +2,182 @@
   "placeholderImages": [
     {
       "id": "product-1",
-      "imageUrl": "https://picsum.photos/seed/101/600/600",
-      "imageHint": "t-shirt model"
+      "imageUrl": "https://images.unsplash.com/photo-1643881080033-e67069c5e4df?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHx3aGl0ZSUyMHQtc2hpcnR8ZW58MHx8fHwxNzYxNTU4Nzk4fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "white t-shirt"
     },
     {
       "id": "product-2",
-      "imageUrl": "https://picsum.photos/seed/102/600/600",
+      "imageUrl": "https://images.unsplash.com/photo-1517841905240-472988babdf9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxkZW5pbSUyMGphY2tldHxlbnwwfHx8fDE3NjE0ODYzNjB8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "denim jacket"
     },
     {
       "id": "product-3",
-      "imageUrl": "https://picsum.photos/seed/103/600/600",
-      "imageHint": "summer dress"
+      "imageUrl": "https://images.unsplash.com/photo-1665084937620-3de82a059a38?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxmbG9yYWwlMjBkcmVzc3xlbnwwfHx8fDE3NjE1NzI0ODB8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "floral dress"
     },
     {
       "id": "product-4",
-      "imageUrl": "https://picsum.photos/seed/104/600/600",
+      "imageUrl": "https://images.unsplash.com/photo-1460353581641-37baddab0fa2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxydW5uaW5nJTIwc2hvZXN8ZW58MHx8fHwxNzYxNTEyMDcwfDA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "running shoes"
     },
     {
       "id": "product-5",
-      "imageUrl": "https://picsum.photos/seed/105/600/600",
-      "imageHint": "man wallet"
+      "imageUrl": "https://images.unsplash.com/photo-1628483211662-9bcc692c46dc?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxsZWF0aGVyJTIwd2FsbGV0fGVufDB8fHx8MTc2MTQ5ODIxMHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "leather wallet"
     },
     {
       "id": "product-6",
-      "imageUrl": "https://picsum.photos/seed/106/600/600",
-      "imageHint": "earbuds case"
+      "imageUrl": "https://images.unsplash.com/photo-1722448113450-f6860b7fbfe5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHx3aXJlbGVzcyUyMGVhcmJ1ZHN8ZW58MHx8fHwxNzYxNDk4MjI3fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "wireless earbuds"
     },
     {
       "id": "product-7",
-      "imageUrl": "https://picsum.photos/seed/107/600/600",
-      "imageHint": "smartwatch display"
+      "imageUrl": "https://images.unsplash.com/photo-1617043983671-adaadcaa2460?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxzbWFydCUyMHdhdGNofGVufDB8fHx8MTc2MTU0MjQyN3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "smart watch"
     },
     {
       "id": "product-8",
-      "imageUrl": "https://picsum.photos/seed/108/600/600",
-      "imageHint": "led mouse"
+      "imageUrl": "https://images.unsplash.com/photo-1629121291243-7b5e885cce9b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxnYW1pbmclMjBtb3VzZXxlbnwwfHx8fDE3NjE1ODI4NTN8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "gaming mouse"
     },
     {
       "id": "product-9",
-      "imageUrl": "https://picsum.photos/seed/109/600/600",
-      "imageHint": "backlit keyboard"
+      "imageUrl": "https://images.unsplash.com/photo-1618586810102-aaa7049200c0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxtZWNoYW5pY2FsJTIwa2V5Ym9hcmR8ZW58MHx8fHwxNzYxNTk4MzkxfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "mechanical keyboard"
     },
     {
       "id": "product-10",
-      "imageUrl": "https://picsum.photos/seed/110/600/600",
-      "imageHint": "television screen"
+      "imageUrl": "https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxzbWFydCUyMHR2fGVufDB8fHx8MTc2MTU3MTU4NXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "smart tv"
     },
     {
       "id": "product-11",
-      "imageUrl": "https://picsum.photos/seed/111/600/600",
+      "imageUrl": "https://images.unsplash.com/photo-1610478506025-8110cc8f1986?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxjb2ZmZWUlMjBtdWd8ZW58MHx8fHwxNzYxNTIzNzkwfDA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "coffee mug"
     },
     {
       "id": "product-12",
-      "imageUrl": "https://picsum.photos/seed/112/600/600",
-      "imageHint": "modern lamp"
+      "imageUrl": "https://images.unsplash.com/photo-1621447980929-6638614633c8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxkZXNrJTIwbGFtcHxlbnwwfHx8fDE3NjE1ODkxNTl8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "desk lamp"
     },
     {
       "id": "product-13",
-      "imageUrl": "https://picsum.photos/seed/113/600/600",
+      "imageUrl": "https://images.unsplash.com/photo-1672062518694-9d86f3b6f000?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxjYW52YXMlMjBhcnR8ZW58MHx8fHwxNzYxNTI2ODgwfDA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "canvas art"
     },
     {
       "id": "product-14",
-      "imageUrl": "https://picsum.photos/seed/114/600/600",
+      "imageUrl": "https://images.unsplash.com/photo-1596301824628-4bf8dce3b4d0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxmb2xkZWQlMjBzaGVldHN8ZW58MHx8fHwxNzYxNTk4MzkxfDA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "folded sheets"
     },
     {
       "id": "product-15",
-      "imageUrl": "https://picsum.photos/seed/115/600/600",
+      "imageUrl": "https://images.unsplash.com/photo-1755584176597-d5c31c8a226e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxtaXN0JTIwZGlmZnVzZXJ8ZW58MHx8fHwxNzYxNTk4MzkxfDA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "mist diffuser"
     },
     {
       "id": "product-16",
-      "imageUrl": "https://picsum.photos/seed/116/600/600",
+      "imageUrl": "https://images.unsplash.com/photo-1531812297762-cfeaab66c5cf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxuZXclMjBpcGhvbmV8ZW58MHx8fHwxNzYxNTAzOTQ5fDA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "new iphone"
     },
     {
       "id": "product-17",
-      "imageUrl": "https://picsum.photos/seed/117/600/600",
+      "imageUrl": "https://images.unsplash.com/photo-1598327106026-d9521da673d1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxhbmRyb2lkJTIwcGhvbmV8ZW58MHx8fHwxNzYxNTk4MzkxfDA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "android phone"
     },
     {
       "id": "product-18",
-      "imageUrl": "https://picsum.photos/seed/118/600/600",
-      "imageHint": "battery pack"
+      "imageUrl": "https://images.unsplash.com/photo-1596207891316-23851be3cc20?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxwb3dlciUyMGJhbmt8ZW58MHx8fHwxNzYxNTk4MzkxfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "power bank"
     },
     {
       "id": "product-19",
-      "imageUrl": "https://picsum.photos/seed/119/600/600",
+      "imageUrl": "https://images.unsplash.com/photo-1752830132482-def8649b6432?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxjaGFyZ2luZyUyMGNhYmxlfGVufDB8fHx8MTc2MTU5ODM5MXww&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "charging cable"
     },
     {
       "id": "product-20",
-      "imageUrl": "https://picsum.photos/seed/120/600/600",
+      "imageUrl": "https://images.unsplash.com/photo-1574762919998-00a062825f49?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxjbGVhciUyMGNhc2V8ZW58MHx8fHwxNzYxNTk4MzkxfDA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "clear case"
     },
     {
       "id": "product-21",
-      "imageUrl": "https://picsum.photos/seed/121/600/600",
+      "imageUrl": "https://images.unsplash.com/photo-1531646317777-0619c7c5d1d3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8YmVhdXR5JTIwcHJvZHVjdHxlbnwwfHx8fDE3NjE1OTgzOTF8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "beauty product"
     },
     {
       "id": "product-22",
-      "imageUrl": "https://picsum.photos/seed/122/600/600",
+      "imageUrl": "https://images.unsplash.com/photo-1654374504608-67c4cfe65fca?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxsaXAlMjBjYXJlfGVufDB8fHx8MTc2MTU5ODM5MXww&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "lip care"
     },
     {
       "id": "product-23",
-      "imageUrl": "https://picsum.photos/seed/123/600/600",
+      "imageUrl": "https://images.unsplash.com/photo-1620331317984-53581633aff6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxibG93JTIwZHJ5ZXJ8ZW58MHx8fHwxNzYxNTk4MzkxfDA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "blow dryer"
     },
     {
       "id": "product-24",
-      "imageUrl": "https://picsum.photos/seed/124/600/600",
+      "imageUrl": "https://images.unsplash.com/photo-1709101242274-61efccd05376?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxnbGFzcyUyMHBlcmZ1bWV8ZW58MHx8fHwxNzYxNTk4MzkxfDA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "glass perfume"
     },
     {
       "id": "product-25",
-      "imageUrl": "https://picsum.photos/seed/125/600/600",
+      "imageUrl": "https://images.unsplash.com/photo-1715220169023-c1d5c8d2be37?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxlbGVjdHJpYyUyMHNoYXZlcnxlbnwwfHx8fDE3NjE1OTgzOTF8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "electric shaver"
     },
     {
       "id": "product-26",
-      "imageUrl": "https://picsum.photos/seed/126/600/600",
+      "imageUrl": "https://images.unsplash.com/photo-1476979735039-2fdea9e9e407?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxoaWtpbmclMjBiYWNrcGFja3xlbnwwfHx8fDE3NjE1OTgzOTF8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "hiking backpack"
     },
     {
       "id": "product-27",
-      "imageUrl": "https://picsum.photos/seed/127/600/600",
+      "imageUrl": "https://images.unsplash.com/flagged/photo-1568911117718-3554ef91cb3b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxibGFjayUyMHN1bmdsYXNzZXN8ZW58MHx8fHwxNzYxNTk4MzkxfDA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "black sunglasses"
     },
     {
       "id": "product-28",
-      "imageUrl": "https://picsum.photos/seed/128/600/600",
+      "imageUrl": "https://images.unsplash.com/photo-1664714628878-9d2aa898b9e3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHx3YXRlciUyMGJvdHRsZXxlbnwwfHx8fDE3NjE1NDI0Mjd8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "water bottle"
     },
     {
       "id": "product-29",
-      "imageUrl": "https://picsum.photos/seed/129/600/600",
+      "imageUrl": "https://images.unsplash.com/photo-1643343990654-fdf43a1c6c18?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHx0cmF2ZWwlMjBwaWxsb3d8ZW58MHx8fHwxNzYxNTE5MjgwfDA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "travel pillow"
     },
     {
       "id": "product-30",
-      "imageUrl": "https://picsum.photos/seed/130/600/600",
+      "imageUrl": "https://images.unsplash.com/photo-1683394305929-5e7c8d942127?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxneW0lMjBiYWd8ZW58MHx8fHwxNzYxNTk4MzkxfDA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "gym bag"
     },
     {
       "id": "category-fashion",
-      "imageUrl": "https://picsum.photos/seed/201/800/600",
+      "imageUrl": "https://images.unsplash.com/photo-1614990354198-b06764dcb13c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxjbG90aGluZyUyMHJhY2t8ZW58MHx8fHwxNzYxNTAwMzM3fDA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "clothing rack"
     },
     {
       "id": "category-electronics",
-      "imageUrl": "https://picsum.photos/seed/202/800/600",
+      "imageUrl": "https://images.unsplash.com/photo-1693279504914-d08266ecbe66?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHx0ZWNoJTIwZ2FkZ2V0c3xlbnwwfHx8fDE3NjE1ODQwMTV8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "tech gadgets"
     },
     {
       "id": "category-home",
-      "imageUrl": "https://picsum.photos/seed/203/800/600",
+      "imageUrl": "https://images.unsplash.com/photo-1614045959735-6f9dc28cb994?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxjb3p5JTIwcm9vbXxlbnwwfHx8fDE3NjE1NDY3ODF8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "cozy room"
     },
     {
       "id": "category-mobiles",
-      "imageUrl": "https://picsum.photos/seed/204/800/600",
+      "imageUrl": "https://images.unsplash.com/photo-1672413514634-4781b15fd89e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxzbWFydCUyMHBob25lc3xlbnwwfHx8fDE3NjE1OTgzOTF8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "smart phones"
     },
     {
       "id": "category-beauty",
-      "imageUrl": "https://picsum.photos/seed/205/800/600",
+      "imageUrl": "https://images.unsplash.com/photo-1728464865048-9b053f29b4c8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8bWFrZXVwJTIwaXRlbXN8ZW58MHx8fHwxNzYxNTk4MzkxfDA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "makeup items"
     },
     {
       "id": "category-lifestyle",
-      "imageUrl": "https://picsum.photos/seed/206/800/600",
+      "imageUrl": "https://images.unsplash.com/photo-1607962837359-5e7e89f86776?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxhY3RpdmUlMjBsaWZlc3R5bGV8ZW58MHx8fHwxNzYxNTg0ODYyfDA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "active lifestyle"
     }
   ]
