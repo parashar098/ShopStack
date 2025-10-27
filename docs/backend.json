@@ -1,0 +1,184 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "User Profile",
+      "description": "Stores public and private information for a user.",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "The user's full name."
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "The user's email address."
+        },
+        "role": {
+          "type": "string",
+          "description": "The role of the user.",
+          "enum": ["customer", "support-agent", "admin"]
+        },
+        "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The timestamp when the user was created."
+        }
+      },
+      "required": ["name", "email", "role", "createdAt"]
+    },
+    "SupportTicket": {
+      "title": "Support Ticket",
+      "description": "Represents a single support request from a customer.",
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "description": "The title or summary of the support ticket."
+        },
+        "description": {
+          "type": "string",
+          "description": "A detailed description of the issue."
+        },
+        "customerId": {
+          "type": "string",
+          "description": "The ID of the user who created the ticket."
+        },
+        "agentId": {
+          "type": "string",
+          "description": "The ID of the support agent assigned to the ticket."
+        },
+        "status": {
+          "type": "string",
+          "description": "The current status of the ticket.",
+          "enum": ["new", "open", "in-progress", "resolved", "closed"]
+        },
+        "priority": {
+          "type": "string",
+          "description": "The priority level of the ticket.",
+          "enum": ["low", "medium", "high", "urgent"]
+        },
+        "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The timestamp when the ticket was created."
+        },
+        "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The timestamp when the ticket was last updated."
+        }
+      },
+      "required": ["title", "description", "customerId", "status", "priority", "createdAt", "updatedAt"]
+    },
+    "TicketUpdate": {
+        "title": "Ticket Update",
+        "description": "A comment or update on a support ticket.",
+        "type": "object",
+        "properties": {
+            "authorId": {
+                "type": "string",
+                "description": "The ID of the user who posted the update."
+            },
+            "message": {
+                "type": "string",
+                "description": "The content of the update."
+            },
+            "createdAt": {
+                "type": "string",
+                "format": "date-time",
+                "description": "The timestamp when the update was posted."
+            }
+        },
+        "required": ["authorId", "message", "createdAt"]
+    },
+    "ChatMessage": {
+      "title": "Chat Message",
+      "description": "A single message in a live chat session.",
+      "type": "object",
+      "properties": {
+        "senderId": {
+          "type": "string",
+          "description": "The ID of the user who sent the message."
+        },
+        "receiverId": {
+          "type": "string",
+          "description": "The ID of the user who should receive the message."
+        },
+        "content": {
+          "type": "string",
+          "description": "The text content of the message."
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The time the message was sent."
+        },
+        "fileUrl": {
+          "type": "string",
+          "format": "uri",
+          "description": "An optional URL to a shared file."
+        }
+      },
+      "required": ["senderId", "receiverId", "content", "timestamp"]
+    },
+    "KnowledgeBaseArticle": {
+        "title": "Knowledge Base Article",
+        "description": "An article in the knowledge base for automated responses.",
+        "type": "object",
+        "properties": {
+            "title": {
+                "type": "string",
+                "description": "The title of the article."
+            },
+            "content": {
+                "type": "string",
+                "description": "The full content of the article."
+            },
+            "category": {
+                "type": "string",
+                "description": "The category the article belongs to."
+            },
+             "tags": {
+                "type": "array",
+                "items": { "type": "string" },
+                "description": "Keywords for searching the article."
+            },
+            "createdAt": {
+                "type": "string",
+                "format": "date-time"
+            },
+            "updatedAt": {
+                "type": "string",
+                "format": "date-time"
+            }
+        },
+        "required": ["title", "content", "category", "createdAt", "updatedAt"]
+    }
+  },
+  "auth": {
+    "providers": ["google.com", "password"]
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/UserProfile" },
+      "description": "Stores individual user profiles."
+    },
+    "/tickets/{ticketId}": {
+      "schema": { "$ref": "#/entities/SupportTicket" },
+      "description": "Stores all support tickets."
+    },
+    "/tickets/{ticketId}/updates/{updateId}": {
+      "schema": { "$ref": "#/entities/TicketUpdate" },
+      "description": "Stores all updates for a specific ticket."
+    },
+    "/chats/{chatId}/messages/{messageId}": {
+      "schema": { "$ref": "#/entities/ChatMessage" },
+      "description": "Stores messages for a specific live chat session."
+    },
+    "/knowledgeBase/{articleId}": {
+        "schema": { "$ref": "#/entities/KnowledgeBaseArticle" },
+        "description": "Stores knowledge base articles."
+    }
+  }
+}
