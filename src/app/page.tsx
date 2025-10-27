@@ -17,6 +17,8 @@ import HeroCarousel from "@/components/hero-carousel";
 export default async function HomePage() {
   const featuredProducts = await getFeaturedProducts(8);
   const discountProduct = await getProductById('product-7');
+  const { products: allProducts } = await getProducts();
+  const galleryImages = allProducts.map(p => p.imageURL);
   
   const heroCombos = [
     {
@@ -117,7 +119,7 @@ export default async function HomePage() {
                 Explore the variety and quality that defines our brand. Each product is selected with an eye for design, durability, and delight.
             </p>
         </div>
-        <RollingGallery autoplay={true} pauseOnHover={true} />
+        <RollingGallery images={galleryImages} autoplay={true} pauseOnHover={true} />
       </section>
 
       <section id="our-impact" className="py-16 md:py-24 bg-background">
