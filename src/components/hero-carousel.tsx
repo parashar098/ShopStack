@@ -23,7 +23,7 @@ export default function HeroCarousel({ products }: HeroCarouselProps) {
   return (
     <Carousel
       plugins={[plugin.current]}
-      className="absolute inset-0 w-full h-full"
+      className="w-full h-full"
       opts={{
         loop: true,
       }}
