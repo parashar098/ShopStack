@@ -1,7 +1,7 @@
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { getFeaturedProducts, getProductById } from "@/lib/api";
+import { getFeaturedProducts, getProductById, getProducts } from "@/lib/api";
 import ProductCard from "@/components/product-card";
 import SplitText from "@/components/ui/split-text";
 import CategoryHighlights from "@/components/category-highlights";
@@ -12,10 +12,12 @@ import Image from "next/image";
 import Counter from "@/components/ui/counter";
 import RollingGallery from "@/components/ui/rolling-gallery";
 import type { Product } from "@/lib/types";
+import HeroCarousel from "@/components/hero-carousel";
 
 export default async function HomePage() {
   const featuredProducts = await getFeaturedProducts(8);
   const discountProduct = await getProductById('product-7');
+  const carouselProducts = (await getProducts({limit: 5})).products;
 
   const testimonials = [
     { name: "Sarah L.", avatar: "https://i.pravatar.cc/150?u=a042581f4e29026704d", rating: 5, text: "The quality is outstanding, and the customer service was top-notch. I'll definitely be back for more!" },
@@ -32,14 +34,9 @@ export default async function HomePage() {
   return (
     <div className="flex flex-col">
       <section className="relative w-full h-[60vh] md:h-[80vh] flex items-center justify-center overflow-hidden">
-        <Image 
-            src="https://picsum.photos/seed/hero/1600/900"
-            alt="Hero background"
-            fill
-            className="object-cover"
-            priority
-            data-ai-hint="modern storefront"
-        />
+        <div className="absolute inset-0 w-full h-full filter blur-sm">
+            <HeroCarousel products={carouselProducts} />
+        </div>
         <div className="absolute inset-0 bg-black/50" />
         <div className="relative z-10 container mx-auto px-4 md:px-6 text-center text-white">
           <div className="max-w-3xl mx-auto">

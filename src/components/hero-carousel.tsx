@@ -40,6 +40,7 @@ export default function HeroCarousel({ products }: HeroCarouselProps) {
                 fill
                 className="object-cover"
                 data-ai-hint={product.imageHint}
+                priority
               />
             </div>
           </CarouselItem>
