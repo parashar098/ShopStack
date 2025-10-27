@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { getOrdersByUserId, getProductById } from '@/lib/api';
-import type { Order } from '@/lib/types';
+import type { Order, Product } from '@/lib/types';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -22,7 +22,7 @@ import {
 import Image from 'next/image';
 
 function OrderItemDetails({ item }: { item: Order['items'][0] }) {
-    const [product, setProduct] = useState<any>(null);
+    const [product, setProduct] = useState<Product | null | undefined>(null);
 
     useEffect(() => {
         const fetchProduct = async () => {
@@ -36,8 +36,16 @@ function OrderItemDetails({ item }: { item: Order['items'][0] }) {
          <TableRow>
             <TableCell>
                 <div className="flex items-center gap-3">
-                    <div className="relative w-12 h-12 rounded-md overflow-hidden">
-                        {product ? <Image src={product.imageURL} alt={product.name} layout="fill" objectFit="cover" /> : <Skeleton className="w-full h-full" />}
+                    <div className="relative w-12 h-12 rounded-md overflow-hidden bg-muted">
+                        {product ? (
+                            <Image 
+                                src={product.imageURL} 
+                                alt={product.name} 
+                                fill
+                                className="object-cover"
+                                data-ai-hint={product.imageHint} 
+                            />
+                        ) : <Skeleton className="w-full h-full" />}
                     </div>
                     <span className="font-medium">{product?.name || 'Loading...'}</span>
                 </div>
@@ -52,6 +60,7 @@ export default function OrderHistoryPage() {
   const { user, isLoading } = useAuth();
   const router = useRouter();
   const [userOrders, setUserOrders] = useState<Order[]>([]);
+  const [isFetchingOrders, setIsFetchingOrders] = useState(true);
 
   useEffect(() => {
     if (!isLoading && !user) {
@@ -61,16 +70,18 @@ export default function OrderHistoryPage() {
 
   useEffect(() => {
     if (user) {
+        setIsFetchingOrders(true);
         const fetchOrders = async () => {
             const orders = await getOrdersByUserId(user.id);
             const sortedOrders = orders.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
             setUserOrders(sortedOrders);
+            setIsFetchingOrders(false);
         }
         fetchOrders();
     }
   }, [user]);
 
-  if (isLoading || !user) {
+  if (isLoading || isFetchingOrders || !user) {
     return (
       <div className="container mx-auto px-4 py-8 md:py-12">
         <div className="max-w-4xl mx-auto">
@@ -112,9 +123,9 @@ export default function OrderHistoryPage() {
             {userOrders.length === 0 ? (
               <div className="text-center py-20 border-2 border-dashed rounded-lg">
                 <ShoppingCart className="mx-auto h-16 w-16 text-muted-foreground" />
-                <h2 className="mt-6 text-xl font-semibold">No Orders Yet</h2>
+                <h2 className="mt-6 text-xl font-semibold">You haven’t purchased anything yet.</h2>
                 <p className="mt-2 text-muted-foreground">
-                  You haven't placed any orders. Let's change that!
+                  Looks like you have no past orders. Let's change that!
                 </p>
                 <Button asChild className="mt-6">
                   <Link href="/products">Start Shopping</Link>
