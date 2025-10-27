@@ -17,7 +17,33 @@ import HeroCarousel from "@/components/hero-carousel";
 export default async function HomePage() {
   const featuredProducts = await getFeaturedProducts(8);
   const discountProduct = await getProductById('product-7');
-  const carouselProducts = (await getProducts({limit: 5})).products;
+  
+  const heroCombos = [
+    {
+      id: 'combo-1',
+      title: 'Ultimate Tech Bundle',
+      description: 'Get the best of our electronics with this exclusive combo deal. Limited time only!',
+      imageURL: 'https://images.unsplash.com/photo-1550009158-94ae76552485?q=80&w=1287&auto=format&fit=crop',
+      imageHint: 'tech bundle',
+      link: '/products?category=Electronics'
+    },
+    {
+      id: 'combo-2',
+      title: 'Seasonal Fashion Picks',
+      description: 'Upgrade your wardrobe with our latest collection of trendy apparel and accessories.',
+      imageURL: 'https://images.unsplash.com/photo-1445205170230-053b83016050?q=80&w=1171&auto=format&fit=crop',
+      imageHint: 'fashion collection',
+      link: '/products?category=Fashion'
+    },
+    {
+      id: 'combo-3',
+      title: 'Cozy Home Makeover',
+      description: 'Everything you need to transform your living space into a comfortable and stylish sanctuary.',
+      imageURL: 'https://images.unsplash.com/photo-1618220179428-22790b461013?q=80&w=1227&auto=format&fit=crop',
+      imageHint: 'stylish living room',
+      link: '/products?category=Home'
+    }
+  ];
 
   const testimonials = [
     { name: "Sarah L.", avatar: "https://i.pravatar.cc/150?u=a042581f4e29026704d", rating: 5, text: "The quality is outstanding, and the customer service was top-notch. I'll definitely be back for more!" },
@@ -33,31 +59,8 @@ export default async function HomePage() {
 
   return (
     <div className="flex flex-col">
-      <section className="relative w-full h-[60vh] md:h-[80vh] flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 w-full h-full filter blur-sm">
-            <HeroCarousel products={carouselProducts} />
-        </div>
-        <div className="absolute inset-0 bg-black/50" />
-        <div className="relative z-10 container mx-auto px-4 md:px-6 text-center text-white">
-          <div className="max-w-3xl mx-auto">
-            <SplitText
-              text="Discover Your Next Favorite Thing"
-              tag="h1"
-              className="text-4xl font-headline font-bold tracking-tighter sm:text-5xl md:text-6xl !text-white"
-            />
-            <p className="mt-4 text-lg md:text-xl text-white/80">
-              High-quality products curated just for you. Explore our collection and find what you've been looking for.
-            </p>
-            <div className="mt-8 flex justify-center gap-4">
-              <Button asChild size="lg" className="bg-white text-primary hover:bg-white/90">
-                <Link href="/products">Explore Products</Link>
-              </Button>
-              <Button asChild size="lg">
-                <Link href="/register">Create Account</Link>
-              </Button>
-            </div>
-          </div>
-        </div>
+       <section className="w-full">
+        <HeroCarousel items={heroCombos} />
       </section>
 
       <CategoryHighlights />
