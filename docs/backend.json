@@ -1,8 +1,50 @@
 {
   "entities": {
-    "UserProfile": {
-      "title": "User Profile",
-      "description": "Stores public and private information for a user.",
+    "Product": {
+      "title": "Product",
+      "description": "Represents an item available for sale in the e-commerce store.",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "The name of the product."
+        },
+        "description": {
+          "type": "string",
+          "description": "A detailed description of the product."
+        },
+        "price": {
+          "type": "number",
+          "description": "The price of the product in INR."
+        },
+        "category": {
+          "type": "string",
+          "description": "The category the product belongs to (e.g., 'Fashion', 'Electronics')."
+        },
+        "stock": {
+          "type": "number",
+          "description": "The number of items in stock."
+        },
+        "imageUrl": {
+          "type": "string",
+          "format": "uri",
+          "description": "The URL of the product's image."
+        },
+        "rating": {
+          "type": "number",
+          "description": "The average customer rating for the product (from 0 to 5)."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The timestamp when the product was created."
+        }
+      },
+      "required": ["name", "description", "price", "category", "stock", "imageUrl", "createdAt"]
+    },
+    "User": {
+      "title": "User",
+      "description": "Represents a customer or administrator of the store.",
       "type": "object",
       "properties": {
         "name": {
@@ -12,173 +54,148 @@
         "email": {
           "type": "string",
           "format": "email",
-          "description": "The user's email address."
+          "description": "The user's email address, used for login."
         },
         "role": {
           "type": "string",
           "description": "The role of the user.",
-          "enum": ["customer", "support-agent", "admin"]
+          "enum": ["customer", "admin"]
+        },
+        "shippingAddress": {
+          "type": "string",
+          "description": "The user's default shipping address."
         },
         "createdAt": {
-            "type": "string",
-            "format": "date-time",
-            "description": "The timestamp when the user was created."
+          "type": "string",
+          "format": "date-time",
+          "description": "The timestamp when the user account was created."
         }
       },
       "required": ["name", "email", "role", "createdAt"]
     },
-    "SupportTicket": {
-      "title": "Support Ticket",
-      "description": "Represents a single support request from a customer.",
+    "Order": {
+      "title": "Order",
+      "description": "Represents a completed transaction by a user.",
       "type": "object",
       "properties": {
-        "title": {
+        "userId": {
           "type": "string",
-          "description": "The title or summary of the support ticket."
+          "description": "The ID of the user who placed the order."
         },
-        "description": {
-          "type": "string",
-          "description": "A detailed description of the issue."
+        "items": {
+          "type": "array",
+          "description": "An array of products included in the order.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "productId": { "type": "string" },
+              "quantity": { "type": "number" },
+              "price": { "type": "number" }
+            },
+            "required": ["productId", "quantity", "price"]
+          }
         },
-        "customerId": {
-          "type": "string",
-          "description": "The ID of the user who created the ticket."
+        "totalAmount": {
+          "type": "number",
+          "description": "The total cost of the order."
         },
-        "agentId": {
+        "shippingAddress": {
           "type": "string",
-          "description": "The ID of the support agent assigned to the ticket."
+          "description": "The address where the order was shipped."
         },
         "status": {
           "type": "string",
-          "description": "The current status of the ticket.",
-          "enum": ["new", "open", "in-progress", "resolved", "closed"]
-        },
-        "priority": {
-          "type": "string",
-          "description": "The priority level of the ticket.",
-          "enum": ["low", "medium", "high", "urgent"]
+          "enum": ["pending", "processing", "shipped", "delivered", "cancelled"],
+          "description": "The current status of the order."
         },
         "createdAt": {
-            "type": "string",
-            "format": "date-time",
-            "description": "The timestamp when the ticket was created."
-        },
-        "updatedAt": {
-            "type": "string",
-            "format": "date-time",
-            "description": "The timestamp when the ticket was last updated."
-        }
-      },
-      "required": ["title", "description", "customerId", "status", "priority", "createdAt", "updatedAt"]
-    },
-    "TicketUpdate": {
-        "title": "Ticket Update",
-        "description": "A comment or update on a support ticket.",
-        "type": "object",
-        "properties": {
-            "authorId": {
-                "type": "string",
-                "description": "The ID of the user who posted the update."
-            },
-            "message": {
-                "type": "string",
-                "description": "The content of the update."
-            },
-            "createdAt": {
-                "type": "string",
-                "format": "date-time",
-                "description": "The timestamp when the update was posted."
-            }
-        },
-        "required": ["authorId", "message", "createdAt"]
-    },
-    "ChatMessage": {
-      "title": "Chat Message",
-      "description": "A single message in a live chat session.",
-      "type": "object",
-      "properties": {
-        "senderId": {
-          "type": "string",
-          "description": "The ID of the user who sent the message."
-        },
-        "receiverId": {
-          "type": "string",
-          "description": "The ID of the user who should receive the message."
-        },
-        "content": {
-          "type": "string",
-          "description": "The text content of the message."
-        },
-        "timestamp": {
           "type": "string",
           "format": "date-time",
-          "description": "The time the message was sent."
-        },
-        "fileUrl": {
-          "type": "string",
-          "format": "uri",
-          "description": "An optional URL to a shared file."
+          "description": "The timestamp when the order was placed."
         }
       },
-      "required": ["senderId", "receiverId", "content", "timestamp"]
+      "required": ["userId", "items", "totalAmount", "shippingAddress", "status", "createdAt"]
     },
-    "KnowledgeBaseArticle": {
-        "title": "Knowledge Base Article",
-        "description": "An article in the knowledge base for automated responses.",
-        "type": "object",
-        "properties": {
-            "title": {
-                "type": "string",
-                "description": "The title of the article."
-            },
-            "content": {
-                "type": "string",
-                "description": "The full content of the article."
-            },
-            "category": {
-                "type": "string",
-                "description": "The category the article belongs to."
-            },
-             "tags": {
-                "type": "array",
-                "items": { "type": "string" },
-                "description": "Keywords for searching the article."
-            },
-            "createdAt": {
-                "type": "string",
-                "format": "date-time"
-            },
-            "updatedAt": {
-                "type": "string",
-                "format": "date-time"
-            }
+    "Review": {
+      "title": "Review",
+      "description": "A customer's review and rating for a product.",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "The ID of the user who wrote the review."
         },
-        "required": ["title", "content", "category", "createdAt", "updatedAt"]
+        "productId": {
+          "type": "string",
+          "description": "The ID of the product being reviewed."
+        },
+        "rating": {
+          "type": "number",
+          "description": "The rating given by the user (from 1 to 5)."
+        },
+        "comment": {
+          "type": "string",
+          "description": "The text content of the review."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["userId", "productId", "rating", "createdAt"]
+    },
+    "Cart": {
+      "title": "Cart",
+      "description": "A user's shopping cart.",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "The ID of the user who owns the cart."
+        },
+        "items": {
+          "type": "array",
+          "description": "An array of items in the cart.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "productId": { "type": "string" },
+              "quantity": { "type": "number" }
+            },
+            "required": ["productId", "quantity"]
+          }
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["userId", "items", "updatedAt"]
     }
   },
   "auth": {
     "providers": ["google.com", "password"]
   },
   "firestore": {
+    "/products/{productId}": {
+      "schema": { "$ref": "#/entities/Product" },
+      "description": "Stores all product details."
+    },
+    "/products/{productId}/reviews/{reviewId}": {
+      "schema": { "$ref": "#/entities/Review" },
+      "description": "Stores reviews for a specific product."
+    },
     "/users/{userId}": {
-      "schema": { "$ref": "#/entities/UserProfile" },
+      "schema": { "$ref": "#/entities/User" },
       "description": "Stores individual user profiles."
     },
-    "/tickets/{ticketId}": {
-      "schema": { "$ref": "#/entities/SupportTicket" },
-      "description": "Stores all support tickets."
+    "/users/{userId}/cart": {
+        "schema": { "$ref": "#/entities/Cart" },
+        "description": "Stores the user's shopping cart. Should be a single document."
     },
-    "/tickets/{ticketId}/updates/{updateId}": {
-      "schema": { "$ref": "#/entities/TicketUpdate" },
-      "description": "Stores all updates for a specific ticket."
-    },
-    "/chats/{chatId}/messages/{messageId}": {
-      "schema": { "$ref": "#/entities/ChatMessage" },
-      "description": "Stores messages for a specific live chat session."
-    },
-    "/knowledgeBase/{articleId}": {
-        "schema": { "$ref": "#/entities/KnowledgeBaseArticle" },
-        "description": "Stores knowledge base articles."
+    "/orders/{orderId}": {
+      "schema": { "$ref": "#/entities/Order" },
+      "description": "Stores all customer orders."
     }
   }
 }
