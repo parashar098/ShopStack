@@ -9,6 +9,7 @@ import ProductFilters from "@/components/product-filters";
 import type { Product } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 
 const PRODUCTS_PER_PAGE = 8;
 
@@ -18,32 +19,37 @@ function ProductsPageContent() {
     
     const [products, setProducts] = useState<Product[]>([]);
     const [categories, setCategories] = useState<string[]>([]);
-    const [maxPrice, setMaxPrice] = useState(10000);
+    const [maxPrice, setMaxPrice] = useState(0);
     const [totalPages, setTotalPages] = useState(1);
     const [isLoading, setIsLoading] = useState(true);
+    const [isFiltersLoading, setIsFiltersLoading] = useState(true);
 
     const page = Number(searchParams.get('page')) || 1;
     const category = searchParams.get('category') || "all";
     const searchTerm = searchParams.get('search') || "";
     const sort = searchParams.get('sort') || "newest";
     const minPrice = Number(searchParams.get('minPrice')) || 0;
-    const currentMaxPrice = Number(searchParams.get('maxPrice')); // Can be NaN, which is fine for the check
+    const currentMaxPriceQuery = searchParams.get('maxPrice');
 
     useEffect(() => {
         const fetchInitialData = async () => {
+            setIsFiltersLoading(true);
             const fetchedCategories = await getCategories();
             setCategories(fetchedCategories.map(c => c.name));
-            const { products: allProducts } = await getProducts(); // Get all to find max price
+            const { products: allProducts } = await getProducts();
             const highestPrice = Math.max(...allProducts.map(p => p.price));
             setMaxPrice(highestPrice > 0 ? highestPrice : 10000);
+            setIsFiltersLoading(false);
         };
         fetchInitialData();
     }, []);
 
     useEffect(() => {
+        if (isFiltersLoading) return; // Don't fetch products until filters are ready
+        
         setIsLoading(true);
         const fetchProducts = async () => {
-            const effectiveMaxPrice = isNaN(currentMaxPrice) || currentMaxPrice === 0 ? maxPrice : currentMaxPrice;
+            const effectiveMaxPrice = currentMaxPriceQuery ? Number(currentMaxPriceQuery) : maxPrice;
             const priceRange = [minPrice, effectiveMaxPrice];
 
             const { products: fetchedProducts, totalPages: fetchedTotalPages } = await getProducts({ 
@@ -59,10 +65,8 @@ function ProductsPageContent() {
             setIsLoading(false);
         };
 
-        if (maxPrice > 0) { // Ensure maxPrice is loaded before fetching
-             fetchProducts();
-        }
-    }, [page, category, searchTerm, sort, minPrice, currentMaxPrice, maxPrice]);
+        fetchProducts();
+    }, [page, category, searchTerm, sort, minPrice, currentMaxPriceQuery, isFiltersLoading, maxPrice]);
 
     const updateQuery = useCallback((newParams: Record<string, string | number | null>) => {
         const params = new URLSearchParams(searchParams.toString());
@@ -84,28 +88,48 @@ function ProductsPageContent() {
     const handleCategoryChange = (cat: string) => updateQuery({ category: cat === 'all' ? null : cat });
     const handleSearchChange = (search: string) => updateQuery({ search: search || null });
     const handleSortChange = (s: string) => updateQuery({ sort: s });
-    const handlePriceChange = (priceRange: number[]) => updateQuery({ minPrice: priceRange[0], maxPrice: priceRange[1] });
+    const handlePriceChange = (priceRange: number[]) => {
+        // Only update if the range is different from the max range to avoid unnecessary query params
+        if (priceRange[0] === 0 && priceRange[1] === maxPrice) {
+            updateQuery({ minPrice: null, maxPrice: null });
+        } else {
+            updateQuery({ minPrice: priceRange[0], maxPrice: priceRange[1] });
+        }
+    };
     const handlePageChange = (newPage: number) => updateQuery({ page: newPage });
+
+    const currentMaxPrice = currentMaxPriceQuery ? Number(currentMaxPriceQuery) : maxPrice;
 
   return (
     <div className="container mx-auto px-4 py-8 md:py-12">
         <div className="grid md:grid-cols-4 gap-8">
             <aside className="md:col-span-1">
-            <ProductFilters
-                categories={categories}
-                onCategoryChange={handleCategoryChange}
-                onSearchChange={handleSearchChange}
-                onSortChange={handleSortChange}
-                onPriceChange={handlePriceChange}
-                currentCategory={category}
-                currentSearchTerm={searchTerm}
-                currentSort={sort}
-                currentPriceRange={[minPrice, isNaN(currentMaxPrice) ? maxPrice : currentMaxPrice]}
-                maxPrice={maxPrice}
-            />
+            {isFiltersLoading ? (
+                <Card>
+                    <CardHeader><Skeleton className="h-6 w-24" /></CardHeader>
+                    <CardContent className="space-y-6">
+                        <Skeleton className="h-10 w-full" />
+                        <Skeleton className="h-20 w-full" />
+                        <Skeleton className="h-20 w-full" />
+                    </CardContent>
+                </Card>
+            ) : (
+                <ProductFilters
+                    categories={categories}
+                    onCategoryChange={handleCategoryChange}
+                    onSearchChange={handleSearchChange}
+                    onSortChange={handleSortChange}
+                    onPriceChange={handlePriceChange}
+                    currentCategory={category}
+                    currentSearchTerm={searchTerm}
+                    currentSort={sort}
+                    currentPriceRange={[minPrice, currentMaxPrice]}
+                    maxPrice={maxPrice}
+                />
+            )}
             </aside>
             <main className="md:col-span-3">
-            <h1 className="text-3xl font-headline font-bold tracking-tighter mb-8">
+            <h1 className="text-3xl font-headline font-bold tracking-tighter mb-8 capitalize">
                 {category === 'all' ? 'All Products' : category}
             </h1>
             
@@ -165,4 +189,3 @@ export default function ProductsPage() {
         </Suspense>
     );
 }
-
