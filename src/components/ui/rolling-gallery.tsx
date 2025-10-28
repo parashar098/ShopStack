@@ -3,6 +3,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { motion, useMotionValue, useAnimation, useTransform } from 'framer-motion';
+import Image from 'next/image';
 
 const IMGS = [
   'https://images.unsplash.com/photo-1528181304800-259b08848526?q=80&w=800&auto=format&fit=crop',
@@ -130,7 +131,7 @@ const RollingGallery = ({ autoplay = false, pauseOnHover = false, images = IMGS 
                 transform: `rotateY(${i * (360 / faceCount)}deg) translateZ(${radius}px)`
               }}
             >
-              <img 
+              <Image 
                 src={url} 
                 alt={`gallery image ${i + 1}`} 
                 className="gallery-img" 
