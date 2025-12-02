@@ -16,7 +16,8 @@ import HeroCarousel from "@/components/hero-carousel";
 
 export default async function HomePage() {
   const featuredProducts = await getFeaturedProducts(8);
-  const discountProduct = await getProductById('product-7');
+  // Get first product from featured products instead of trying to fetch specific ID
+  const discountProduct = featuredProducts.length > 0 ? featuredProducts[0] : null;
   const { products: allProducts } = await getProducts();
   const galleryImages = allProducts.map(p => p.imageURL);
   

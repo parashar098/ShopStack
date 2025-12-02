@@ -19,18 +19,37 @@ type PlaceOrderInput = {
 
 export async function placeOrder(input: PlaceOrderInput): Promise<string | null> {
   try {
-    const newOrderData = {
-      userId: input.userId,
-      items: input.items,
-      totalAmount: input.totalAmount,
-      shippingAddress: input.shippingAddress,
-      paymentStatus: "completed" as const,
-    };
-    
-    // Use the in-memory DB to create an order
-    const newOrder = db.createOrder(newOrderData);
+    // Persist order to the Express backend so it is stored in MongoDB
+    const API_BASE = process.env.API_URL || process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
 
-    return newOrder.id;
+    // Build order payload expected by backend
+    const itemsPrice = input.items.reduce((sum, it) => sum + (it.price * it.quantity), 0);
+    const orderPayload = {
+      user: input.userId,
+      orderItems: input.items.map(it => ({ product: it.productId, name: '', qty: it.quantity, price: it.price, image: '' })),
+      shippingAddress: input.shippingAddress,
+      paymentMethod: 'mock',
+      itemsPrice,
+      taxPrice: 0,
+      shippingPrice: 0,
+      totalPrice: input.totalAmount,
+    };
+
+    const res = await fetch(`${API_BASE}/api/orders`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(orderPayload),
+    });
+
+    if (!res.ok) {
+      const text = await res.text();
+      console.error('Backend order creation failed:', res.status, text);
+      throw new Error('Failed to create order on backend');
+    }
+
+    const created = await res.json();
+    // Backend returns the saved order object; use its _id or id
+    return created._id || created.id || null;
   } catch (error) {
     console.error("Failed to place order:", error);
     return null;

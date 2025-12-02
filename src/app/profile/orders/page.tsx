@@ -7,7 +7,38 @@ import { useEffect, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { getOrdersByUserId, getProductById } from '@/lib/api';
-import type { Order, Product } from '@/lib/types';
+import type { Product } from '@/lib/types';
+
+interface OrderItem {
+    productId: string;
+    name: string;
+    qty: number;
+    price: number;
+    image: string;
+}
+
+interface Order {
+    id: string;
+    userId: string;
+    items: OrderItem[];
+    shippingAddress: {
+        address: string;
+        city: string;
+        postalCode: string;
+        country: string;
+    };
+    paymentMethod: string;
+    itemsPrice: number;
+    taxPrice: number;
+    shippingPrice: number;
+    totalPrice: number;
+    isPaid: boolean;
+    paidAt?: string | Date;
+    isDelivered: boolean;
+    deliveredAt?: string | Date;
+    createdAt: string | Date;
+}
+
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -18,10 +49,10 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/components/ui/accordion"
+} from "@/components/ui/accordion";
 import Image from 'next/image';
 
-function OrderItemDetails({ item }: { item: Order['items'][0] }) {
+function OrderItemDetails({ item }: { item: OrderItem }) {
     const [product, setProduct] = useState<Product | null | undefined>(null);
 
     useEffect(() => {
@@ -50,8 +81,8 @@ function OrderItemDetails({ item }: { item: Order['items'][0] }) {
                     <span className="font-medium">{product?.name || 'Loading...'}</span>
                 </div>
             </TableCell>
-            <TableCell>{item.quantity}</TableCell>
-            <TableCell className="text-right">₹{(item.price * item.quantity).toFixed(2)}</TableCell>
+            <TableCell>{item.qty}</TableCell>
+            <TableCell className="text-right">₹{(item.price * item.qty).toFixed(2)}</TableCell>
         </TableRow>
     )
 }
@@ -138,13 +169,13 @@ export default function OrderHistoryPage() {
                             <AccordionTrigger>
                                 <div className="flex justify-between w-full pr-4 text-sm">
                                     <div className="text-left">
-                                        <p className="font-medium">Order #{order.id.split('-')[1]}</p>
+                                        <p className="font-medium">Order #{order.id.substring(0, 8)}</p>
                                         <p className="text-muted-foreground">{new Date(order.createdAt).toLocaleDateString()}</p>
                                     </div>
                                     <div className="text-right">
-                                        <p className="font-medium">₹{order.totalAmount.toFixed(2)}</p>
-                                        <Badge variant={order.paymentStatus === 'completed' ? 'default' : 'secondary'} className="mt-1">
-                                            {order.paymentStatus}
+                                        <p className="font-medium">₹{order.totalPrice.toFixed(2)}</p>
+                                        <Badge variant={order.isPaid ? 'default' : 'secondary'} className="mt-1">
+                                            {order.isPaid ? 'Paid' : 'Pending'}
                                         </Badge>
                                     </div>
                                 </div>
@@ -161,8 +192,8 @@ export default function OrderHistoryPage() {
                                             </TableRow>
                                         </TableHeader>
                                         <TableBody>
-                                            {order.items.map((item, index) => (
-                                               <OrderItemDetails key={index} item={item} />
+                                            {order.items && order.items.map((item, index) => (
+                                               <OrderItemDetails key={`${order.id}-${index}`} item={item} />
                                             ))}
                                         </TableBody>
                                     </Table>

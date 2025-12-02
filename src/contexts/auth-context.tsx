@@ -2,7 +2,7 @@
 "use client";
 
 import type { User } from "@/lib/types";
-import { mockUsers, addUser, updateUser as updateMockUser } from "@/lib/data";
+import { loginUser, registerUser } from "@/lib/backend-api";
 import {
   createContext,
   useState,
@@ -44,27 +44,30 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const login = useCallback(
-    (email: string, password?: string) => {
-      // Password is not checked in this mock implementation
-      const foundUser = mockUsers.find(u => u.email === email);
-      
-      if (foundUser) {
-        setUser(foundUser);
-        try {
-            localStorage.setItem("shopstack_user", JSON.stringify(foundUser));
-        } catch (error) {
-            console.error("Failed to save user to localStorage", error);
-        }
-        toast({
-          title: "Login Successful",
-          description: `Welcome back, ${foundUser.name}!`,
-        });
-        return foundUser;
-      } else {
+    async (email: string, password?: string) => {
+      if (!password) {
         toast({
           variant: "destructive",
           title: "Login Failed",
-          description: "No user found with that email.",
+          description: "Password is required.",
+        });
+        return null;
+      }
+
+      try {
+        const user = await loginUser(email, password);
+        setUser(user);
+        localStorage.setItem("shopstack_user", JSON.stringify(user));
+        toast({
+          title: "Login Successful",
+          description: `Welcome back, ${user.name}!`,
+        });
+        return user;
+      } catch (error) {
+        toast({
+          variant: "destructive",
+          title: "Login Failed",
+          description: error instanceof Error ? error.message : "Invalid credentials.",
         });
         return null;
       }
@@ -73,30 +76,35 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   );
   
   const register = useCallback(
-    (name: string, email: string, password?: string) => {
-      const existingUser = mockUsers.find(u => u.email === email);
-      if (existingUser) {
+    async (name: string, email: string, password?: string) => {
+      if (!password) {
         toast({
           variant: "destructive",
           title: "Registration Failed",
-          description: "A user with this email already exists.",
+          description: "Password is required.",
         });
         return null;
       }
 
-      const newUser = addUser({ name, email });
-      setUser(newUser);
-       try {
-            localStorage.setItem("shopstack_user", JSON.stringify(newUser));
-        } catch (error) {
-            console.error("Failed to save user to localStorage", error);
-        }
-      toast({
+      try {
+        const newUser = await registerUser(name, email, password);
+        setUser(newUser);
+        localStorage.setItem("shopstack_user", JSON.stringify(newUser));
+        toast({
           title: "Registration Successful",
           description: `Welcome, ${newUser.name}!`,
-      });
-      return newUser;
-    }, [toast]
+        });
+        return newUser;
+      } catch (error) {
+        toast({
+          variant: "destructive",
+          title: "Registration Failed",
+          description: error instanceof Error ? error.message : "Registration failed. Please try again.",
+        });
+        return null;
+      }
+    },
+    [toast]
   );
 
   const logout = useCallback(() => {
@@ -113,29 +121,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     });
   }, [toast, user]);
 
-  const updateUser = useCallback((updatedData: Partial<User>) => {
+  const updateUser = useCallback(async (updatedData: Partial<User>) => {
     if (!user) return;
     
-    // In a real app, this would be an API call.
-    const updatedUser = updateMockUser(user.id, updatedData);
-
-    if (updatedUser) {
-        setUser(updatedUser);
-        try {
-            localStorage.setItem("shopstack_user", JSON.stringify(updatedUser));
-        } catch (error) {
-            console.error("Failed to save user to localStorage", error);
-        }
-        toast({
-            title: "Profile Updated",
-            description: "Your profile has been successfully updated.",
-        });
-    } else {
-        toast({
-            variant: "destructive",
-            title: "Update Failed",
-            description: "Could not update your profile. Please try again.",
-        });
+    try {
+      // In a real app, this would call the backend API
+      // For now, update locally with the provided data
+      const updatedUser = { ...user, ...updatedData };
+      setUser(updatedUser);
+      localStorage.setItem("shopstack_user", JSON.stringify(updatedUser));
+      toast({
+        title: "Profile Updated",
+        description: "Your profile has been successfully updated.",
+      });
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Update Failed",
+        description: "Could not update your profile. Please try again.",
+      });
     }
   }, [user, toast]);
 

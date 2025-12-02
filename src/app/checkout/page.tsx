@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useCart } from "@/hooks/use-cart";
 import { useAuth } from "@/hooks/use-auth";
 import { useRouter } from "next/navigation";
-import { placeOrder } from "@/actions/order";
+import { placeOrder, createRazorpayOrder } from "@/actions/order";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -107,29 +107,79 @@ export default function CheckoutPage() {
     }
 
     try {
-      // For demo purposes, we directly create the order without real payment processing
-      const orderId = await placeOrder({
-        userId: user.id,
-        shippingAddress: data,
-        items: cartItems.map(item => ({ productId: item.id, quantity: item.quantity, price: item.price })),
-        totalAmount: cartTotal,
-      });
+      if (data.paymentMethod === 'razorpay') {
+        // Create a mock Razorpay order on the server (server action)
+        const resp = await createRazorpayOrder(cartTotal);
+        if (!resp || !resp.success) {
+          throw new Error('Failed to create Razorpay order');
+        }
 
-      if (orderId) {
-        toast({
-          title: "Order Placed! (Demo)",
-          description: "Thank you for your purchase.",
-        });
-        clearCart();
-        router.push(`/order-confirmation/${orderId}`);
+        const razorOrder = resp.order;
+
+        // Prepare options for Razorpay checkout
+        const options: any = {
+          key: process.env.NEXT_PUBLIC_RAZORPAY_KEY || 'rzp_test_1234567890abcdef', // demo key fallback
+          amount: razorOrder.amount, // in paise
+          currency: razorOrder.currency || 'INR',
+          name: 'ShopStack (Demo)',
+          description: `Order - ${razorOrder.receipt}`,
+          order_id: razorOrder.id,
+          handler: async function (response: any) {
+            // On successful payment, place the order in the app and redirect to orders page
+            try {
+              const orderId = await placeOrder({
+                userId: user.id,
+                shippingAddress: data,
+                items: cartItems.map(item => ({ productId: item.id, quantity: item.quantity, price: item.price })),
+                totalAmount: cartTotal,
+              });
+
+              if (orderId) {
+                toast({ title: 'Payment successful', description: 'Redirecting to your orders...' });
+                clearCart();
+                router.push('/profile/orders');
+              } else {
+                toast({ variant: 'destructive', title: 'Order failed', description: 'Could not record the order after payment.' });
+              }
+            } catch (err) {
+              console.error(err);
+              toast({ variant: 'destructive', title: 'Order failed', description: 'Could not record the order after payment.' });
+            }
+          },
+          modal: {
+            ondismiss: function() {
+              toast({ variant: 'destructive', title: 'Payment cancelled', description: 'You cancelled the payment.' });
+            }
+          }
+        };
+
+        // Open Razorpay checkout
+        // @ts-ignore - window.Razorpay injected by Script
+        const rzp = new (window as any).Razorpay(options);
+        rzp.open();
       } else {
-        throw new Error("Failed to place order.");
+        // For mock credit-card (stripe) flow, place order directly
+        const orderId = await placeOrder({
+          userId: user.id,
+          shippingAddress: data,
+          items: cartItems.map(item => ({ productId: item.id, quantity: item.quantity, price: item.price })),
+          totalAmount: cartTotal,
+        });
+
+        if (orderId) {
+          toast({ title: 'Order Placed! (Demo)', description: 'Thank you for your purchase.' });
+          clearCart();
+          router.push('/profile/orders');
+        } else {
+          throw new Error('Failed to place order.');
+        }
       }
     } catch (error) {
+      console.error(error);
       toast({
-        variant: "destructive",
-        title: "Something went wrong",
-        description: "We couldn't process your order. Please try again.",
+        variant: 'destructive',
+        title: 'Something went wrong',
+        description: 'We could not process your order. Please try again.',
       });
     } finally {
       setIsProcessing(false);

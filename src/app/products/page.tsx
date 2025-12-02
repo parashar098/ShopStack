@@ -38,24 +38,40 @@ function ProductsPageContent() {
             setCategories(fetchedCategories.map(c => c.name));
             const { products: allProducts } = await getProducts();
             const highestPrice = Math.max(...allProducts.map(p => p.price));
-            setMaxPrice(highestPrice > 0 ? highestPrice : 10000);
-            setIsFiltersLoading(false);
+            const calculatedMaxPrice = highestPrice > 0 ? highestPrice : 10000;
+            setMaxPrice(calculatedMaxPrice);
+            
+            // If no price filters are explicitly set in URL, remove them
+            if (!searchParams.get('minPrice') && !searchParams.get('maxPrice')) {
+                setIsFiltersLoading(false);
+            } else {
+                setIsFiltersLoading(false);
+            }
         };
         fetchInitialData();
-    }, []);
+    }, [searchParams]);
 
     useEffect(() => {
         if (isFiltersLoading) return; // Don't fetch products until filters are ready
         
         setIsLoading(true);
         const fetchProducts = async () => {
-            const effectiveMaxPrice = currentMaxPriceQuery ? Number(currentMaxPriceQuery) : maxPrice;
-            const priceRange = [minPrice, effectiveMaxPrice];
+            // Use the calculated maxPrice, or fall back to the query param if explicitly set
+            let effectiveMaxPrice = maxPrice;
+            if (currentMaxPriceQuery) {
+                effectiveMaxPrice = Number(currentMaxPriceQuery);
+            }
+            
+            // Only apply price range if both values are reasonable
+            let priceRange: number[] | undefined;
+            if (effectiveMaxPrice > 0) {
+                priceRange = [minPrice, effectiveMaxPrice];
+            }
 
             const { products: fetchedProducts, totalPages: fetchedTotalPages } = await getProducts({ 
                 page, 
                 limit: PRODUCTS_PER_PAGE,
-                category,
+                category: category === 'all' ? undefined : category,
                 searchTerm,
                 sort,
                 priceRange,
