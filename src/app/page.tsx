@@ -15,10 +15,25 @@ import type { Product } from "@/lib/types";
 import HeroCarousel from "@/components/hero-carousel";
 
 export default async function HomePage() {
-  const featuredProducts = await getFeaturedProducts(8);
-  // Get first product from featured products instead of trying to fetch specific ID
+  let featuredProducts: Product[] = [];
+  let allProducts: Product[] = [];
+  
+  try {
+    featuredProducts = await getFeaturedProducts(8);
+  } catch (error) {
+    console.error("Error fetching featured products:", error);
+    // Continue with empty array - products will load on client side
+  }
+  
+  try {
+    const result = await getProducts();
+    allProducts = result.products || [];
+  } catch (error) {
+    console.error("Error fetching all products:", error);
+    // Continue with empty array - products will load on client side
+  }
+  
   const discountProduct = featuredProducts.length > 0 ? featuredProducts[0] : null;
-  const { products: allProducts } = await getProducts();
   const galleryImages = allProducts.map(p => p.imageURL);
   
   const heroCombos = [
