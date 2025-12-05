@@ -1,0 +1,26 @@
+<svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+  <!-- Blue Shirt -->
+  <path d="M 120 90 L 140 90 L 140 130 L 160 150 L 160 200 L 120 200 L 120 150 L 100 130 Z" fill="#00A8CC" stroke="#00A8CC" stroke-width="2" stroke-linejoin="round"/>
+  
+  <!-- Red Dress -->
+  <path d="M 180 100 L 200 90 L 220 100 L 220 140 L 240 160 L 240 200 L 180 200 L 180 160 L 200 140 Z" fill="#FF6B6B" stroke="#FF6B6B" stroke-width="2" stroke-linejoin="round"/>
+  
+  <!-- Blue Bird -->
+  <circle cx="200" cy="50" r="12" fill="#00A8CC"/>
+  <ellipse cx="195" cy="48" rx="4" ry="3" fill="#FFFFFF"/>
+  <path d="M 212 50 Q 220 45 225 50" stroke="#00A8CC" stroke-width="2" fill="none" stroke-linecap="round"/>
+  
+  <!-- Stars -->
+  <g fill="#FF6B6B">
+    <circle cx="235" cy="70" r="4"/>
+    <circle cx="250" cy="65" r="3.5"/>
+    <circle cx="260" cy="75" r="3"/>
+  </g>
+  
+  <!-- Text: KidsCloth -->
+  <text x="200" y="240" font-family="Arial, sans-serif" font-size="48" font-weight="bold" text-anchor="middle" fill="#00A8CC">Kids</text>
+  <text x="200" y="240" font-family="Arial, sans-serif" font-size="48" font-weight="bold" text-anchor="middle" fill="#FF6B6B" dx="95">Cloth</text>
+  
+  <!-- Subtext -->
+  <text x="200" y="265" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="#999999">your slogan here</text>
+</svg>

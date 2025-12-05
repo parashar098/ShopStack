@@ -2,8 +2,8 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import {
-  Package2,
   ShoppingCart,
   Menu,
   Heart,
@@ -124,7 +124,7 @@ export default function MainNav() {
               </SheetHeader>
               <nav className="grid gap-6 text-lg font-medium mt-8">
                 <Link href="/" onClick={() => setOpen(false)} className="flex items-center gap-2 text-lg font-semibold mb-4">
-                  <Package2 className="h-6 w-6 text-primary" />
+                  <Image src="/logo.svg" alt="ShopStack" width={40} height={40} className="h-10 w-10" />
                   <span className="font-bold font-headline">ShopStack</span>
                 </Link>
                 {navLinks.map(link => (
@@ -154,7 +154,7 @@ export default function MainNav() {
         
         {/* Desktop Logo & Links */}
         <Link href="/" className="items-center space-x-2 hidden md:flex">
-            <Package2 className="h-6 w-6 text-primary" />
+            <Image src="/logo.svg" alt="ShopStack" width={40} height={40} className="h-10 w-10" />
             <span className="font-bold font-headline text-lg">ShopStack</span>
         </Link>
         <nav className="hidden md:flex items-center space-x-6 text-sm font-medium ml-6">
@@ -168,7 +168,7 @@ export default function MainNav() {
         {/* Mobile Logo (centered) */}
         <div className="flex-1 flex justify-center md:hidden">
            <Link href="/" className="flex items-center space-x-2">
-              <Package2 className="h-6 w-6 text-primary" />
+              <Image src="/logo.svg" alt="ShopStack" width={40} height={40} className="h-10 w-10" />
               <span className="font-bold font-headline text-lg">ShopStack</span>
           </Link>
         </div>
