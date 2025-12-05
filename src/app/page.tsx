@@ -22,6 +22,14 @@ export default async function HomePage() {
   const galleryImages = allProducts.map(p => p.imageURL);
   
   const heroCombos = [
+      {
+        id: 'combo-fashion',
+        title: 'Fashion Collection',
+        description: 'Elevate your style with our exclusive fashion collection. Discover trendy outfits and accessories for every occasion.',
+        imageURL: '/fashion-banner.svg',
+        imageHint: 'women clothing collection',
+        link: '/products?category=Fashion'
+      },
     {
       id: 'combo-1',
       title: 'Ultimate Tech Bundle',
