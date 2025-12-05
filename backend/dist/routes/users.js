@@ -6,6 +6,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const User_1 = __importDefault(require("../models/User"));
 const router = (0, express_1.Router)();
+// Admin: Get all users
+router.get('/', async (req, res) => {
+    try {
+        const users = await User_1.default.find({}).select('-password').sort({ createdAt: -1 });
+        res.json(users);
+    }
+    catch (err) {
+        console.error('Failed to fetch all users:', err);
+        res.status(500).json({ error: 'Failed to fetch all users' });
+    }
+});
 // Register user
 router.post('/register', async (req, res) => {
     try {

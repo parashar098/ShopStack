@@ -7,6 +7,20 @@ const express_1 = require("express");
 const mongoose_1 = require("mongoose");
 const Order_1 = __importDefault(require("../models/Order"));
 const router = (0, express_1.Router)();
+// Admin: Get all orders
+router.get('/', async (req, res) => {
+    try {
+        const orders = await Order_1.default.find({})
+            .populate('user', 'name email')
+            .populate('orderItems.product')
+            .sort({ createdAt: -1 });
+        res.json(orders);
+    }
+    catch (err) {
+        console.error('Failed to fetch all orders:', err);
+        res.status(500).json({ error: 'Failed to fetch all orders' });
+    }
+});
 // Create order
 router.post('/', async (req, res) => {
     try {

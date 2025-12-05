@@ -4,6 +4,17 @@ import bcrypt from 'bcryptjs';
 
 const router = Router();
 
+// Admin: Get all users
+router.get('/', async (req: Request, res: Response) => {
+  try {
+    const users = await User.find({}).select('-password').sort({ createdAt: -1 });
+    res.json(users);
+  } catch (err) {
+    console.error('Failed to fetch all users:', err);
+    res.status(500).json({ error: 'Failed to fetch all users' });
+  }
+});
+
 // Register user
 router.post('/register', async (req: Request, res: Response) => {
   try {

@@ -5,6 +5,20 @@ import Product from '../models/Product';
 
 const router = Router();
 
+// Admin: Get all orders
+router.get('/', async (req: Request, res: Response) => {
+  try {
+    const orders = await Order.find({})
+      .populate('user', 'name email')
+      .populate('orderItems.product')
+      .sort({ createdAt: -1 });
+
+    res.json(orders);
+  } catch (err) {
+    console.error('Failed to fetch all orders:', err);
+    res.status(500).json({ error: 'Failed to fetch all orders' });
+  }
+});
 // Create order
 router.post('/', async (req: Request, res: Response) => {
   try {
