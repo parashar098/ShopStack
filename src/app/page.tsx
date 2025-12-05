@@ -34,7 +34,7 @@ export default async function HomePage() {
       id: 'combo-1',
       title: 'Ultimate Tech Bundle',
       description: 'Get the best of our electronics with this exclusive combo deal. Limited time only!',
-      imageURL: 'https://images.unsplash.com/photo-1550009158-94ae76552485?q=80&w=1287&auto=format&fit=crop',
+      imageURL: '/tech-banner.svg',
       imageHint: 'tech bundle',
       link: '/products?category=Electronics'
     },
