@@ -1,0 +1,13 @@
+.git
+.gitignore
+README.md
+.env.local
+.env.*.local
+backend/
+docs/
+scripts/
+e2e/
+__tests__/
+.idx/
+node_modules/.cache
+.next/cache
