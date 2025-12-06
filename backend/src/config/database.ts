@@ -1,10 +1,15 @@
 // src/config/database.ts
 import mongoose from 'mongoose';
 import * as dotenv from 'dotenv';
+import * as path from 'path';
 
-dotenv.config();
+// Load .env from backend folder
+dotenv.config({ path: path.resolve(__dirname, '../../.env') });
 
-const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/shopstack';
+const MONGO_URI = process.env.MONGO_URI;
+if (!MONGO_URI) {
+  throw new Error('MONGO_URI environment variable is not set. Please check your .env file.');
+}
 
 // Handle connection events
 mongoose.connection.on('connected', () => {
