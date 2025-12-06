@@ -1,48 +1,60 @@
-Backend local setup
--------------------
+Backend Setup & Running
+-----------------------
 
-This document explains how to run a local MongoDB instance and start the backend during development on Windows (PowerShell) or using Docker.
+This project uses **MongoDB Atlas** (cloud database). No local MongoDB installation required.
 
-1) Prerequisites
+## Prerequisites
 - Node.js (>=16)
 - npm
-- Either MongoDB installed locally (mongod) or Docker available
+- MongoDB Atlas account (free tier available at https://www.mongodb.com/cloud/atlas)
 
-2) Use .env
- - Copy `.env.example` to `.env` in the `backend` folder and edit if needed.
+## Setup Steps
 
-3) Start MongoDB locally (option A: installed mongod)
-PowerShell:
+### 1. Get MongoDB Atlas Connection String
+1. Go to https://www.mongodb.com/cloud/atlas
+2. Create a free cluster
+3. Create a database user with a password
+4. Click "Connect" and copy the connection string
+5. It should look like: `mongodb+srv://username:password@cluster.mongodb.net/?appName=shopstack`
+
+### 2. Configure Environment
+Copy `.env.example` to `.env` in the `backend` folder:
 
 ```powershell
-mongod --dbpath "C:\data\db"
+cd backend
+copy .env.example .env
 ```
 
-4) Start MongoDB with Docker (option B)
-PowerShell:
-
-```powershell
-docker run -d --name shopstack-mongo -p 27017:27017 -v %cd%/mongo-data:/data/db mongo:6
-docker ps
+Edit `.env` and paste your MongoDB Atlas connection string:
+```env
+MONGO_URI=mongodb+srv://your_username:your_password@your_cluster.mongodb.net/?appName=shopstack
+PORT=5000
 ```
 
-5) Start backend
-PowerShell (from `backend` folder):
-
+### 3. Install Dependencies & Start Backend
 ```powershell
 npm install
-copy .env.example .env
 npm run dev
+```
 
-# Alternative: build and run the compiled output
+The backend will start on `http://localhost:5000` and connect to MongoDB Atlas.
+
+### 4. Verify Connection
+- Open `http://localhost:5000/api/products` in your browser
+- You should see a JSON response with products
+- Check the terminal for "MongoDB connected" message
+
+## Build & Production
+
+Build for production:
+```powershell
 npm run build
 npm start
 ```
 
-6) Verify
-- Open browser or use curl/Postman: `http://localhost:5000/` should return the welcome JSON.
-- If you see connection logs from the backend, it successfully connected to MongoDB.
+This compiles TypeScript and runs the production version from `dist/server.js`.
 
-Notes
-- The project uses `MONGO_URI` environment variable; the default in `.env.example` points to `mongodb://localhost:27017/shopstack`.
-- On Windows, signal handling (SIGUSR2) used by nodemon might behave differently; `npm run dev` with the provided script should work.
+## Notes
+- `nodemon` watches for file changes during `npm run dev` (development only)
+- For deployment, use `npm start` (runs pre-compiled code)
+- All data is stored in MongoDB Atlas cloud, not locally
