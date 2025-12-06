@@ -13,6 +13,9 @@ import Counter from "@/components/ui/counter";
 import RollingGallery from "@/components/ui/rolling-gallery";
 import type { Product } from "@/lib/types";
 import HeroCarousel from "@/components/hero-carousel";
+import dynamic from 'next/dynamic';
+
+const FeaturedProductsClient = dynamic(() => import('@/components/featured-products-client'), { ssr: false });
 
 export default async function HomePage() {
   let featuredProducts: Product[] = [];
@@ -96,11 +99,17 @@ export default async function HomePage() {
           <h2 className="text-3xl font-headline font-bold tracking-tighter text-center mb-10">
             Our Featured Products
           </h2>
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {featuredProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
+          {/* Server-side fallback: if featuredProducts is empty, client component will fetch at runtime */}
+          {featuredProducts.length > 0 ? (
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              {featuredProducts.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
+          ) : (
+            // Client-side loader will fetch products when backend is available
+            <FeaturedProductsClient limit={8} />
+          )}
         </div>
       </section>
 
