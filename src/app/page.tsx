@@ -13,9 +13,7 @@ import Counter from "@/components/ui/counter";
 import RollingGallery from "@/components/ui/rolling-gallery";
 import type { Product } from "@/lib/types";
 import HeroCarousel from "@/components/hero-carousel";
-import dynamic from 'next/dynamic';
-
-const FeaturedProductsClient = dynamic(() => import('@/components/featured-products-client'), { ssr: false });
+import FeaturedProductsClient from '@/components/featured-products-client';
 
 export default async function HomePage() {
   let featuredProducts: Product[] = [];
