@@ -14,6 +14,7 @@ import RollingGallery from "@/components/ui/rolling-gallery";
 import type { Product } from "@/lib/types";
 import HeroCarousel from "@/components/hero-carousel";
 import FeaturedProductsClient from '@/components/featured-products-client';
+import GalleryClient from '@/components/gallery-client';
 
 export default async function HomePage() {
   // Avoid fetching products during SSR/build to prevent fetch failures when backend is unavailable.
@@ -135,7 +136,7 @@ export default async function HomePage() {
                 Explore the variety and quality that defines our brand. Each product is selected with an eye for design, durability, and delight.
             </p>
         </div>
-        <RollingGallery images={galleryImages} autoplay={true} pauseOnHover={true} />
+        <GalleryClient />
       </section>
 
       <section id="our-impact" className="py-16 md:py-24 bg-background">
