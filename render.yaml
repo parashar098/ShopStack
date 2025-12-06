@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: shopstack-backend
+    runtime: node
+    rootDir: backend
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGO_URI
+        scope: project
+      - key: PORT
+        value: "5000"
