@@ -121,7 +121,19 @@ export async function getFeaturedProducts(limit = 8) {
 
 export async function getAllUsers() {
     try {
-        return await fetchAllUsersAPI();
+        const data = await fetchAllUsersAPI();
+        // Normalize user objects and ensure createdAt is a Date for server-side usage
+        return (data || []).map((u: any) => ({
+            id: u._id || u.id,
+            name: u.name,
+            email: u.email,
+            role: u.isAdmin ? 'admin' : 'customer',
+            createdAt: new Date(u.createdAt || Date.now()),
+            phone: u.phone,
+            gender: u.gender,
+            dob: u.dob,
+            profileImage: u.profileImage,
+        }));
     } catch (error) {
         console.error('Failed to fetch all users:', error);
         return [];
@@ -130,7 +142,13 @@ export async function getAllUsers() {
 
 export async function getAllOrders() {
     try {
-        return await fetchAllOrdersAPI();
+        const data = await fetchAllOrdersAPI();
+        // Normalize orders so server components can safely use Date and totalAmount
+        return (data || []).map((o: any) => ({
+            ...o,
+            createdAt: new Date(o.createdAt || Date.now()),
+            totalAmount: o.totalPrice ?? o.totalAmount ?? 0,
+        }));
     } catch (error) {
         console.error('Failed to fetch all orders:', error);
         return [];
