@@ -39,8 +39,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // src/config/database.ts
 const mongoose_1 = __importDefault(require("mongoose"));
 const dotenv = __importStar(require("dotenv"));
-dotenv.config();
-const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/shopstack';
+const path = __importStar(require("path"));
+// Load .env from backend folder
+dotenv.config({ path: path.resolve(__dirname, '../../.env') });
+const MONGO_URI = process.env.MONGO_URI;
+if (!MONGO_URI) {
+    throw new Error('MONGO_URI environment variable is not set. Please check your .env file.');
+}
 // Handle connection events
 mongoose_1.default.connection.on('connected', () => {
     var _a;
