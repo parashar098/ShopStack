@@ -1,6 +1,6 @@
 
 
-import { fetchProducts as fetchProductsAPI, fetchProductById as fetchProductByIdAPI, fetchUserOrders } from './backend-api';
+import { fetchProducts as fetchProductsAPI, fetchProductById as fetchProductByIdAPI, fetchUserOrders, fetchAllUsers as fetchAllUsersAPI, fetchAllOrders as fetchAllOrdersAPI } from './backend-api';
 import type { Product } from './types';
 
 // Get products with optional filters (calls backend)
@@ -120,15 +120,21 @@ export async function getFeaturedProducts(limit = 8) {
 }
 
 export async function getAllUsers() {
-    // This would need a GET /api/users endpoint
-    console.warn('getAllUsers not yet implemented for backend');
-    return [];
+    try {
+        return await fetchAllUsersAPI();
+    } catch (error) {
+        console.error('Failed to fetch all users:', error);
+        return [];
+    }
 }
 
 export async function getAllOrders() {
-    // This would need a GET /api/orders endpoint
-    console.warn('getAllOrders not yet implemented for backend');
-    return [];
+    try {
+        return await fetchAllOrdersAPI();
+    } catch (error) {
+        console.error('Failed to fetch all orders:', error);
+        return [];
+    }
 }
 
 export async function getOrderById(id: string) {

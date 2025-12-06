@@ -60,6 +60,30 @@ export async function fetchProductById(id: string) {
   }
 }
 
+// Fetch all users (admin endpoint)
+export async function fetchAllUsers() {
+  try {
+    const res = await fetch(`${API_BASE}/api/users`);
+    if (!res.ok) throw new Error('Failed to fetch users');
+    return await res.json();
+  } catch (err) {
+    console.error('Error fetching users from backend:', err);
+    return [];
+  }
+}
+
+// Fetch all orders (admin endpoint)
+export async function fetchAllOrders() {
+  try {
+    const res = await fetch(`${API_BASE}/api/orders`);
+    if (!res.ok) throw new Error('Failed to fetch orders');
+    return await res.json();
+  } catch (err) {
+    console.error('Error fetching orders from backend:', err);
+    return [];
+  }
+}
+
 export async function createProduct(productData: {
   name: string;
   description: string;
