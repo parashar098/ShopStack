@@ -1,7 +1,7 @@
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { getFeaturedProducts, getProductById, getProducts } from "@/lib/api";
+import { getProductById } from "@/lib/api";
 import ProductCard from "@/components/product-card";
 import SplitText from "@/components/ui/split-text";
 import CategoryHighlights from "@/components/category-highlights";
@@ -16,26 +16,11 @@ import HeroCarousel from "@/components/hero-carousel";
 import FeaturedProductsClient from '@/components/featured-products-client';
 
 export default async function HomePage() {
-  let featuredProducts: Product[] = [];
-  let allProducts: Product[] = [];
-  
-  try {
-    featuredProducts = await getFeaturedProducts(8);
-  } catch (error) {
-    console.error("Error fetching featured products:", error);
-    // Continue with empty array - products will load on client side
-  }
-  
-  try {
-    const result = await getProducts();
-    allProducts = result.products || [];
-  } catch (error) {
-    console.error("Error fetching all products:", error);
-    // Continue with empty array - products will load on client side
-  }
-  
-  const discountProduct = featuredProducts.length > 0 ? featuredProducts[0] : null;
-  const galleryImages = allProducts.map(p => p.imageURL);
+  // Avoid fetching products during SSR/build to prevent fetch failures when backend is unavailable.
+  // Products and related UI will be loaded on the client via `FeaturedProductsClient`.
+  const featuredProducts: Product[] = [];
+  const galleryImages: string[] = [];
+  const discountProduct = null;
   
   const heroCombos = [
       {
